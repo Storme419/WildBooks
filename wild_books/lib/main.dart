@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wild_books/about_us_page.dart';
 import 'package:wild_books/add_a_book_page.dart';
 import 'package:wild_books/book_shelf_page.dart';
+import 'package:wild_books/geolocation_test.dart';
 import 'package:wild_books/list_of_all_books.dart';
 import 'package:wild_books/search_page.dart';
 import 'package:wild_books/signin_page.dart';
@@ -33,7 +34,8 @@ class MyApp extends StatelessWidget {
               '/sign-in': (context) => SigninPage(),
               '/about-us': (context) => AboutUs(),
               '/add-book': (context) => AddBook(),
-              '/books-list': (context) => ListOfBooks(),
+              //'/books-list': (context) => ListOfBooks(),
+              '/books-list': (context) => LocationTest(),
             },
             home: RootPage(),
           );
