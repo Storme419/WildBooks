@@ -14,9 +14,12 @@ class LocationTest extends StatelessWidget {
         ElevatedButton(
             onPressed: () => GeolocationController.instance.getLocation(),
             child: Text('Click me')),
-        Text(GeolocationController.instance.error == ''
-            ? 'Latitude: ${GeolocationController.instance.lat} | Longitude: ${GeolocationController.instance.long}'
-            : '${GeolocationController.instance.error}'),
+        Text(
+          GeolocationController.instance.error == ''
+              ? 'Latitude: ${GeolocationController.instance.lat} | Longitude: ${GeolocationController.instance.long}'
+              : '${GeolocationController.instance.error}',
+          textAlign: TextAlign.center,
+        ),
       ]),
     );
   }
