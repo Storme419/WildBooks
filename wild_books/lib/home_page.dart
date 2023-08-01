@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wild_books/book.dart';
 import 'package:wild_books/book_tile.dart';
+import 'package:wild_books/utils/db.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -46,14 +47,23 @@ class _HomePageState extends State<HomePage> {
           height: 45,
         ),
         Expanded(
-            child: ListView.builder(
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  Book book = Book(
-                      title: 'Crime and Punishment',
-                      author: 'Fyodor Dostoyevsky',
-                      bookCover: 'lib/images/book2.png');
-                  return BookTile(book: book);
+            child: FutureBuilder(
+                future: getBooks(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  final books = snapshot.data!;
+                  debugPrint(books.toString());
+                  return ListView.builder(
+                      itemCount: 10,
+                      itemBuilder: (context, index) {
+                        Book book = Book(
+                            title: books[index]['title'],
+                            author: books[index]['author'],
+                            bookCover: books[index]['image_url']);
+                        return BookTile(book: book);
+                      });
                 }))
       ],
     );

@@ -12,7 +12,7 @@ class BookTile extends StatelessWidget {
       leading: SizedBox(
         width: 100,
         height: 500,
-        child: Image.asset(book.bookCover, fit: BoxFit.fill),
+        child: Image.network(book.bookCover, fit: BoxFit.fill),
       ),
       title: Text('Title: ${book.title}',
           style: TextStyle(color: Colors.grey[600], fontSize: 20)),

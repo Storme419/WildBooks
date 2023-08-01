@@ -9,8 +9,10 @@ import 'package:wild_books/signin_page.dart';
 import 'package:wild_books/home_page.dart';
 import 'package:wild_books/map_page.dart';
 import 'package:wild_books/theme_controller.dart';
+import 'package:wild_books/utils/db.dart';
 
-void main() {
+Future<void> main() async {
+  await initSupabase();
   runApp(const MyApp());
 }
 
