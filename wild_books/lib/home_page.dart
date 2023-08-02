@@ -27,17 +27,21 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      TextField(
-                        onChanged: (text) {
-                          print(text);
-                        },
-                        decoration: const InputDecoration(
-                            filled: true,
-                            hintText: 'Please enter your code here',
-                            border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(15.0)))),
-                      ),
+                      // TextField(
+                      //   onChanged: (text) {
+                      //     print(text);
+                      //   },
+                      //   decoration: InputDecoration(
+                      //       suffixIcon: IconButton(
+                      //           icon: Icon(Icons.send),
+                      //           onPressed: () {
+                      //             print('hello');
+                      //           }),
+                      //       hintText: 'Please enter your code here',
+                      //       border: OutlineInputBorder(
+                      //           borderRadius:
+                      //               BorderRadius.all(Radius.circular(15.0)))),
+                      // ),
                       // Container(
                       //   padding: const EdgeInsets.all(12),
                       //   margin: const EdgeInsets.symmetric(horizontal: 25),
