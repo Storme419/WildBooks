@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wild_books/book.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class BookTile extends StatelessWidget {
   Book book;
@@ -51,6 +52,18 @@ class BookTile extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
                     child: Text(
                       'Author: ${book.author}',
+                      style: TextStyle(
+                        fontSize: 15,
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
+                    child: Text(
+                      'Released ${timeago.format(book.timestamp)}',
                       style: TextStyle(
                         fontSize: 15,
                       ),
