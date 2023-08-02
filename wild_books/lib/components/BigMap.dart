@@ -1,16 +1,14 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_animations/flutter_map_animations.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:wild_books/components/MarkerData.dart';
+import 'package:wild_books/classes/MarkerData.dart';
 
 class BigMap extends StatefulWidget {
-    const BigMap({Key? key, required this.markerData}) : super(key: key);
+  const BigMap({super.key, required this.markerData});
 
-    final List<MarkerData> markerData;
+  final List<MarkerData> markerData;
 
   @override
   State<BigMap> createState() => _BigMapState();
@@ -92,11 +90,12 @@ class _BigMapState extends State<BigMap> with TickerProviderStateMixin {
         ),
         MarkerLayer(
           markers: [
-            Marker(
-              point: const LatLng(51.509364, -0.128928),
-              width: 80,
-              height: 80,
-              builder: (context) => GestureDetector(
+            ...widget.markerData.map(
+              (marker) => Marker(
+                point: marker.getLatLng(),
+                width: 80,
+                height: 80,
+                builder: (context) => GestureDetector(
                 onTap: () {
                   debugPrint('you clicked a thing');
                   setState(() {
@@ -110,7 +109,7 @@ class _BigMapState extends State<BigMap> with TickerProviderStateMixin {
                   children: [
                     const Icon(Icons.location_on, color: Colors.red, size: 30),
                     Text(
-                      markerText,
+                      marker.getMarkerText(),
                       style: TextStyle(
                         color: Colors.white,
                         backgroundColor: lovelyColour,
@@ -119,19 +118,6 @@ class _BigMapState extends State<BigMap> with TickerProviderStateMixin {
                   ],
                 ),
               ),
-            ),
-            Marker(
-                point: const LatLng(53.2043, -1.1549),
-                width: 80,
-                height: 80,
-                builder: (context) => const Icon(Icons.house, size: 30),
-              ),
-            ...widget.markerData.map(
-              (marker) => Marker(
-                point: marker.getLatLng(),
-                width: 80,
-                height: 80,
-                builder: (context) => const Icon(Icons.location_on, size: 30),
               ),
             )
           ],
