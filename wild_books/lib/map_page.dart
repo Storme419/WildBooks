@@ -17,26 +17,49 @@ class _MapState extends State<Map> {
         lng: -0.13,
         bookId: 1,
         bookName: 'Harry Potter and the Very Long Named Book'),
-    MarkerData(lat: 51.4, lng: -0.12, bookId: 1, bookName: '1984'),
-    MarkerData(lat: 51.3, lng: -0.3, bookId: 1, bookName: 'The Great Gatsby'),
-    MarkerData(lat: 51.7, lng: -0.3, bookId: 1, bookName: 'American Psycho'),
+    MarkerData(lat: 51.4, lng: -0.12, bookId: 2, bookName: '1984'),
+    MarkerData(lat: 51.3, lng: -0.3, bookId: 3, bookName: 'The Great Gatsby'),
+    MarkerData(lat: 51.7, lng: -0.3, bookId: 4, bookName: 'American Psycho'),
   ];
 
   String selectedBookTitle = 'Some book';
   int selectedBookId = 1;
+  bool isDrawerVisible = false;
 
   @override
   Widget build(BuildContext context) {
-    double drawerHeight = 180;
+    double drawerHeight = MediaQuery.of(context).size.height / 4;
+
+    void notifyMarkerDetails(bookTitle, bookId) {
+      setState(() {
+        selectedBookTitle = bookTitle;
+        selectedBookId = bookId;
+        isDrawerVisible = true;
+      });
+    }
+
+    void notifyHideDrawer() {
+      setState(() {
+        isDrawerVisible = false;
+      });
+    }
 
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          BigMap(markerData: markerData),
-          Positioned(
+          BigMap(
+              markerData: markerData,
+              callbackMarkerDetails: notifyMarkerDetails,
+              callbackHideDrawer: notifyHideDrawer),
+          AnimatedPositioned(
             left: 0,
-            bottom: 0, //-drawerHeight,
-            child: MapDrawer(height: drawerHeight, bookTitle: selectedBookTitle, bookId: selectedBookId),
+            bottom: isDrawerVisible ? 0 : -drawerHeight,
+            duration: const Duration(milliseconds: 300),
+            child: MapDrawer(
+                height: drawerHeight,
+                bookTitle: selectedBookTitle,
+                bookId: selectedBookId,
+                callbackHideDrawer: notifyHideDrawer),
           ),
         ],
       ),
@@ -45,11 +68,18 @@ class _MapState extends State<Map> {
 }
 
 class MapDrawer extends StatefulWidget {
-  const MapDrawer({super.key, required this.height, required this.bookTitle, required this.bookId});
+  const MapDrawer({
+    super.key,
+    required this.height,
+    required this.bookTitle,
+    required this.bookId,
+    required this.callbackHideDrawer,
+  });
 
   final double height;
   final String bookTitle;
   final int bookId;
+  final void Function() callbackHideDrawer;
 
   @override
   State<MapDrawer> createState() => _MapDrawerState();
@@ -71,19 +101,33 @@ class _MapDrawerState extends State<MapDrawer> {
         width: width,
         child: Padding(
           padding: const EdgeInsets.all(8),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+          child: Stack(
             children: <Widget>[
-              Text(widget.bookTitle),
-              ElevatedButton(
-                onPressed: () {
-                  // push to navigator stack...
-                },
-                child: Text('View this book - link to ${widget.bookId}'),
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text(widget.bookTitle),
+                  ElevatedButton(
+                    onPressed: () {
+                      debugPrint('navigate to ${widget.bookId}');
+                    },
+                    child: const Text('View this book'),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+            Align(
+              alignment: Alignment.topRight,
+              child: IconButton(
+                onPressed: () {
+                  widget.callbackHideDrawer();
+                },
+                icon: const Icon(Icons.close),
+              ),
+            ),
+          ]),
         ),
       ),
     );

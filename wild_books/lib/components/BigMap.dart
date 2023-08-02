@@ -6,8 +6,14 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:wild_books/classes/MarkerData.dart';
 
 class BigMap extends StatefulWidget {
-  const BigMap({super.key, required this.markerData});
+  const BigMap(
+      {super.key,
+      required this.markerData,
+      required this.callbackMarkerDetails,
+      required this.callbackHideDrawer});
 
+  final void Function(dynamic, dynamic) callbackMarkerDetails;
+  final void Function() callbackHideDrawer;
   final List<MarkerData> markerData;
 
   @override
@@ -15,16 +21,11 @@ class BigMap extends StatefulWidget {
 }
 
 class _BigMapState extends State<BigMap> with TickerProviderStateMixin {
-
   late final mapController = AnimatedMapController(
     vsync: this,
     duration: const Duration(milliseconds: 1000),
     curve: Curves.easeInOut,
   );
-
-  MaterialColor lovelyColour = Colors.purple;
-  String markerText = 'clickable marker';
-
 
   @override
   Widget build(BuildContext context) {
@@ -33,30 +34,24 @@ class _BigMapState extends State<BigMap> with TickerProviderStateMixin {
       options: MapOptions(
         minZoom: 2.0,
         maxZoom: 18.0,
-        center: const LatLng(53.2043, -1.1549),
+        center: const LatLng(51.5, -0.1),
         interactiveFlags: InteractiveFlag.all & ~InteractiveFlag.rotate,
         zoom: 9.2,
         onMapReady: () {
           mapController.mapController.mapEventStream.listen((evt) {});
         },
+        onTap: (tapPosition, latLng) {
+          widget.callbackHideDrawer();
+        },
       ),
       nonRotatedChildren: [
-        Column(
-          children: [
-            ElevatedButton(
+        Align(
+          alignment: Alignment.topRight,
+          child: CircleAvatar(
+            radius: 25,
+            backgroundColor: Colors.white,
+            child: IconButton(
               onPressed: () {
-                mapController.animateTo(
-                    dest: const LatLng(51.509364, -0.128928), zoom: 9.2);
-              },
-              child: const Text('Go to London'),
-            ),
-          ],
-        ),
-        Column(
-          children: [
-            ElevatedButton(
-              onPressed: () {
-
                 // get lat/long of user
                 double userLat = 0;
                 double userLong = 0;
@@ -64,9 +59,9 @@ class _BigMapState extends State<BigMap> with TickerProviderStateMixin {
                 mapController.animateTo(
                     dest: LatLng(userLat, userLong), zoom: 9.2);
               },
-              child: const Text('Go to my location'),
+              icon: const Icon(Icons.my_location),
             ),
-          ],
+          ),
         ),
         RichAttributionWidget(
           attributions: [
@@ -91,28 +86,24 @@ class _BigMapState extends State<BigMap> with TickerProviderStateMixin {
                 width: 80,
                 height: 80,
                 builder: (context) => GestureDetector(
-                onTap: () {
-                  debugPrint('you clicked a thing');
-                  setState(() {
-                    lovelyColour = (lovelyColour == Colors.purple
-                        ? Colors.orange
-                        : Colors.purple);
-                    markerText = 'redirect?';
-                  });
-                },
-                child: Column(
-                  children: [
-                    const Icon(Icons.location_on, color: Colors.red, size: 30),
-                    Text(
-                      marker.getMarkerText(),
-                      style: TextStyle(
-                        color: Colors.white,
-                        backgroundColor: lovelyColour,
+                  onTap: () {
+                    widget.callbackMarkerDetails(
+                        marker.bookName, marker.bookId);
+                  },
+                  child: Column(
+                    children: [
+                      const Icon(Icons.location_on,
+                          color: Colors.red, size: 30),
+                      Text(
+                        marker.getMarkerText(),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          backgroundColor: Colors.deepOrange,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
               ),
             )
           ],
