@@ -121,51 +121,7 @@ class _RootPageState extends State<RootPage> {
             ),
           ]),
         ),
-        appBar: AppBar(
-          title: const Text(
-            'Wild Books',
-          ),
-          actions: [
-            IconButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/sign-in');
-                },
-                icon: const Icon(
-                  Icons.person_2_rounded,
-                  size: 35,
-                ))
-          ],
-          //     title: Image.asset(
-          //   "./images/logo-color.png",
-          //   width: 140,
-          // )
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-            currentIndex: pageIndex,
-            onTap: (index) {
-              setState(() {
-                pageIndex = index;
-              });
-            },
-            type: BottomNavigationBarType.fixed,
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home, size: 30),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.book_rounded, size: 30),
-                label: 'Bookshelf',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.map_rounded, size: 30),
-                label: 'Map',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.search, size: 30),
-                label: 'Search',
-              ),
-            ]),
-        body: _pages[pageIndex]);
+      body: _pages[pageIndex],
+    );
   }
 }
