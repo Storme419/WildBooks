@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
 class GeolocationController extends ChangeNotifier {
-  // static GeolocationController instance = GeolocationController();
+  static GeolocationController instance = GeolocationController();
 
   double lat = 0.0;
   double long = 0.0;
