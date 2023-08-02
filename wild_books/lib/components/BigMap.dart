@@ -4,6 +4,7 @@ import 'package:flutter_map_animations/flutter_map_animations.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wild_books/classes/MarkerData.dart';
+import 'package:wild_books/geolocation_controller.dart';
 
 class BigMap extends StatefulWidget {
   const BigMap(
@@ -26,6 +27,11 @@ class _BigMapState extends State<BigMap> with TickerProviderStateMixin {
     duration: const Duration(milliseconds: 1000),
     curve: Curves.easeInOut,
   );
+
+   void initState() {
+    GeolocationController.instance.getLocation();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -52,12 +58,10 @@ class _BigMapState extends State<BigMap> with TickerProviderStateMixin {
             backgroundColor: Colors.white,
             child: IconButton(
               onPressed: () {
-                // get lat/long of user
-                double userLat = 0;
-                double userLong = 0;
-
                 mapController.animateTo(
-                    dest: LatLng(userLat, userLong), zoom: 9.2);
+                  dest: LatLng(GeolocationController.instance.lat,
+                      GeolocationController.instance.long),
+                );
               },
               icon: const Icon(Icons.my_location),
             ),
