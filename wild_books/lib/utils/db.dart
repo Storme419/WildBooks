@@ -30,7 +30,6 @@ Future getBooks() async {
             genre
           )
       ''');
-
   List<Object> newData = [];
   for (int i = 0; i < data.length; i++) {
     newData.add({
