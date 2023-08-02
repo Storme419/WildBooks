@@ -1,17 +1,23 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_animations/flutter_map_animations.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:wild_books/components/MarkerData.dart';
 
 class BigMap extends StatefulWidget {
-  const BigMap({super.key});
+    const BigMap({Key? key, required this.markerData}) : super(key: key);
+
+    final List<MarkerData> markerData;
 
   @override
   State<BigMap> createState() => _BigMapState();
 }
 
 class _BigMapState extends State<BigMap> with TickerProviderStateMixin {
+
   late final mapController = AnimatedMapController(
     vsync: this,
     duration: const Duration(milliseconds: 1000),
@@ -21,12 +27,6 @@ class _BigMapState extends State<BigMap> with TickerProviderStateMixin {
   MaterialColor lovelyColour = Colors.purple;
   String markerText = 'clickable marker';
 
-  final points = [
-    const LatLng(51.6, -0.13),
-    const LatLng(51.4, -0.12),
-    const LatLng(51.5, -0.3),
-    const LatLng(51.3, 0.11),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -126,9 +126,9 @@ class _BigMapState extends State<BigMap> with TickerProviderStateMixin {
                 height: 80,
                 builder: (context) => const Icon(Icons.house, size: 30),
               ),
-            ...points.map(
-              (point) => Marker(
-                point: point,
+            ...widget.markerData.map(
+              (marker) => Marker(
+                point: marker.getLatLng(),
                 width: 80,
                 height: 80,
                 builder: (context) => const Icon(Icons.location_on, size: 30),
