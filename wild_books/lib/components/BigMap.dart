@@ -50,26 +50,21 @@ class _BigMapState extends State<BigMap> with TickerProviderStateMixin {
               },
               child: const Text('Go to London'),
             ),
+          ],
+        ),
+        Column(
+          children: [
             ElevatedButton(
               onPressed: () {
+
+                // get lat/long of user
+                double userLat = 0;
+                double userLong = 0;
+
                 mapController.animateTo(
-                    dest: const LatLng(53.2043, -1.1549), zoom: 9.2);
+                    dest: LatLng(userLat, userLong), zoom: 9.2);
               },
-              child: const Text('Go to Warsop'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                mapController.animateTo(
-                    dest: const LatLng(53.3342, -1.7837), zoom: 10);
-              },
-              child: const Text('Peak District'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                mapController.animateTo(
-                    dest: const LatLng(55.3781, -3.4360), zoom: 5.5);
-              },
-              child: const Text('Zoom Out...'),
+              child: const Text('Go to my location'),
             ),
           ],
         ),
