@@ -10,6 +10,7 @@ import 'package:wild_books/home_page.dart';
 import 'package:wild_books/map_page.dart';
 import 'package:wild_books/theme_controller.dart';
 import 'package:wild_books/utils/db.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 
 Future<void> main() async {
   await initSupabase();
@@ -53,7 +54,7 @@ class RootPage extends StatefulWidget {
 }
 
 class _RootPageState extends State<RootPage> {
-  int pageIndex = 0;
+  int _selectedIndex = 0;
 
   final List<Widget> _pages = [
     const HomePage(),
@@ -123,7 +124,7 @@ class _RootPageState extends State<RootPage> {
         ),
         appBar: AppBar(
           title: const Text(
-            'Wild Books',
+            'W I L D B O O K S',
           ),
           actions: [
             IconButton(
@@ -140,32 +141,46 @@ class _RootPageState extends State<RootPage> {
           //   width: 140,
           // )
         ),
-        bottomNavigationBar: BottomNavigationBar(
-            currentIndex: pageIndex,
-            onTap: (index) {
+        body: _pages[_selectedIndex],
+      bottomNavigationBar: Container(
+        color: Colors.brown.shade800,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+          child: GNav(
+            backgroundColor: Colors.brown.shade800,
+            color: Colors.white,
+            activeColor: Colors.white,
+            tabBackgroundColor: Colors.brown,
+            padding: EdgeInsets.all(16),
+            
+            gap: 8,
+            tabs: const [
+              GButton(
+                icon: Icons.home,
+                text: 'Home',
+              ),
+              GButton(
+                icon: Icons.book_rounded,
+                text: 'Bookshelf',
+              ),
+              GButton(
+                icon: Icons.map,
+                text: 'Map',
+              ),
+              GButton(
+                icon: Icons.search,
+                text: 'Search',
+              ),
+            ],
+            selectedIndex: _selectedIndex,
+            onTabChange: (index) {
               setState(() {
-                pageIndex = index;
+                _selectedIndex = index;
               });
             },
-            type: BottomNavigationBarType.fixed,
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home, size: 30),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.book_rounded, size: 30),
-                label: 'Bookshelf',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.map_rounded, size: 30),
-                label: 'Map',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.search, size: 30),
-                label: 'Search',
-              ),
-            ]),
-        body: _pages[pageIndex]);
+          ),
+        ),
+      ),
+    );
   }
 }
