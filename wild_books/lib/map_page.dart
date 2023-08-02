@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:wild_books/components/BigMap.dart';
 import 'package:wild_books/classes/MarkerData.dart';
 
@@ -101,8 +100,7 @@ class _MapDrawerState extends State<MapDrawer> {
         width: width,
         child: Padding(
           padding: const EdgeInsets.all(8),
-          child: Stack(
-            children: <Widget>[
+          child: Stack(children: <Widget>[
             Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

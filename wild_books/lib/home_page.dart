@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:wild_books/book.dart';
 import 'package:wild_books/book_tile.dart';
 import 'package:wild_books/utils/db.dart';
@@ -60,7 +59,8 @@ class _HomePageState extends State<HomePage> {
                           Book book = Book(
                               title: books[index]['title'],
                               author: books[index]['author'],
-                              bookCover: books[index]['image_url']);
+                              bookCover: books[index]['image_url'],
+                              timestamp: DateTime.parse(books[index]['timestamp']));
                           return BookTile(book: book);
                         });
                   }),
