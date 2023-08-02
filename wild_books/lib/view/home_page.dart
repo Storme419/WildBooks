@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:wild_books/book.dart';
-import 'package:wild_books/book_tile.dart';
+import 'package:wild_books/model/book.dart';
+import 'package:wild_books/view/book_tile.dart';
 import 'package:wild_books/utils/db.dart';
 
 class HomePage extends StatefulWidget {

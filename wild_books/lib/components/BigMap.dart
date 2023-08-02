@@ -4,7 +4,7 @@ import 'package:flutter_map_animations/flutter_map_animations.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wild_books/classes/MarkerData.dart';
-import 'package:wild_books/geolocation_controller.dart';
+import 'package:wild_books/controller/geolocation_controller.dart';
 
 class BigMap extends StatefulWidget {
   const BigMap(

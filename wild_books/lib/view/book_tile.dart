@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wild_books/book.dart';
+import 'package:wild_books/model/book.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class BookTile extends StatelessWidget {
