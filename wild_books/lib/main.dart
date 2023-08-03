@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:wild_books/view/about_us_page.dart';
+import 'package:wild_books/view/account_page.dart';
 import 'package:wild_books/view/add_a_book_page.dart';
 import 'package:wild_books/view/book_shelf_page.dart';
 import 'package:wild_books/view/list_of_all_books.dart';
 import 'package:wild_books/search_page.dart';
-import 'package:wild_books/signin_page.dart';
 import 'package:wild_books/view/home_page.dart';
+import 'package:wild_books/view/login_page.dart';
+import 'package:wild_books/view/redirect_page.dart';
 import 'package:wild_books/view/map_page.dart';
 import 'package:wild_books/theme_controller.dart';
 import 'package:wild_books/utils/db.dart';
@@ -33,9 +35,11 @@ class MyApp extends StatelessWidget {
             //initialRoute: '/home',
             routes: {
               '/home': (context) => HomePage(),
-              '/sign-in': (context) => SigninPage(),
-              '/about-us': (context) => AboutUs(),
+              '/profile-button': (context) => RedirectPage(),
+              '/sign-in': (context) => LoginPage(),
               '/add-book': (context) => AddBook(),
+              '/about-us': (context) => AboutUs(),
+              '/account': (context) => AccountPage(),
               '/books-list': (context) => ListOfBooks(),
             },
             home: RootPage(),
@@ -114,8 +118,9 @@ class _RootPageState extends State<RootPage> {
           ListTile(
             leading: Icon(Icons.logout),
             title: Text('Log-out'),
-            onTap: () {
-              Navigator.of(context).pushReplacementNamed('/home');
+            onTap: () async {
+              await supabase.auth.signOut();
+              Navigator.of(context).pushNamed('/home');
             },
           ),
         ]),
@@ -127,7 +132,7 @@ class _RootPageState extends State<RootPage> {
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.of(context).pushNamed('/sign-in');
+                Navigator.of(context).pushNamed('/profile-button');
               },
               icon: const Icon(
                 Icons.person_2_rounded,

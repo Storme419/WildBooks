@@ -4,6 +4,7 @@ import 'package:wild_books/view/book_tile.dart';
 import 'package:wild_books/utils/db.dart';
 
 class HomePage extends StatefulWidget {
+   static const route = '/home';
   const HomePage({super.key});
 
   @override

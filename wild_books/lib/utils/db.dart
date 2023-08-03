@@ -7,8 +7,11 @@ Future<void> initSupabase() async {
     url: 'https://lmuadjmjcowajbxdbqmu.supabase.co',
     anonKey:
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxtdWFkam1qY293YWpieGRicW11Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTA3OTcyNjksImV4cCI6MjAwNjM3MzI2OX0.SDDdTS9Smvk3whG2pGtIyVohsBuhujNVbxV4MOecoH8',
+    authFlowType: AuthFlowType.pkce,
   );
 }
+
+final supabase = Supabase.instance.client;
 
 //book cover
 //title
