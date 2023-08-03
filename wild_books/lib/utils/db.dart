@@ -11,6 +11,8 @@ Future<void> initSupabase() async {
   );
 }
 
+final supabase = Supabase.instance.client;
+
 Future getBooks() async {
   final data =
       await Supabase.instance.client.from('book_events_populated').select('''
