@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> initSupabase() async {
@@ -63,15 +64,15 @@ Future getSingleBook(givenCode) async {
       'image_url': data[0]['image_url'],
     });
     for (var i = 0; i < data[0]['book_events_populated'].length; i++) {
+      final events = data[0]['book_events_populated'][i];
       newData.add({
-        'event': data[0]['book_events_populated'][i]['event'],
-        'timestamp': data[0]['book_events_populated'][i]['timestamp'],
-        'latitude': data[0]['book_events_populated'][i]['latitude'],
-        'longitude': data[0]['book_events_populated'][i]['longitude'],
-        'name': data[0]['book_events_populated'][i]['users_populated']['name'],
-        'note': data[0]['book_events_populated'][i]['user_note'],
-        'comments': data[0]['book_events_populated'][i]
-            ['event_comments_populated']
+        'event': events['event'],
+        'timestamp': events['timestamp'],
+        'latitude': events['latitude'],
+        'longitude': events['longitude'],
+        'name': events['users_populated']['name'],
+        'note': events['user_note'],
+        'comments': events['event_comments_populated']
       });
     }
   }
