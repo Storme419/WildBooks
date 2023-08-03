@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> initSupabase() async {
@@ -13,15 +14,6 @@ Future<void> initSupabase() async {
 
 final supabase = Supabase.instance.client;
 
-//book cover
-//title
-//author
-//event column from events table
-//user id for user name from events table
-//timestamp from events table
-//location from events table
-//need username from joining table to user
-
 Future getBooks() async {
   final data =
       await Supabase.instance.client.from('book_events_populated').select('''
@@ -30,7 +22,8 @@ Future getBooks() async {
             title,
             author,
             image_url,
-            genre
+            genre,
+            code
           )
       ''');
   List<Object> newData = [];
@@ -41,8 +34,50 @@ Future getBooks() async {
       'title': data[i]['books_populated']['title'],
       'author': data[i]['books_populated']['author'],
       'image_url': data[i]['books_populated']['image_url'],
-      'genre': data[i]['books_populated']['genre']
+      'genre': data[i]['books_populated']['genre'],
+      'code': data[i]['books_populated']['code']
     });
+  }
+  return newData;
+}
+
+Future getSingleBook(givenCode) async {
+  final data = await Supabase.instance.client.from('books_populated').select('''
+        title, author, image_url, code,
+        book_events_populated (
+         event,
+         timestamp,
+         latitude,
+         longitude,
+         user_note,
+         users_populated (name),
+         event_comments_populated (
+          comments_body,
+          users_populated (name)
+         )
+        )
+      ''').eq('code', givenCode);
+
+  List<Object> newData = [];
+
+  if (givenCode == data[0]['code']) {
+    newData.add({
+      'title': data[0]['title'],
+      'author': data[0]['author'],
+      'image_url': data[0]['image_url'],
+    });
+    for (var i = 0; i < data[0]['book_events_populated'].length; i++) {
+      final events = data[0]['book_events_populated'][i];
+      newData.add({
+        'event': events['event'],
+        'timestamp': events['timestamp'],
+        'latitude': events['latitude'],
+        'longitude': events['longitude'],
+        'name': events['users_populated']['name'],
+        'note': events['user_note'],
+        'comments': events['event_comments_populated']
+      });
+    }
   }
   return newData;
 }
