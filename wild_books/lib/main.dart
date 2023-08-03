@@ -12,6 +12,7 @@ import 'package:wild_books/view/map_page.dart';
 import 'package:wild_books/theme_controller.dart';
 import 'package:wild_books/utils/db.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:wild_books/view/profile_page.dart';
 
 Future<void> main() async {
   await initSupabase();
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
               '/about-us': (context) => AboutUs(),
               '/account': (context) => AccountPage(),
               '/books-list': (context) => ListOfBooks(),
+              '/profile': (context) => ProfilePage(),
             },
             home: RootPage(),
           );
@@ -113,6 +115,13 @@ class _RootPageState extends State<RootPage> {
             title: Text('Find Books'),
             onTap: () {
               // Navigator.of(context).pushNamed('/about-us');
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.face),
+            title: Text('My Profile'),
+            onTap: () {
+              Navigator.of(context).pushNamed('/profile');
             },
           ),
           ListTile(
