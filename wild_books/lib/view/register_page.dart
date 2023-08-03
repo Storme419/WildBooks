@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:wild_books/view/login_page.dart';
 import '../utils/db.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
