@@ -4,7 +4,6 @@ import 'package:wild_books/view/book_tile.dart';
 import 'package:wild_books/utils/db.dart';
 
 class HomePage extends StatefulWidget {
-   static const route = '/home';
   const HomePage({super.key});
 
   @override
@@ -15,13 +14,14 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       body: SafeArea(
         child: Column(
           children: [
             Container(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
               width: MediaQuery.of(context).size.width,
-              height: 60,
+              height: 65,
               child: Column(children: [
                 TextField(
                     onChanged: (text) {
@@ -53,7 +53,6 @@ class _HomePageState extends State<HomePage> {
                       return const Center(child: CircularProgressIndicator());
                     }
                     final books = snapshot.data!;
-                    debugPrint(books.toString());
                     return ListView.builder(
                         itemCount: 10,
                         itemBuilder: (context, index) {
@@ -61,7 +60,8 @@ class _HomePageState extends State<HomePage> {
                               title: books[index]['title'],
                               author: books[index]['author'],
                               bookCover: books[index]['image_url'],
-                              timestamp: DateTime.parse(books[index]['timestamp']));
+                              timestamp:
+                                  DateTime.parse(books[index]['timestamp']));
                           return BookTile(book: book);
                         });
                   }),

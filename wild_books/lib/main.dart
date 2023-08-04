@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wild_books/location_to_city.dart';
 import 'package:wild_books/view/about_us_page.dart';
 import 'package:wild_books/view/account_page.dart';
 import 'package:wild_books/view/add_a_book_page.dart';
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
               '/profile-button': (context) => RedirectPage(),
               '/sign-in': (context) => LoginPage(),
               '/add-book': (context) => AddBook(),
-              '/about-us': (context) => AboutUs(),
+              '/about-us': (context) => LocationPage(),
               '/account': (context) => AccountPage(),
               '/books-list': (context) => ListOfBooks(),
               '/profile': (context) => ProfilePage(),
