@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> initSupabase() async {
@@ -17,33 +16,38 @@ final supabase = Supabase.instance.client;
 Future getBooks() async {
   final data =
       await Supabase.instance.client.from('book_events_populated').select('''
-        event, timestamp, latitude, longitude,
+        event, timestamp, latitude, longitude, 
         books_populated(
             title,
             author,
             image_url,
             genre,
-            code
+            code,
+            book_id
           )
       ''');
   List<Object> newData = [];
   for (int i = 0; i < data.length; i++) {
+    final events = data[i]['books_populated'];
+
     newData.add({
       'event': data[i]['event'],
       'timestamp': data[i]['timestamp'],
-      'title': data[i]['books_populated']['title'],
-      'author': data[i]['books_populated']['author'],
-      'image_url': data[i]['books_populated']['image_url'],
-      'genre': data[i]['books_populated']['genre'],
-      'code': data[i]['books_populated']['code']
+      'location': "to be disclosed",
+      'title': events['title'],
+      'author': events['author'],
+      'image_url': events['image_url'],
+      'genre': events['genre'],
+      'code': events['code']
     });
   }
+
   return newData;
 }
 
 Future getSingleBook(givenCode) async {
   final data = await Supabase.instance.client.from('books_populated').select('''
-        title, author, image_url, code,
+        title, author, image_url, code, story_id,
         book_events_populated (
          event,
          timestamp,
@@ -65,19 +69,46 @@ Future getSingleBook(givenCode) async {
       'title': data[0]['title'],
       'author': data[0]['author'],
       'image_url': data[0]['image_url'],
+      'code': data[0]['code'],
+      'story_id': data[0]['story_id']
     });
     for (var i = 0; i < data[0]['book_events_populated'].length; i++) {
       final events = data[0]['book_events_populated'][i];
       newData.add({
         'event': events['event'],
         'timestamp': events['timestamp'],
-        'latitude': events['latitude'],
-        'longitude': events['longitude'],
+        'location': "to be disclosed",
         'name': events['users_populated']['name'],
         'note': events['user_note'],
         'comments': events['event_comments_populated']
       });
     }
   }
+  return newData;
+}
+
+Future getStory(givenStoryId) async {
+  final data = await Supabase.instance.client.from('story_junction').select('''
+        story_id, 
+        books_populated(
+          title,
+          author,
+          image_url),
+        story_comments_populated (
+          body,
+          timestamp,
+          users_populated (name)
+          )
+        ''').eq('story_id', givenStoryId);
+
+  List<Object> newData = [];
+  final story = data[0]['books_populated'][0];
+  newData.add({
+    'title': story['title'],
+    'author': story['author'],
+    'image_url': story['image_url'],
+    'story_id': data[0]['story_id'],
+    'comments': data[0]['story_comments_populated']
+  });
   return newData;
 }
