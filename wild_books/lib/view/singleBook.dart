@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:wild_books/model/book.dart';
 // https://didtheylikeit.com/wp-content/uploads/2022/07/TheKiteRunner300x400-2.png
 
 class SingleBook extends StatelessWidget {
-  const SingleBook({super.key});
+  Book book;
+  SingleBook({super.key, required this.book});
 
   @override
   Widget build(BuildContext context) {
@@ -18,28 +20,23 @@ class SingleBook extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_ios),
         ),
       ),
-    body: SingleChildScrollView(
-      child: Center(
-        
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(25),
-                child: Image.network('https://didtheylikeit.com/wp-content/uploads/2022/07/TheKiteRunner300x400-2.png', fit: BoxFit.fill),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(25),
+                  child: Image.network(
+                      'https://didtheylikeit.com/wp-content/uploads/2022/07/TheKiteRunner300x400-2.png',
+                      fit: BoxFit.fill),
                 ),
-        
                 const SizedBox(height: 48),
-        
                 const Text(
                   'Title: Kite Runner',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
-        
                 const Text(
                   'Author: Khaled Hosseini',
                   style: TextStyle(
@@ -48,9 +45,7 @@ class SingleBook extends StatelessWidget {
                   ),
                   textAlign: TextAlign.center,
                 ),
-    
                 const SizedBox(height: 48),
-    
                 const Text(
                   'This is a fake description box to lure you in to our amazing app. Bit more text.',
                   style: TextStyle(
@@ -58,11 +53,11 @@ class SingleBook extends StatelessWidget {
                   ),
                   textAlign: TextAlign.center,
                 ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
-    ),
     );
   }
 }
