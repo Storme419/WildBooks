@@ -44,8 +44,9 @@ dependencies:
   url_launcher: ^6.1.12
   intl: ^0.18.1
   geocoding: ^2.1.0
+  simple_animations: ^4.0.0 
   
-  
+
 
 dev_dependencies:
   flutter_lints: ^2.0.0

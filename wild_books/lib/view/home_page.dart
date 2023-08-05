@@ -11,7 +11,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +29,9 @@ class _HomePageState extends State<HomePage> {
                     },
                     decoration: InputDecoration(
                       suffixIcon: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).pushNamed('/add-book');
+                        },
                         icon: const Icon(Icons.send),
                       ),
                       label: Text(
@@ -41,13 +42,19 @@ class _HomePageState extends State<HomePage> {
                           borderRadius:
                               BorderRadius.all(Radius.circular(15.0))),
                     )),
-                Text('Want to release a book instead? Generate a code here')
+                Wrap(children: [
+                  Text('Want to release a book instead? '),
+                  InkWell(
+                    onTap: () => Navigator.of(context).pushNamed('/get-code'),
+                    child: Text('Generate a code here'),
+                  ),
+                ])
               ]),
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(30, 20, 20, 40),
               child: const Text(
-                  'Introducing Wild Books, a web-based application that fosters a reading community and promotes recycling in the most novel way possible. Read more here... ',
+                  'Introducing Wild Books, a web-based application that fosters a reading community and promotes recycling in the most novel way possible.',
                   style: TextStyle(fontSize: 20)),
             ),
             Padding(
@@ -71,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                       label: Text('Popular books'),
                       icon: Icon(Icons.favorite)),
                 ],
-                selected: <String>{'All books'},
+                selected: <String>{'all'},
                 onSelectionChanged: (Set<String> newSelection) {},
               ),
             ),
