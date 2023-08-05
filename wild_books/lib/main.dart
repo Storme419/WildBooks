@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:wild_books/location_to_city.dart';
+import 'package:wild_books/src/shared/themes/themes.dart';
 import 'package:wild_books/view/about_us_page.dart';
 import 'package:wild_books/view/account_page.dart';
 import 'package:wild_books/view/add_a_book_page.dart';
@@ -29,22 +31,23 @@ class MyApp extends StatelessWidget {
         builder: (context, child) {
           return MaterialApp(
             title: 'Flutter Demo',
-            theme: ThemeController.instance.isDarkTheme
-                ? ThemeData.dark()
-                : ThemeData.light(),
+            themeMode: ThemeController.instance.isDarkTheme
+                ? ThemeMode.dark
+                : ThemeMode.light,
+            theme: lightTheme,
+            darkTheme: darkTheme,
             debugShowCheckedModeBanner: false,
-            //initialRoute: '/home',
             routes: {
-              '/home': (context) => HomePage(),
-              '/profile-button': (context) => RedirectPage(),
-              '/sign-in': (context) => LoginPage(),
-              '/add-book': (context) => AddBook(),
-              '/about-us': (context) => AboutUs(),
-              '/account': (context) => AccountPage(),
-              '/books-list': (context) => ListOfBooks(),
-              '/profile': (context) => ProfilePage(),
+              '/home': (context) => const HomePage(),
+              '/profile-button': (context) => const RedirectPage(),
+              '/sign-in': (context) => const LoginPage(),
+              '/add-book': (context) => const AddBook(),
+              '/about-us': (context) => const LocationPage(),
+              '/account': (context) => const AccountPage(),
+              '/books-list': (context) => const ListOfBooks(),
+              '/profile': (context) => const ProfilePage(),
             },
-            home: RootPage(),
+            home: const RootPage(),
           );
         });
   }
@@ -70,116 +73,131 @@ class _RootPageState extends State<RootPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
-        child: Column(children: [
-          UserAccountsDrawerHeader(
-              currentAccountPicture: ClipRRect(
-                  borderRadius: BorderRadius.circular(40),
-                  child: Image.network(
-                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS29OImDEUJspbdQTIIKTar91MyZ920fD6jpQ&usqp=CAU")),
-              accountName: Text("Test User"),
-              accountEmail: Text("test@gmail.com")),
-          SwitchListTile(
-            title: Text('Dark Mode'),
-            value: ThemeController.instance.isDarkTheme,
-            onChanged: (value) {
-              ThemeController.instance.changeTheme();
-            },
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          ListTile(
-            leading: Icon(Icons.info),
-            title: Text('About Us'),
-            onTap: () {
+      drawer: NavigationDrawer(
+          onDestinationSelected: (index) async {
+            if (index == 0) {
+              Navigator.of(context).pop();
               Navigator.of(context).pushNamed('/about-us');
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.add),
-            title: Text('Add a book'),
-            onTap: () {
+            }
+            if (index == 1) {
+              Navigator.of(context).pop();
               Navigator.of(context).pushNamed('/add-book');
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.book_rounded),
-            title: Text('All Books'),
-            onTap: () {
+            }
+            if (index == 2) {
+              Navigator.of(context).pop();
               Navigator.of(context).pushNamed('/books-list');
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.search),
-            title: Text('Find Books'),
-            onTap: () {
-              // Navigator.of(context).pushNamed('/about-us');
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.face),
-            title: Text('My Profile'),
-            onTap: () {
-              Navigator.of(context).pushNamed('/profile');
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.logout),
-            title: Text('Log-out'),
-            onTap: () async {
+            }
+            if (index == 3) {
+              Navigator.of(context).pop();
+              Navigator.of(context).pushNamed('/about-us');
+            }
+            if (index == 4) {
+              Navigator.of(context).pop();
+              Navigator.of(context).pushNamed('/account');
+            }
+            if (index == 5) {
+              Navigator.of(context).pop();
               await supabase.auth.signOut();
-              Navigator.of(context).pushNamed('/home');
-            },
-          ),
-        ]),
-      ),
+              Navigator.of(context).pushNamed('/');
+            }
+          },
+          children: [
+            UserAccountsDrawerHeader(
+                currentAccountPicture: ClipRRect(
+                    borderRadius: BorderRadius.circular(40),
+                    child: Image.network(
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS29OImDEUJspbdQTIIKTar91MyZ920fD6jpQ&usqp=CAU")),
+                accountName: const Text("Test User"),
+                accountEmail: const Text("test@gmail.com")),
+            SwitchListTile(
+              title: const Text('Dark Mode'),
+              value: ThemeController.instance.isDarkTheme,
+              onChanged: (value) {
+                ThemeController.instance.changeTheme();
+              },
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const NavigationDrawerDestination(
+              icon: Icon(Icons.info),
+              label: Text('About Us'),
+            ),
+            const NavigationDrawerDestination(
+              icon: Icon(Icons.add),
+              label: Text('Add a book'),
+            ),
+            const NavigationDrawerDestination(
+              icon: Icon(Icons.book_rounded),
+              label: Text('All Books'),
+            ),
+            const NavigationDrawerDestination(
+              icon: Icon(Icons.search),
+              label: Text('Find Books'),
+            ),
+            const NavigationDrawerDestination(
+              icon: Icon(Icons.face),
+              label: Text('My Profile'),
+            ),
+            const NavigationDrawerDestination(
+              icon: Icon(Icons.logout),
+              label: Text('Log-out'),
+            ),
+          ]),
       appBar: AppBar(
         title: const Text(
           'W I L D B O O K S',
         ),
         actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed('/profile-button');
-              },
-              icon: const Icon(
-                Icons.person_2_rounded,
-                size: 35,
-              ))
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: CircleAvatar(
+              backgroundColor: Theme.of(context).primaryColor,
+              child: IconButton(
+                  padding: EdgeInsets.fromLTRB(0, 0, 2, 4),
+                  onPressed: () {
+                    Navigator.of(context).pushNamed('/profile-button');
+                  },
+                  icon: const Icon(
+                    Icons.person_2_rounded,
+                    size: 35,
+                  )),
+            ),
+          )
         ],
-        //     title: Image.asset(
-        //   "./images/logo-color.png",
-        //   width: 140,
-        // )
       ),
       body: _pages[_selectedIndex],
       bottomNavigationBar: Container(
-        color: Colors.brown.shade800,
+        color: Theme.of(context).colorScheme.primaryContainer,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
           child: GNav(
-            backgroundColor: Colors.brown.shade800,
-            color: Colors.white,
-            activeColor: Colors.white,
-            tabBackgroundColor: Colors.brown,
-            padding: EdgeInsets.all(16),
+            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+            color: Theme.of(context).colorScheme.onSurface,
+            activeColor: Theme.of(context).colorScheme.onSecondary,
+            tabBackgroundColor:
+                Theme.of(context).colorScheme.onSecondaryContainer,
+            padding: const EdgeInsets.all(5),
             gap: 8,
             tabs: const [
               GButton(
                 icon: Icons.home,
+                iconSize: 35,
                 text: 'Home',
               ),
               GButton(
                 icon: Icons.book_rounded,
+                iconSize: 35,
                 text: 'Bookshelf',
               ),
               GButton(
                 icon: Icons.map,
+                iconSize: 35,
                 text: 'Map',
               ),
               GButton(
                 icon: Icons.search,
+                iconSize: 35,
                 text: 'Search',
               ),
             ],

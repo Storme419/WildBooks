@@ -4,7 +4,6 @@ import 'package:wild_books/view/book_tile.dart';
 import 'package:wild_books/utils/db.dart';
 
 class HomePage extends StatefulWidget {
-   static const route = '/home';
   const HomePage({super.key});
 
   @override
@@ -12,16 +11,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       body: SafeArea(
         child: Column(
           children: [
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              padding: const EdgeInsets.fromLTRB(50, 15, 50, 5),
               width: MediaQuery.of(context).size.width,
-              height: 60,
+              height: 110,
               child: Column(children: [
                 TextField(
                     onChanged: (text) {
@@ -30,20 +31,49 @@ class _HomePageState extends State<HomePage> {
                     decoration: InputDecoration(
                       suffixIcon: IconButton(
                         onPressed: () {},
-                        icon: Icon(Icons.send),
+                        icon: const Icon(Icons.send),
+                      ),
+                      label: Text(
+                        'Found a book?',
                       ),
                       hintText: 'Please enter your code here',
                       border: const OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(15.0))),
                     )),
+                Text('Want to release a book instead? Generate a code here')
               ]),
             ),
             Container(
-              padding: EdgeInsets.symmetric(vertical: 50.0, horizontal: 20.0),
-              child: Text(
+              padding: const EdgeInsets.fromLTRB(30, 20, 20, 40),
+              child: const Text(
                   'Introducing Wild Books, a web-based application that fosters a reading community and promotes recycling in the most novel way possible. Read more here... ',
                   style: TextStyle(fontSize: 20)),
+            ),
+            Padding(
+              padding: EdgeInsets.all(2),
+              child: SegmentedButton<String>(
+                segments: const [
+                  ButtonSegment<String>(
+                      value: 'all',
+                      label: Text('All books'),
+                      icon: Icon(Icons.done_sharp)),
+                  ButtonSegment<String>(
+                      value: 'found',
+                      label: Text('found books'),
+                      icon: Icon(Icons.pin_drop)),
+                  ButtonSegment<String>(
+                      value: 'released',
+                      label: Text('Released books'),
+                      icon: Icon(Icons.my_library_books)),
+                  ButtonSegment<String>(
+                      value: 'liked',
+                      label: Text('Popular books'),
+                      icon: Icon(Icons.favorite)),
+                ],
+                selected: <String>{'All books'},
+                onSelectionChanged: (Set<String> newSelection) {},
+              ),
             ),
             Expanded(
               child: FutureBuilder(
@@ -53,7 +83,6 @@ class _HomePageState extends State<HomePage> {
                       return const Center(child: CircularProgressIndicator());
                     }
                     final books = snapshot.data!;
-                    debugPrint(books.toString());
                     return ListView.builder(
                         itemCount: 10,
                         itemBuilder: (context, index) {
@@ -61,7 +90,8 @@ class _HomePageState extends State<HomePage> {
                               title: books[index]['title'],
                               author: books[index]['author'],
                               bookCover: books[index]['image_url'],
-                              timestamp: DateTime.parse(books[index]['timestamp']));
+                              timestamp:
+                                  DateTime.parse(books[index]['timestamp']));
                           return BookTile(book: book);
                         });
                   }),
