@@ -5,6 +5,7 @@ import 'package:wild_books/view/about_us_page.dart';
 import 'package:wild_books/view/account_page.dart';
 import 'package:wild_books/view/add_a_book_page.dart';
 import 'package:wild_books/view/book_shelf_page.dart';
+import 'package:wild_books/view/generate_code_page.dart';
 import 'package:wild_books/view/list_of_all_books.dart';
 import 'package:wild_books/view/search_page.dart';
 import 'package:wild_books/view/home_page.dart';
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
               '/about-us': (context) => const LocationPage(),
               '/account': (context) => const AccountPage(),
               '/books-list': (context) => const ListOfBooks(),
-              '/profile': (context) => const ProfilePage(),
+              '/get-code': (context) => const GenerateCode(),
             },
             home: const RootPage(),
           );
