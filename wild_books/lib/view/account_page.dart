@@ -22,7 +22,7 @@ class _AccountPageState extends State<AccountPage> {
       _loading = true;
     });
 
-    try {
+    try { 
       final userId = supabase.auth.currentUser!.id;
       final data = await supabase
           .from('profiles')
