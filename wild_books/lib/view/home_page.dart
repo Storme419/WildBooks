@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
                           onPressed: () {
-                            Navigator.of(context).pushNamed('/add-book');
+                            Navigator.of(context).pushNamed('/found-book');
                           },
                           icon: const Icon(Icons.send),
                         ),

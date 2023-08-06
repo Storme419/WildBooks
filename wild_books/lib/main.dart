@@ -4,6 +4,7 @@ import 'package:wild_books/view/about_us_page.dart';
 import 'package:wild_books/view/account_page.dart';
 import 'package:wild_books/view/add_a_book_page.dart';
 import 'package:wild_books/view/book_shelf_page.dart';
+import 'package:wild_books/view/found_book_page.dart';
 import 'package:wild_books/view/list_of_all_books.dart';
 import 'package:wild_books/view/search_page.dart';
 import 'package:wild_books/view/home_page.dart';
@@ -13,7 +14,6 @@ import 'package:wild_books/view/map_page.dart';
 import 'package:wild_books/controller/theme_controller.dart';
 import 'package:wild_books/utils/db.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-
 
 Future<void> main() async {
   await initSupabase();
@@ -44,6 +44,7 @@ class MyApp extends StatelessWidget {
               '/about-us': (context) => const AboutUs(),
               '/account': (context) => const AccountPage(),
               '/books-list': (context) => const ListOfBooks(),
+              '/found-book': (context) => const FoundBook()
             },
             home: const RootPage(),
           );
