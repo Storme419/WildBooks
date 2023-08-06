@@ -72,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: const Text(
                           "Login",
                           style: TextStyle(
-                            fontSize: 25,
+                            fontSize: 15,
                             color: Colors.black87,
                             letterSpacing: 1,
                           ),
@@ -80,9 +80,9 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       Container(
                         width: double.infinity,
-                        height: 70,
+                        height: 55,
                         margin: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 20),
+                            horizontal: 20, vertical: 10),
                         padding: const EdgeInsets.symmetric(
                             horizontal: 15, vertical: 5),
                         decoration: BoxDecoration(
@@ -109,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                                   controller: _emailController,
                                   maxLines: 1,
                                   decoration: const InputDecoration(
-                                    label: Text("Email..."),
+                                    label: Text("Email"),
                                     border: InputBorder.none,
                                   ),
                                 ),
@@ -120,9 +120,9 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       Container(
                           width: double.infinity,
-                          height: 70,
+                          height: 55,
                           margin: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 20),
+                              horizontal: 20, vertical: 10),
                           padding: const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 5),
                           decoration: BoxDecoration(
@@ -149,7 +149,7 @@ class _LoginPageState extends State<LoginPage> {
                                     controller: _passwordController,
                                     maxLines: 1,
                                     decoration: const InputDecoration(
-                                      label: Text("Password..."),
+                                      label: Text("Password"),
                                       border: InputBorder.none,
                                     ),
                                     obscureText: true,
@@ -195,13 +195,13 @@ class _LoginPageState extends State<LoginPage> {
                               color: Color.fromARGB(1, 42, 87, 255),
                               borderRadius: BorderRadius.circular(20)),
                           child: Container(
-                            width: 200,
-                            height: 50,
+                            width: 150,
+                            height: 40,
                             alignment: Alignment.center,
                             child: const Text(
                               'Let\'s go!',
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 16,
                                 color: Colors.black87,
                               ),
                             ),

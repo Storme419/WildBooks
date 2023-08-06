@@ -19,9 +19,23 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             Container(
-              padding: const EdgeInsets.fromLTRB(50, 15, 50, 5),
+              padding: const EdgeInsets.fromLTRB(30, 20, 20, 0),
+              child: Wrap(children: [
+                const Text('What\'s Wild Books?',
+                    style:
+                        TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
+                InkWell(
+                  onTap: () => Navigator.of(context).pushNamed('/about-us'),
+                  child: const Text(' Know more about us.',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
+                )
+              ]),
+            ),
+            Container(
+              padding: const EdgeInsets.fromLTRB(25, 25, 25, 10),
               width: MediaQuery.of(context).size.width,
-              height: 110,
+              height: 120,
               child: Column(children: [
                 TextField(
                     onChanged: (text) {
@@ -51,32 +65,30 @@ class _HomePageState extends State<HomePage> {
                 ])
               ]),
             ),
-            Container(
-              padding: const EdgeInsets.fromLTRB(30, 20, 20, 40),
-              child: const Text(
-                  'Introducing Wild Books, a web-based application that fosters a reading community and promotes recycling in the most novel way possible.',
-                  style: TextStyle(fontSize: 20)),
-            ),
             Padding(
               padding: EdgeInsets.all(2),
               child: SegmentedButton<String>(
                 segments: const [
                   ButtonSegment<String>(
-                      value: 'all',
-                      label: Text('All books'),
-                      icon: Icon(Icons.done_sharp)),
+                    value: 'all',
+                    label: Text('All books'),
+                    // icon: Icon(Icons.done_sharp)
+                  ),
                   ButtonSegment<String>(
-                      value: 'found',
-                      label: Text('found books'),
-                      icon: Icon(Icons.pin_drop)),
+                    value: 'found',
+                    label: Text('Found'),
+                    //   icon: Icon(Icons.pin_drop)
+                  ),
                   ButtonSegment<String>(
-                      value: 'released',
-                      label: Text('Released books'),
-                      icon: Icon(Icons.my_library_books)),
+                    value: 'released',
+                    label: Text('Released'),
+                    //   icon: Icon(Icons.my_library_books)
+                  ),
                   ButtonSegment<String>(
-                      value: 'liked',
-                      label: Text('Popular books'),
-                      icon: Icon(Icons.favorite)),
+                    value: 'liked',
+                    label: Text('Popular'),
+                    //    icon: Icon(Icons.favorite)
+                  ),
                 ],
                 selected: <String>{'all'},
                 onSelectionChanged: (Set<String> newSelection) {},

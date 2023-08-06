@@ -58,7 +58,7 @@ class BookTile extends StatelessWidget {
                           'Title: ${book.title}',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 20,
+                            fontSize: 18,
                           ),
                         ),
                       ),
