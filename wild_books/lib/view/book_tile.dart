@@ -1,43 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:wild_books/model/book.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:wild_books/model/location.dart';
 import 'package:wild_books/view/singleBook.dart';
 
-class BookTile extends StatefulWidget {
+class BookTile extends StatelessWidget {
   final Book book;
+  final userLocation = UserLocation();
 
   BookTile({super.key, required this.book});
 
-  @override
-  State<BookTile> createState() => _BookTileState();
-}
-
-class _BookTileState extends State<BookTile> {
-  @override
-  void initState() {
-    getLocation();
-
-    // Make sure to call super.initState();
-    super.initState();
-  }
-
-  String? city = '';
-
-  Future<void> getLocation() async {
-    try {
-      List<Placemark> placemark = await placemarkFromCoordinates(
-          widget.book.latitude, widget.book.longitude);
-
-      print(placemark);
-
-      setState(() {
-        city = placemark[0].locality;
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
+  String? city;
 
   @override
   Widget build(BuildContext context) {
@@ -51,12 +24,12 @@ class _BookTileState extends State<BookTile> {
                 MaterialPageRoute(
                     builder: (context) => SingleBook(
                         book: Book(
-                            title: widget.book.title,
-                            author: widget.book.author,
-                            bookCover: widget.book.bookCover,
-                            timestamp: widget.book.timestamp,
-                            latitude: widget.book.latitude,
-                            longitude: widget.book.longitude))));
+                            title: book.title,
+                            author: book.author,
+                            bookCover: book.bookCover,
+                            timestamp: book.timestamp,
+                            latitude: book.latitude,
+                            longitude: book.longitude))));
           },
           child: Card(
             shape: RoundedRectangleBorder(
@@ -76,53 +49,58 @@ class _BookTileState extends State<BookTile> {
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(15.0),
-                      child: Image.network(widget.book.bookCover,
-                          fit: BoxFit.fill),
+                      child: Image.network(book.bookCover, fit: BoxFit.fill),
                     ),
                   ),
                 ),
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.6,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
-                        child: Text(
-                          'Title: ${widget.book.title}',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.7,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(30, 5, 0, 5),
+                          child: Text(
+                            'Title: ${book.title}',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.6,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
-                        child: Text(
-                          'Author: ${widget.book.author}',
-                          style: TextStyle(
-                            fontSize: 15,
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.7,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(30, 5, 0, 5),
+                          child: Text(
+                            'Author: ${book.author}',
+                            style: TextStyle(
+                              fontSize: 15,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.6,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
-                        child: Text(
-                          'Released in ${city} ${timeago.format(widget.book.timestamp)}',
-                          style: TextStyle(
-                            fontSize: 15,
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.7,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(30, 5, 0, 5),
+                          child: FutureBuilder(
+                            future: userLocation.getLocation(
+                                book.latitude, book.longitude),
+                            builder: (context, snapshot) {
+                              debugPrint(snapshot.data.toString());
+
+                              return Text(
+                                  'Released in ${snapshot.data.toString()} ${timeago.format(book.timestamp)}',
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                  ));
+                            },
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
+                    ]),
               ],
             ),
           ),

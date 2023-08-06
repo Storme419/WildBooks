@@ -1,3 +1,5 @@
+import 'package:geocoding/geocoding.dart';
+
 class Book {
   final String title;
   final String author;
@@ -5,8 +7,7 @@ class Book {
   final DateTime timestamp;
   final double latitude;
   final double longitude;
-  String? city;
-
+ 
 
   Book({
     required this.title,
@@ -16,4 +17,6 @@ class Book {
     required this.latitude,
     required this.longitude,
   });
+
+
 }
