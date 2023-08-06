@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
                 Wrap(children: [
                   const Text('Want to release a book instead? '),
                   InkWell(
-                    onTap: () => Navigator.of(context).pushNamed('/get-code'),
+                    onTap: () => Navigator.of(context).pushNamed('/add-book'),
                     child: const Text('Generate a code here'),
                   ),
                 ])
