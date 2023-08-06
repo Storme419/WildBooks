@@ -14,7 +14,7 @@ class BookTile extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => SingleBook(
+                builder: (context) => SingleBookPage(
                       book: Book(
                       title: book.title,
                       author: book.author,
