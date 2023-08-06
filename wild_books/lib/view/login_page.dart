@@ -171,7 +171,8 @@ class _LoginPageState extends State<LoginPage> {
                               password: password,
                             );
                             if (mounted) {
-                              Navigator.of(context).pushNamed('/account');
+                              Navigator.pushNamedAndRemoveUntil(context,
+                                  '/account', ModalRoute.withName('/'));
                             }
                           } on AuthException catch (error) {
                             ScaffoldMessenger.of(context).showSnackBar(
