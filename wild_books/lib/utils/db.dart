@@ -33,6 +33,8 @@ Future getBooks() async {
     newData.add({
       'event': data[i]['event'],
       'timestamp': data[i]['timestamp'],
+      'latitude': data[i]['latitude'],
+      'longitude': data[i]['longitude'],
       'location': "to be disclosed",
       'title': events['title'],
       'author': events['author'],

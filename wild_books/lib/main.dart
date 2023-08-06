@@ -74,34 +74,8 @@ class _RootPageState extends State<RootPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavigationDrawer(
-          onDestinationSelected: (index) async {
-            if (index == 0) {
-              Navigator.of(context).pop();
-              Navigator.of(context).pushNamed('/about-us');
-            }
-            if (index == 1) {
-              Navigator.of(context).pop();
-              Navigator.of(context).pushNamed('/add-book');
-            }
-            if (index == 2) {
-              Navigator.of(context).pop();
-              Navigator.of(context).pushNamed('/books-list');
-            }
-            if (index == 3) {
-              Navigator.of(context).pop();
-              Navigator.of(context).pushNamed('/about-us');
-            }
-            if (index == 4) {
-              Navigator.of(context).pop();
-              Navigator.of(context).pushNamed('/account');
-            }
-            if (index == 5) {
-              Navigator.of(context).pop();
-              await supabase.auth.signOut();
-              Navigator.of(context).pushNamed('/');
-            }
-          },
+      drawer: Drawer(
+        child: Column(
           children: [
             UserAccountsDrawerHeader(
                 currentAccountPicture: ClipRRect(
@@ -120,31 +94,50 @@ class _RootPageState extends State<RootPage> {
             const SizedBox(
               height: 20,
             ),
-            const NavigationDrawerDestination(
-              icon: Icon(Icons.info),
-              label: Text('About Us'),
+            ListTile(
+              leading: Icon(Icons.info),
+              title: Text('About Us'),
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pushNamed('/about-us');
+              },
             ),
-            const NavigationDrawerDestination(
-              icon: Icon(Icons.add),
-              label: Text('Add a book'),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add a book'),
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pushNamed('/add-book');
+              },
             ),
-            const NavigationDrawerDestination(
-              icon: Icon(Icons.book_rounded),
-              label: Text('All Books'),
+            ListTile(
+              leading: Icon(Icons.book_rounded),
+              title: Text('All Books'),
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pushNamed('/books-list');
+              },
             ),
-            const NavigationDrawerDestination(
-              icon: Icon(Icons.search),
-              label: Text('Find Books'),
+            ListTile(
+              leading: Icon(Icons.search),
+              title: Text('Find Books'),
+              onTap: () {
+                Navigator.of(context).pop();
+                // Navigator.of(context).pushNamed('/about-us');
+              },
             ),
-            const NavigationDrawerDestination(
-              icon: Icon(Icons.face),
-              label: Text('My Profile'),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text('Log-out'),
+              onTap: () async {
+                Navigator.of(context).pop();
+                await supabase.auth.signOut();
+                Navigator.of(context).pushNamed('/');
+              },
             ),
-            const NavigationDrawerDestination(
-              icon: Icon(Icons.logout),
-              label: Text('Log-out'),
-            ),
-          ]),
+          ],
+        ),
+      ),
       appBar: AppBar(
         title: const Text(
           'W I L D B O O K S',
@@ -152,23 +145,21 @@ class _RootPageState extends State<RootPage> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 8),
-            child: CircleAvatar(
-              backgroundColor: Theme.of(context).primaryColor,
-              child: IconButton(
-                  padding: EdgeInsets.fromLTRB(0, 0, 2, 4),
-                  onPressed: () {
-                    Navigator.of(context).pushNamed('/profile-button');
-                  },
-                  icon: const Icon(
-                    Icons.person_2_rounded,
-                    size: 35,
-                  )),
-            ),
-          )
+            child: IconButton(
+                padding: EdgeInsets.fromLTRB(0, 0, 2, 4),
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/profile-button');
+                },
+                icon: const Icon(
+                  Icons.person_2_rounded,
+                  // size: 35,
+                )),
+          ),
         ],
       ),
       body: _pages[_selectedIndex],
       bottomNavigationBar: Container(
+        height: 70,
         color: Theme.of(context).colorScheme.primaryContainer,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
@@ -183,22 +174,22 @@ class _RootPageState extends State<RootPage> {
             tabs: const [
               GButton(
                 icon: Icons.home,
-                iconSize: 35,
+                //iconSize: 35,
                 text: 'Home',
               ),
               GButton(
                 icon: Icons.book_rounded,
-                iconSize: 35,
+                //  iconSize: 35,
                 text: 'Bookshelf',
               ),
               GButton(
                 icon: Icons.map,
-                iconSize: 35,
+                // iconSize: 35,
                 text: 'Map',
               ),
               GButton(
                 icon: Icons.search,
-                iconSize: 35,
+                // iconSize: 35,
                 text: 'Search',
               ),
             ],

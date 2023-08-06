@@ -20,26 +20,24 @@ class _LocationPageState extends State<LocationPage> {
   }
 
   Future<void> getLocation() async {
-    print('hello');
     try {
       List<Placemark> placemark =
-          await placemarkFromCoordinates(UserLocation.lat, UserLocation.long);
-      
-    print(placemark[0].country);
-    print(placemark[0].name);
-    print(placemark[0].street);
-    print(placemark[0].postalCode);
+          await placemarkFromCoordinates(50.8919808, -1.3139968);
 
-    setState(() {
-      country = placemark[0].country!;
-      name = placemark[0].name!;
-      street = placemark[0].street!;
-      postalCode = placemark[0].postalCode!;
-    });
+      print(placemark);
+      print(placemark[0].name);
+      print(placemark[0].street);
+      print(placemark[0].postalCode);
+
+      setState(() {
+        country = placemark[0].country!;
+        name = placemark[0].name!;
+        street = placemark[0].street!;
+        postalCode = placemark[0].postalCode!;
+      });
     } catch (e) {
       print(e);
     }
-
   }
 
   @override

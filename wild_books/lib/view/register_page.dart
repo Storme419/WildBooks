@@ -65,7 +65,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         child: const Text(
                           "Register an account",
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 15,
                             color: Colors.black87,
                             letterSpacing: 1,
                           ),
@@ -73,9 +73,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       Container(
                         width: double.infinity,
-                        height: 70,
+                        height: 55,
                         margin: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 20),
+                            horizontal: 20, vertical: 10),
                         padding: const EdgeInsets.symmetric(
                             horizontal: 15, vertical: 5),
                         decoration: BoxDecoration(
@@ -113,9 +113,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       Container(
                           width: double.infinity,
-                          height: 70,
+                          height: 55,
                           margin: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 20),
+                              horizontal: 20, vertical: 10),
                           padding: const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 5),
                           decoration: BoxDecoration(
@@ -152,7 +152,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             ],
                           )),
                       const SizedBox(
-                        height: 20,
+                        height: 15,
                       ),
                       ElevatedButton(
                         onPressed: () async {
@@ -200,8 +200,8 @@ class _RegisterPageState extends State<RegisterPage> {
                               color: Color.fromARGB(1, 42, 87, 255),
                               borderRadius: BorderRadius.circular(20)),
                           child: Container(
-                            width: 200,
-                            height: 50,
+                            width: 150,
+                            height: 40,
                             alignment: Alignment.center,
                             child: _isLoading
                                 ? const SizedBox(
@@ -214,7 +214,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 : const Text(
                                     'Let\'s go!',
                                     style: TextStyle(
-                                      fontSize: 20,
+                                      fontSize: 16,
                                       color: Colors.black87,
                                     ),
                                   ),
@@ -237,69 +237,3 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 }
-
-      //   body: ListView(
-      //     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-      //     children: [
-      //       TextFormField(
-      //         controller: _emailController,
-      //         decoration: const InputDecoration(
-      //           label: Text('Email'),
-      //         ),
-      //       ),
-      //       const SizedBox(height: 16),
-      //       TextFormField(
-      //         controller: _passwordController,
-      //         decoration: const InputDecoration(
-      //           label: Text('Password'),
-      //         ),
-      //         obscureText: true,
-      //       ),
-      //       const SizedBox(height: 16),
-      //       ElevatedButton(
-      //         onPressed: () async {
-      //           try {
-      //             setState(() {
-      //               _isLoading = true;
-      //             });
-      //             final email = _emailController.text.trim();
-      //             final password = _passwordController.text.trim();
-      //             await supabase.auth.signUp(
-      //               email: email,
-      //               password: password,
-      //               emailRedirectTo:
-      //                   'mfa-app://callback${Navigator.of(context).pushNamed('/account')}',
-      //             );
-      //             if (mounted) {
-      //               ScaffoldMessenger.of(context).showSnackBar(
-      //                   const SnackBar(content: Text('Check your inbox.')));
-      //             }
-      //           } on AuthException catch (error) {
-      //             ScaffoldMessenger.of(context)
-      //                 .showSnackBar(SnackBar(content: Text(error.message)));
-      //           } catch (error) {
-      //             ScaffoldMessenger.of(context).showSnackBar(
-      //                 const SnackBar(content: Text('Unexpected error occurred')));
-      //           }
-      //           if (mounted) {
-      //             setState(() {
-      //               _isLoading = false;
-      //             });
-      //           }
-      //         },
-      //         child: _isLoading
-      //             ? const SizedBox(
-      //                 height: 24,
-      //                 width: 24,
-      //                 child: Center(
-      //                     child: CircularProgressIndicator(color: Colors.white)),
-      //               )
-      //             : const Text('Register'),
-      //       ),
-      //       const SizedBox(height: 16),
-      //       TextButton(
-      //         onPressed: () => Navigator.of(context).pushNamed('/sign-in'),
-      //         child: const Text('I already have an account'),
-      //       )
-      //     ],
-      //   ),
