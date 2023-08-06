@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wild_books/model/book.dart';
-import 'package:wild_books/view/book_tile.dart';
 import 'package:wild_books/utils/db.dart';
+import 'package:wild_books/view/book_tile.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -26,36 +26,39 @@ class _HomePageState extends State<HomePage> {
                         TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
                 InkWell(
                   onTap: () => Navigator.of(context).pushNamed('/about-us'),
-                  child: const Text(' Know more about us.',
+                  child: const Text(' Know more about us here.',
                       style:
                           TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
                 )
               ]),
             ),
             Container(
-              padding: const EdgeInsets.fromLTRB(25, 25, 25, 10),
+              padding: const EdgeInsets.fromLTRB(6, 30, 6, 15),
               width: MediaQuery.of(context).size.width,
-              height: 120,
+              height: 140,
               child: Column(children: [
-                TextField(
-                    onChanged: (text) {
-                      print(text);
-                    },
-                    decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          Navigator.of(context).pushNamed('/add-book');
-                        },
-                        icon: const Icon(Icons.send),
-                      ),
-                      label: Text(
-                        'Found a book?',
-                      ),
-                      hintText: 'Please enter your code here',
-                      border: const OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(15.0))),
-                    )),
+                SizedBox(
+                  height: 45,
+                  child: TextField(
+                      onChanged: (text) {
+                        print(text);
+                      },
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            Navigator.of(context).pushNamed('/add-book');
+                          },
+                          icon: const Icon(Icons.send),
+                        ),
+                        label: Text(
+                          'Found a book?',
+                        ),
+                        hintText: 'Please enter your code here',
+                        border: const OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(15.0))),
+                      )),
+                ),
                 Wrap(children: [
                   Text('Want to release a book instead? '),
                   InkWell(
@@ -65,8 +68,8 @@ class _HomePageState extends State<HomePage> {
                 ])
               ]),
             ),
-            Padding(
-              padding: EdgeInsets.all(2),
+            Container(
+              padding: EdgeInsets.all(5),
               child: SegmentedButton<String>(
                 segments: const [
                   ButtonSegment<String>(
@@ -102,19 +105,23 @@ class _HomePageState extends State<HomePage> {
                       return const Center(child: CircularProgressIndicator());
                     }
                     final books = snapshot.data!;
+                    // debugPrint(books.toString());
                     return ListView.builder(
                         itemCount: 10,
                         itemBuilder: (context, index) {
                           Book book = Book(
-                              title: books[index]['title'],
-                              author: books[index]['author'],
-                              bookCover: books[index]['image_url'],
-                              timestamp:
-                                  DateTime.parse(books[index]['timestamp']));
+                            title: books[index]['title'],
+                            author: books[index]['author'],
+                            bookCover: books[index]['image_url'],
+                            timestamp:
+                                DateTime.parse(books[index]['timestamp']),
+                            latitude: books[index]['latitude'],
+                            longitude: books[index]['longitude'],
+                          );
                           return BookTile(book: book);
                         });
                   }),
-            )
+            ),
           ],
         ),
       ),

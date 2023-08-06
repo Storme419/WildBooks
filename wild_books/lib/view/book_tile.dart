@@ -1,11 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:wild_books/model/book.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:wild_books/view/singleBook.dart';
 
-class BookTile extends StatelessWidget {
-  Book book;
+class BookTile extends StatefulWidget {
+  final Book book;
+
   BookTile({super.key, required this.book});
+
+  @override
+  State<BookTile> createState() => _BookTileState();
+}
+
+class _BookTileState extends State<BookTile> {
+  @override
+  void initState() {
+    getLocation();
+
+    // Make sure to call super.initState();
+    super.initState();
+  }
+
+  String? city = '';
+
+  Future<void> getLocation() async {
+    try {
+      List<Placemark> placemark = await placemarkFromCoordinates(
+          widget.book.latitude, widget.book.longitude);
+
+      print(placemark);
+
+      setState(() {
+        city = placemark[0].locality;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,12 +50,13 @@ class BookTile extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) => SingleBook(
-                            book: Book(
-                          title: book.title,
-                          author: book.author,
-                          bookCover: book.bookCover,
-                          timestamp: book.timestamp,
-                        ))));
+                        book: Book(
+                            title: widget.book.title,
+                            author: widget.book.author,
+                            bookCover: widget.book.bookCover,
+                            timestamp: widget.book.timestamp,
+                            latitude: widget.book.latitude,
+                            longitude: widget.book.longitude))));
           },
           child: Card(
             shape: RoundedRectangleBorder(
@@ -43,7 +76,8 @@ class BookTile extends StatelessWidget {
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(15.0),
-                      child: Image.network(book.bookCover, fit: BoxFit.fill),
+                      child: Image.network(widget.book.bookCover,
+                          fit: BoxFit.fill),
                     ),
                   ),
                 ),
@@ -55,7 +89,7 @@ class BookTile extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
                         child: Text(
-                          'Title: ${book.title}',
+                          'Title: ${widget.book.title}',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
@@ -68,7 +102,7 @@ class BookTile extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
                         child: Text(
-                          'Author: ${book.author}',
+                          'Author: ${widget.book.author}',
                           style: TextStyle(
                             fontSize: 15,
                           ),
@@ -80,7 +114,7 @@ class BookTile extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
                         child: Text(
-                          'Released ${timeago.format(book.timestamp)}',
+                          'Released in ${city} ${timeago.format(widget.book.timestamp)}',
                           style: TextStyle(
                             fontSize: 15,
                           ),
