@@ -15,7 +15,7 @@ class BigMap extends StatefulWidget {
 
   final void Function(dynamic, dynamic) callbackMarkerDetails;
   final void Function() callbackHideDrawer;
-  final List<MarkerData> markerData;
+  final Future<List<MarkerData>> markerData;
 
   @override
   State<BigMap> createState() => _BigMapState();
@@ -28,10 +28,11 @@ class _BigMapState extends State<BigMap> with TickerProviderStateMixin {
     curve: Curves.easeInOut,
   );
 
-   void initState() {
+  @override
+  void initState() {
+    super.initState();
     GeolocationController.instance.getLocation();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -82,35 +83,45 @@ class _BigMapState extends State<BigMap> with TickerProviderStateMixin {
           urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
           userAgentPackageName: 'com.example.app',
         ),
-        MarkerLayer(
-          markers: [
-            ...widget.markerData.map(
-              (marker) => Marker(
-                point: marker.getLatLng(),
-                width: 80,
-                height: 80,
-                builder: (context) => GestureDetector(
-                  onTap: () {
-                    widget.callbackMarkerDetails(
-                        marker.bookName, marker.bookId);
-                  },
-                  child: Column(
-                    children: [
-                      const Icon(Icons.location_on,
-                          color: Colors.red, size: 30),
-                      Text(
-                        marker.getMarkerText(),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          backgroundColor: Colors.deepOrange,
+        FutureBuilder(
+          future: widget.markerData,
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (!snapshot.hasData) return const MarkerLayer(markers: []);
+
+            final markers = snapshot.data!;
+
+            return MarkerLayer(
+              markers: [
+                ...markers.map(
+                  (marker) => Marker(
+                    point: marker.getLatLng(),
+                    width: 80,
+                    height: 80,
+                    builder: (context) => GestureDetector(
+                      onTap: () {
+                        widget.callbackMarkerDetails(
+                            marker.markerText, marker.markerLinkId);
+                      },
+                      child: Column(children: [
+                        Icon(
+                          Icons.location_on,
+                          color: marker.isFound ? Colors.red : Colors.black,
+                          size: 30,
                         ),
-                      ),
-                    ],
+                        Text(
+                          marker.getMarkerText(),
+                          style: TextStyle(
+                            color: marker.isFound ? Colors.white : Colors.black,
+                            backgroundColor: marker.isFound? Colors.deepOrange : Colors.white,
+                          ),
+                        ),
+                      ]),
+                    ),
                   ),
                 ),
-              ),
-            )
-          ],
+              ],
+            );
+          },
         ),
       ],
     );
