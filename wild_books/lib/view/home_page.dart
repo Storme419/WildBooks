@@ -3,6 +3,8 @@ import 'package:wild_books/model/book.dart';
 import 'package:wild_books/utils/db.dart';
 import 'package:wild_books/view/book_tile.dart';
 
+enum FilterValues { all, found, released, popular }
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -11,6 +13,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  FilterValues filterValuesView = FilterValues.all;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +54,7 @@ class _HomePageState extends State<HomePage> {
                           },
                           icon: const Icon(Icons.send),
                         ),
-                        label: Text(
+                        label: const Text(
                           'Found a book?',
                         ),
                         hintText: 'Please enter your code here',
@@ -60,41 +64,45 @@ class _HomePageState extends State<HomePage> {
                       )),
                 ),
                 Wrap(children: [
-                  Text('Want to release a book instead? '),
+                  const Text('Want to release a book instead? '),
                   InkWell(
-                    onTap: () => Navigator.of(context).pushNamed('/get-code'),
-                    child: Text('Generate a code here'),
+                    onTap: () => Navigator.of(context).pushNamed('/add-book'),
+                    child: const Text('Generate a code here'),
                   ),
                 ])
               ]),
             ),
             Container(
-              padding: EdgeInsets.all(5),
-              child: SegmentedButton<String>(
+              padding: const EdgeInsets.all(5),
+              child: SegmentedButton<FilterValues>(
                 segments: const [
-                  ButtonSegment<String>(
-                    value: 'all',
+                  ButtonSegment<FilterValues>(
+                    value: FilterValues.all,
                     label: Text('All books'),
                     // icon: Icon(Icons.done_sharp)
                   ),
-                  ButtonSegment<String>(
-                    value: 'found',
+                  ButtonSegment<FilterValues>(
+                    value: FilterValues.found,
                     label: Text('Found'),
                     //   icon: Icon(Icons.pin_drop)
                   ),
-                  ButtonSegment<String>(
-                    value: 'released',
+                  ButtonSegment<FilterValues>(
+                    value: FilterValues.released,
                     label: Text('Released'),
                     //   icon: Icon(Icons.my_library_books)
                   ),
-                  ButtonSegment<String>(
-                    value: 'liked',
+                  ButtonSegment<FilterValues>(
+                    value: FilterValues.popular,
                     label: Text('Popular'),
                     //    icon: Icon(Icons.favorite)
                   ),
                 ],
-                selected: <String>{'all'},
-                onSelectionChanged: (Set<String> newSelection) {},
+                selected: <FilterValues>{filterValuesView},
+                onSelectionChanged: (Set<FilterValues> newSelection) {
+                  setState(() {
+                    filterValuesView = newSelection.first;
+                  });
+                },
               ),
             ),
             Expanded(
