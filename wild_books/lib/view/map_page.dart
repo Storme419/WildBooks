@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wild_books/components/BigMap.dart';
-import 'package:wild_books/singleBook.dart';
+import 'package:wild_books/view/singleBook.dart';
 import 'package:wild_books/utils/db2.dart';
 
 class Map extends StatefulWidget {
@@ -109,11 +109,11 @@ class _MapDrawerState extends State<MapDrawer> {
                   Text(widget.bookTitle),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const SingleBook()),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) => SingleBookPage(book: widget.bookId)),
+                      // );
                       debugPrint('navigate to ${widget.bookId}');
                     },
                     child: const Text('View this book'),
