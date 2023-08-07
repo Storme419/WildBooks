@@ -5,9 +5,9 @@ import 'package:timeago/timeago.dart' as timeago;
 
 // https://didtheylikeit.com/wp-content/uploads/2022/07/TheKiteRunner300x400-2.png
 
-class SingleBook extends StatelessWidget {
+class SingleBookPage extends StatelessWidget {
   Book book;
-  SingleBook({super.key, required this.book});
+  SingleBookPage({super.key, required this.book});
 
   @override
   Widget build(BuildContext context) {
