@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wild_books/components/BigMap.dart';
-import 'package:wild_books/classes/MarkerData.dart';
+import 'package:wild_books/utils/db.dart';
 
 class Map extends StatefulWidget {
   const Map({super.key});
@@ -10,18 +10,9 @@ class Map extends StatefulWidget {
 }
 
 class _MapState extends State<Map> {
-  final markerData = [
-    MarkerData(
-        lat: 51.6,
-        lng: -0.13,
-        bookId: 1,
-        bookName: 'Harry Potter and the Very Long Named Book'),
-    MarkerData(lat: 51.4, lng: -0.12, bookId: 2, bookName: '1984'),
-    MarkerData(lat: 51.3, lng: -0.3, bookId: 3, bookName: 'The Great Gatsby'),
-    MarkerData(lat: 51.7, lng: -0.3, bookId: 4, bookName: 'American Psycho'),
-  ];
+  bool isShowUnfound = true;
 
-  String selectedBookTitle = 'Some book';
+  String selectedBookTitle = 'Book Title';
   int selectedBookId = 1;
   bool isDrawerVisible = false;
 
@@ -47,7 +38,7 @@ class _MapState extends State<Map> {
       body: Stack(
         children: <Widget>[
           BigMap(
-              markerData: markerData,
+              markerData: getAllBookMarkers(isShowUnfound),
               callbackMarkerDetails: notifyMarkerDetails,
               callbackHideDrawer: notifyHideDrawer),
           AnimatedPositioned(
@@ -59,6 +50,14 @@ class _MapState extends State<Map> {
                 bookTitle: selectedBookTitle,
                 bookId: selectedBookId,
                 callbackHideDrawer: notifyHideDrawer),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                isShowUnfound = !isShowUnfound;
+              });
+            },
+            child: Text(isShowUnfound ? 'show unfound' : 'show all'),
           ),
         ],
       ),
@@ -109,6 +108,11 @@ class _MapDrawerState extends State<MapDrawer> {
                   Text(widget.bookTitle),
                   ElevatedButton(
                     onPressed: () {
+                      //  Navigator.push(
+                      //   context,
+                      //  MaterialPageRoute(
+                      // builder: (context) => const SingleBook()),
+                      // );
                       debugPrint('navigate to ${widget.bookId}');
                     },
                     child: const Text('View this book'),

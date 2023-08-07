@@ -5,7 +5,6 @@ import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wild_books/classes/MarkerData.dart';
 import 'package:wild_books/controller/geolocation_controller.dart';
-import 'package:quickalert/quickalert.dart';
 
 class BigMap extends StatefulWidget {
   const BigMap(
@@ -16,7 +15,7 @@ class BigMap extends StatefulWidget {
 
   final void Function(dynamic, dynamic) callbackMarkerDetails;
   final void Function() callbackHideDrawer;
-  final List<MarkerData> markerData;
+  final Future<List<MarkerData>> markerData;
 
   @override
   State<BigMap> createState() => _BigMapState();
@@ -29,7 +28,9 @@ class _BigMapState extends State<BigMap> with TickerProviderStateMixin {
     curve: Curves.easeInOut,
   );
 
+  @override
   void initState() {
+    super.initState();
     GeolocationController.instance.getLocation();
   }
 
@@ -58,16 +59,10 @@ class _BigMapState extends State<BigMap> with TickerProviderStateMixin {
             backgroundColor: Colors.white,
             child: IconButton(
               onPressed: () {
-                GeolocationController.instance.error != ''
-                    ? QuickAlert.show(
-                        context: context,
-                        type: QuickAlertType.error,
-                        title: 'Oops...',
-                        text: GeolocationController.instance.error)
-                    : mapController.animateTo(
-                        dest: LatLng(GeolocationController.instance.lat,
-                            GeolocationController.instance.long),
-                      );
+                mapController.animateTo(
+                  dest: LatLng(GeolocationController.instance.lat,
+                      GeolocationController.instance.long),
+                );
               },
               icon: const Icon(Icons.my_location),
             ),
@@ -88,35 +83,45 @@ class _BigMapState extends State<BigMap> with TickerProviderStateMixin {
           urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
           userAgentPackageName: 'com.example.app',
         ),
-        MarkerLayer(
-          markers: [
-            ...widget.markerData.map(
-              (marker) => Marker(
-                point: marker.getLatLng(),
-                width: 80,
-                height: 80,
-                builder: (context) => GestureDetector(
-                  onTap: () {
-                    widget.callbackMarkerDetails(
-                        marker.bookName, marker.bookId);
-                  },
-                  child: Column(
-                    children: [
-                      const Icon(Icons.location_on,
-                          color: Colors.red, size: 30),
-                      Text(
-                        marker.getMarkerText(),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          backgroundColor: Colors.deepOrange,
+        FutureBuilder(
+          future: widget.markerData,
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (!snapshot.hasData) return const MarkerLayer(markers: []);
+
+            final markers = snapshot.data!;
+
+            return MarkerLayer(
+              markers: [
+                ...markers.map(
+                  (marker) => Marker(
+                    point: marker.getLatLng(),
+                    width: 80,
+                    height: 80,
+                    builder: (context) => GestureDetector(
+                      onTap: () {
+                        widget.callbackMarkerDetails(
+                            marker.markerText, marker.markerLinkId);
+                      },
+                      child: Column(children: [
+                        Icon(
+                          Icons.location_on,
+                          color: marker.isFound ? Colors.red : Colors.black,
+                          size: 30,
                         ),
-                      ),
-                    ],
+                        Text(
+                          marker.getMarkerText(),
+                          style: TextStyle(
+                            color: marker.isFound ? Colors.white : Colors.black,
+                            backgroundColor: marker.isFound? Colors.deepOrange : Colors.white,
+                          ),
+                        ),
+                      ]),
+                    ),
                   ),
                 ),
-              ),
-            )
-          ],
+              ],
+            );
+          },
         ),
       ],
     );
