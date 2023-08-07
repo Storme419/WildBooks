@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 
 class GeolocationController extends ChangeNotifier {
   static GeolocationController instance = GeolocationController();
@@ -7,6 +8,7 @@ class GeolocationController extends ChangeNotifier {
   double lat = 0.0;
   double long = 0.0;
   String error = '';
+  String? currentAddress;
 
   GeolocationController() {
     getLocation();
@@ -46,6 +48,8 @@ class GeolocationController extends ChangeNotifier {
       return Future.error('Please enable location sharing on your phone');
     }
 
-    return await Geolocator.getCurrentPosition();
+    return await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.best)
+        .timeout(Duration(seconds: 5));
   }
 }
