@@ -115,7 +115,7 @@ class _HomePageState extends State<HomePage> {
                     final books = snapshot.data!;
                     // debugPrint(books.toString());
                     return ListView.builder(
-                        itemCount: 10,
+                        itemCount: books.length,
                         itemBuilder: (context, index) {
                           Book book = Book(
                             title: books[index]['title'],

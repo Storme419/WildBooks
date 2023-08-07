@@ -140,3 +140,17 @@ Future<List<MarkerData>> getAllBookMarkers(bool showUnfound) async {
 
   return markerDataArr;
 }
+
+void addEvent(int bookId, int userId, event, double latitude, double longitude,
+    user_note) async {
+  await Supabase.instance.client.from('book_events_populated').insert({
+    'book_id': bookId,
+    'user_id': userId,
+    //'type': type,
+    'event': event,
+    'timestamp': DateTime.now(),
+    'latitude': latitude,
+    'longitude': longitude,
+    'user_note': user_note
+  });
+}

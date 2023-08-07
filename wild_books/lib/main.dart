@@ -6,6 +6,7 @@ import 'package:wild_books/view/add_a_book_page.dart';
 import 'package:wild_books/view/book_shelf_page.dart';
 import 'package:wild_books/view/found_book_page.dart';
 import 'package:wild_books/view/list_of_all_books.dart';
+import 'package:wild_books/view/posting_test.dart';
 import 'package:wild_books/view/search_page.dart';
 import 'package:wild_books/view/home_page.dart';
 import 'package:wild_books/view/login_page.dart';
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
               '/about-us': (context) => const AboutUs(),
               '/account': (context) => const AccountPage(),
               '/books-list': (context) => const ListOfBooks(),
-              '/found-book': (context) => const FoundBook()
+              '/found-book': (context) => const Test()
             },
             home: const RootPage(),
           );
@@ -76,12 +77,13 @@ class _RootPageState extends State<RootPage> {
         child: Column(
           children: [
             UserAccountsDrawerHeader(
-                currentAccountPicture: ClipRRect(
-                    borderRadius: BorderRadius.circular(40),
-                    child: Image.network(
-                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS29OImDEUJspbdQTIIKTar91MyZ920fD6jpQ&usqp=CAU")),
-                accountName: const Text("Test User"),
-                accountEmail: const Text("test@gmail.com")),
+              currentAccountPicture: ClipRRect(
+                  borderRadius: BorderRadius.circular(40),
+                  child: Image.network(
+                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS29OImDEUJspbdQTIIKTar91MyZ920fD6jpQ&usqp=CAU")),
+              accountName: const Text("Test User"),
+              accountEmail: Text('test@gmail.com'),
+            ),
             SwitchListTile(
               title: const Text('Dark Mode'),
               value: ThemeController.instance.isDarkTheme,
@@ -97,6 +99,7 @@ class _RootPageState extends State<RootPage> {
               title: Text('About Us'),
               onTap: () {
                 Navigator.of(context).pop();
+                //print(supabase.auth.currentUser?.email);
                 Navigator.of(context).pushNamed('/about-us');
               },
             ),
