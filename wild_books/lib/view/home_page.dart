@@ -25,22 +25,22 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       extendBody: true,
       body: SafeArea(
-        child: Column(
-          children: [
-            Container(
-              alignment: Alignment.topRight,
-              padding: const EdgeInsets.fromLTRB(5, 10, 10, 10),
-              child: FloatingActionButton(
-                  mini: true,
-                  shape: CircleBorder(side: BorderSide.none),
-                  tooltip: 'Goes to about us page',
-                  onPressed: () {
-                    Navigator.of(context).pushNamed('/about-us');
-                  },
-                  child: Icon(Icons.question_mark_rounded)),
-            ),
-            SingleChildScrollView(
-              child: Container(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                alignment: Alignment.topRight,
+                padding: const EdgeInsets.fromLTRB(5, 10, 10, 10),
+                child: FloatingActionButton(
+                    mini: true,
+                    shape: CircleBorder(side: BorderSide.none),
+                    tooltip: 'Goes to about us page',
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/about-us');
+                    },
+                    child: Icon(Icons.question_mark_rounded)),
+              ),
+              Container(
                 padding: const EdgeInsets.fromLTRB(6, 15, 6, 15),
                 width: MediaQuery.of(context).size.width * 0.6,
                 height: 120,
@@ -57,11 +57,11 @@ class _HomePageState extends State<HomePage> {
                             onPressed: () async {
                               try {
                                 debugPrint('code: $code');
-
+          
                                 final result = await getSingleBook(code);
-
+          
                                 debugPrint('db result: ${result[0]['code']}');
-
+          
                                 if (result[0]['code'].toUpperCase() ==
                                     code.toUpperCase()) {
                                   Navigator.push(
@@ -101,51 +101,51 @@ class _HomePageState extends State<HomePage> {
                   // ])
                 ]),
               ),
-            ),
-            Container(
-              padding: const EdgeInsets.all(5),
-              child: SegmentedButton<FilterValues>(
-                segments: const [
-                  ButtonSegment<FilterValues>(
-                    value: FilterValues.all,
-                    label: Text('All books'),
-                    // icon: Icon(Icons.done_sharp)
-                  ),
-                  ButtonSegment<FilterValues>(
-                    value: FilterValues.found,
-                    label: Text('Found'),
-                    //   icon: Icon(Icons.pin_drop)
-                  ),
-                  ButtonSegment<FilterValues>(
-                    value: FilterValues.released,
-                    label: Text('Released'),
-                    //   icon: Icon(Icons.my_library_books)
-                  ),
-                ],
-                selected: <FilterValues>{filterValuesView},
-                onSelectionChanged: (Set<FilterValues> newSelection) async {
-                  setState(() {
-                    filterValuesView = newSelection.first;
-
-                    if (filterValuesView.name == 'all') {
-                      listData = getBooks();
-                    } else {
-                      listData = getBooks(filterValuesView.name);
-                    }
-                  });
-                },
+              Container(
+                padding: const EdgeInsets.all(5),
+                child: SegmentedButton<FilterValues>(
+                  segments: const [
+                    ButtonSegment<FilterValues>(
+                      value: FilterValues.all,
+                      label: Text('All books'),
+                      // icon: Icon(Icons.done_sharp)
+                    ),
+                    ButtonSegment<FilterValues>(
+                      value: FilterValues.found,
+                      label: Text('Found'),
+                      //   icon: Icon(Icons.pin_drop)
+                    ),
+                    ButtonSegment<FilterValues>(
+                      value: FilterValues.released,
+                      label: Text('Released'),
+                      //   icon: Icon(Icons.my_library_books)
+                    ),
+                  ],
+                  selected: <FilterValues>{filterValuesView},
+                  onSelectionChanged: (Set<FilterValues> newSelection) async {
+                    setState(() {
+                      filterValuesView = newSelection.first;
+          
+                      if (filterValuesView.name == 'all') {
+                        listData = getBooks();
+                      } else {
+                        listData = getBooks(filterValuesView.name);
+                      }
+                    });
+                  },
+                ),
               ),
-            ),
-            Expanded(
-              child: FutureBuilder(
+              FutureBuilder(
                   future: listData,
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return const Center(child: CircularProgressIndicator());
                     }
                     final books = snapshot.data!;
-
+          
                     return ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
                         itemCount: books.length,
                         itemBuilder: (context, index) {
                           Book book = Book(
@@ -161,8 +161,8 @@ class _HomePageState extends State<HomePage> {
                           return BookTile(book: book);
                         });
                   }),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
