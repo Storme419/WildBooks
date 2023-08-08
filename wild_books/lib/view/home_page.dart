@@ -4,7 +4,7 @@ import 'package:wild_books/model/book.dart';
 import 'package:wild_books/utils/db.dart';
 import 'package:wild_books/view/book_tile.dart';
 
-enum FilterValues { all, found, released, popular }
+enum FilterValues { all, found, released }
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -36,55 +36,57 @@ class _HomePageState extends State<HomePage> {
                   },
                   child: Icon(Icons.question_mark_rounded)),
             ),
-            Container(
-              padding: const EdgeInsets.fromLTRB(6, 30, 6, 15),
-              width: MediaQuery.of(context).size.width,
-              height: 140,
-              child: Column(children: [
-                SizedBox(
-                  height: 45,
-                  child: TextField(
-                      textCapitalization: TextCapitalization.characters,
-                      onChanged: (text) {
-                        code = text;
-                      },
-                      decoration: InputDecoration(
-                        suffixIcon: IconButton(
-                          onPressed: () async {
-                            try {
-                              final result = await getSingleBook(code);
-                              if (result[0]['code'] == code) {
-                                //  Navigator.of(context).pushNamed('/found-book');
+            SingleChildScrollView(
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(6, 15, 6, 15),
+                width: MediaQuery.of(context).size.width * 0.6,
+                height: 120,
+                child: Column(children: [
+                  SizedBox(
+                    height: 45,
+                    child: TextField(
+                        textCapitalization: TextCapitalization.characters,
+                        onChanged: (text) {
+                          code = text;
+                        },
+                        decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            onPressed: () async {
+                              try {
+                                final result = await getSingleBook(code);
+                                if (result[0]['code'] == code) {
+                                  //  Navigator.of(context).pushNamed('/found-book');
+                                }
+                              } catch (e) {
+                                QuickAlert.show(
+                                  context: context,
+                                  type: QuickAlertType.error,
+                                  title: 'Oops...',
+                                  text:
+                                      "Invalid code. Please try again or generate a new code.",
+                                );
                               }
-                            } catch (e) {
-                              QuickAlert.show(
-                                context: context,
-                                type: QuickAlertType.error,
-                                title: 'Oops...',
-                                text:
-                                    "Invalid code. Please try again or generate a new code.",
-                              );
-                            }
-                          },
-                          icon: const Icon(Icons.send),
-                        ),
-                        label: const Text(
-                          'Found a book?',
-                        ),
-                        hintText: 'Please enter your code here',
-                        border: const OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(15.0))),
-                      )),
-                ),
-                Wrap(children: [
-                  const Text('Want to release a book instead? '),
-                  InkWell(
-                    onTap: () => Navigator.of(context).pushNamed('/add-book'),
-                    child: const Text('Generate a code here'),
+                            },
+                            icon: const Icon(Icons.send),
+                          ),
+                          label: const Text(
+                            'Found a book?',
+                          ),
+                          hintText: 'Please enter your code here',
+                          border: const OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15.0))),
+                        )),
                   ),
-                ])
-              ]),
+                  // Wrap(children: [
+                  //   const Text('Want to release a book instead? '),
+                  //   InkWell(
+                  //     onTap: () => Navigator.of(context).pushNamed('/add-book'),
+                  //     child: const Text('Generate a code here'),
+                  //   ),
+                  // ])
+                ]),
+              ),
             ),
             Container(
               padding: const EdgeInsets.all(5),
@@ -104,11 +106,6 @@ class _HomePageState extends State<HomePage> {
                     value: FilterValues.released,
                     label: Text('Released'),
                     //   icon: Icon(Icons.my_library_books)
-                  ),
-                  ButtonSegment<FilterValues>(
-                    value: FilterValues.popular,
-                    label: Text('Popular'),
-                    //    icon: Icon(Icons.favorite)
                   ),
                 ],
                 selected: <FilterValues>{filterValuesView},
