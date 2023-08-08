@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:wild_books/classes/BookData.dart';
 
 Future<void> initSupabase() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -113,4 +116,44 @@ Future getStory(givenStoryId) async {
     'comments': data[0]['story_comments_populated']
   });
   return newData;
+}
+
+Future postBook(BookData book) async {
+
+  // TODO - take user ID as a parameter, to create an event
+
+  final List<Map<String, dynamic>> data = await Supabase.instance.client.from('books_populated')
+  .insert([
+      {
+        'title': book.title,
+        'author': book.author,
+        'isbn': book.isbn,
+        'image_url': book.imgUrl,
+        'genre': book.genreId,
+        'language': book.languageId,
+        'timestamp': book.timestamp,
+        'isFound': book.isFound,
+        'lastKnownLat': book.lat,
+        'lastKnownLong': book.lng,
+        'story_id': book.storyId,
+      },
+  ]).select();
+
+  final bookId = data[0]['book_id'];
+
+  String randomLetter() {
+    const String letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    return letters[Random().nextInt(letters.length-1)];
+  }
+
+  final String code = randomLetter() + randomLetter() + bookId.toString() + randomLetter() + randomLetter();
+
+  await Supabase.instance.client
+  .from('books_populated')
+  .update({ 'code': code })
+  .match({ 'book_id': bookId });
+
+  // TODO: add a released event using the book ID
+
+  return code;
 }
