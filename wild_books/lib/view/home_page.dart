@@ -25,30 +25,17 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             Container(
-              width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.fromLTRB(30, 20, 20, 0),
-              child: Wrap(children: [
-                const Text('What\'s Wild Books?',
-                    style:
-                        TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
-                InkWell(
-                  onTap: () => Navigator.of(context).pushNamed('/about-us'),
-                  child: const Text(' Know more about us here.',
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
-                )
-              ]),
+              alignment: Alignment.topRight,
+              padding: const EdgeInsets.fromLTRB(5, 10, 10, 10),
+              child: FloatingActionButton(
+                  mini: true,
+                  shape: CircleBorder(side: BorderSide.none),
+                  tooltip: 'Goes to about us page',
+                  onPressed: () {
+                    Navigator.of(context).pushNamed('/about-us');
+                  },
+                  child: Icon(Icons.question_mark_rounded)),
             ),
-            // Padding(
-            //   padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
-            //   child: GestureDetector(
-            //     onTap: () => Navigator.of(context).pushNamed('/about-us'),
-            //     child: const Text(
-            //       'What\'s Wild Books? Know more about us here.',
-            //       style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
-            //     ),
-            //   ),
-            // ),
             Container(
               padding: const EdgeInsets.fromLTRB(6, 30, 6, 15),
               width: MediaQuery.of(context).size.width,
@@ -66,18 +53,18 @@ class _HomePageState extends State<HomePage> {
                           onPressed: () async {
                             try {
                               final result = await getSingleBook(code);
-                              if(result[0]['code'] == code){
-                            //  Navigator.of(context).pushNamed('/found-book');
-                              } 
+                              if (result[0]['code'] == code) {
+                                //  Navigator.of(context).pushNamed('/found-book');
+                              }
                             } catch (e) {
-                             QuickAlert.show(
+                              QuickAlert.show(
                                 context: context,
                                 type: QuickAlertType.error,
                                 title: 'Oops...',
-                                text: "Invalid code. Please try again or generate a new code.",
-                                );
+                                text:
+                                    "Invalid code. Please try again or generate a new code.",
+                              );
                             }
-
                           },
                           icon: const Icon(Icons.send),
                         ),
@@ -125,7 +112,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
                 selected: <FilterValues>{filterValuesView},
-                onSelectionChanged: (Set<FilterValues> newSelection) {
+                onSelectionChanged: (Set<FilterValues> newSelection) async {
                   setState(() {
                     filterValuesView = newSelection.first;
                   });
