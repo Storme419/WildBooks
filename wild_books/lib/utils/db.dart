@@ -143,14 +143,55 @@ Future<List<MarkerData>> getAllBookMarkers(bool showUnfound) async {
 
 void addEvent(int bookId, int userId, event, double latitude, double longitude,
     user_note) async {
-  await Supabase.instance.client.from('book_events_populated').insert({
-    'book_id': bookId,
-    'user_id': userId,
-    //'type': type,
-    'event': event,
-    'timestamp': DateTime.now(),
-    'latitude': latitude,
-    'longitude': longitude,
-    'user_note': user_note
-  });
+  String timestamp = DateTime.timestamp().toString();
+  try {
+    await Supabase.instance.client.from('book_events_populated').insert({
+      'book_id': bookId,
+      'user_id': userId,
+      'event': event,
+      'timestamp': timestamp,
+      'latitude': latitude,
+      'longitude': longitude,
+      'user_note': user_note
+    });
+  } on PostgrestException catch (error) {
+    debugPrint(error.message);
+  } catch (e) {
+    debugPrint(e.toString());
+  }
+}
+
+void addEventComment(int event_id, int user_id, body) async {
+  String timestamp = DateTime.timestamp().toString();
+  try {
+    await Supabase.instance.client.from('event_comments_populated').insert({
+     // 'events_comments_id': 31,
+      'event_id': event_id,
+      'timestamp': timestamp,
+      'user_id': user_id,
+      'comments_body': body,
+    });
+  } on PostgrestException catch (error) {
+    debugPrint(error.message);
+  } catch (e) {
+    debugPrint(e.toString());
+  }
+}
+
+void addStoryComment(int story_id, int user_id, isbn, body) async {
+  String timestamp = DateTime.timestamp().toString();
+  try {
+    await Supabase.instance.client.from('story_comments_populated').insert({
+     // 'story_comments_id': 36,
+      'isbn': isbn,
+      'story_id': story_id,
+      'timestamp': timestamp,
+      'user_id': user_id,
+      'body': body,
+    });
+  } on PostgrestException catch (error) {
+    debugPrint(error.message);
+  } catch (e) {
+    debugPrint(e.toString());
+  }
 }

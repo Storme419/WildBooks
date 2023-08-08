@@ -22,19 +22,30 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
         child: Column(
           children: [
-            Container(
-              padding: const EdgeInsets.fromLTRB(30, 20, 20, 0),
-              child: Wrap(children: [
-                const Text('What\'s Wild Books?',
-                    style:
-                        TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
-                InkWell(
-                  onTap: () => Navigator.of(context).pushNamed('/about-us'),
-                  child: const Text(' Know more about us here.',
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
-                )
-              ]),
+            // Container(
+            //   width: double.infinity,
+            //   padding: const EdgeInsets.fromLTRB(30, 20, 20, 0),
+            //   child: Wrap(children: [
+            //     const Text('What\'s Wild Books?',
+            //         style:
+            //             TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
+            //     InkWell(
+            //       onTap: () => Navigator.of(context).pushNamed('/about-us'),
+            //       child: const Text(' Know more about us here.',
+            //           style:
+            //               TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
+            //     )
+            //   ]),
+            // ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
+              child: GestureDetector(
+                onTap: () => Navigator.of(context).pushNamed('/about-us'),
+                child: const Text(
+                  'What\'s Wild Books? Know more about us here.',
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
+                ),
+              ),
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(6, 30, 6, 15),
@@ -113,7 +124,7 @@ class _HomePageState extends State<HomePage> {
                       return const Center(child: CircularProgressIndicator());
                     }
                     final books = snapshot.data!;
-                    // debugPrint(books.toString());
+
                     return ListView.builder(
                         itemCount: books.length,
                         itemBuilder: (context, index) {

@@ -14,13 +14,14 @@ class _TestState extends State<Test> {
     return Container(
         child: ElevatedButton(
             child: Text('Click me'),
-            onPressed: () {
-              try {
-                addEvent(
-                    2, 2, 'released', 41.40338, 2.17403, 'left on the bench');
-              } catch (e) {
-                debugPrint(e.toString());
-              }
-            }));
+            onPressed: () => addStoryComment(
+                1, 2, '9780439708180', 'testing story comment')));
   }
 }
+
+
+// Container(
+//         child: ElevatedButton(
+//             child: Text('Click me'),
+//             onPressed: () => addStoryComment(
+//                 1, 2, '9780439708180', 'added id manually')));

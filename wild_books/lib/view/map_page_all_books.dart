@@ -109,11 +109,7 @@ class _MapDrawerState extends State<MapDrawer> {
                   Text(widget.bookTitle),
                   ElevatedButton(
                     onPressed: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //       builder: (context) => SingleBookPage(book: widget.bookId)),
-                      // );
+                      
                       debugPrint('navigate to ${widget.bookId}');
                     },
                     child: const Text('View this book'),
