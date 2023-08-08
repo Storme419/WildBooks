@@ -50,7 +50,7 @@ class _AddEventState extends State<AddEvent> {
         content: Text('Pick a valid location'),
       ));
     } else {
-      await addEvent(widget.bookId, widget.userId, widget.event, lat, lng,
+      final bool isEventPosted = await addEvent(widget.bookId, widget.userId, widget.event, lat, lng,
           commentController.text);
 
       // patch book lat/long and isFound state
@@ -59,7 +59,7 @@ class _AddEventState extends State<AddEvent> {
         content: Text('Added event successfully'),
       ));
 
-      Navigator.of(context).pop();
+      Navigator.of(context).pop(isEventPosted);
     }
   }
 
