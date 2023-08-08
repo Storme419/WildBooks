@@ -165,7 +165,7 @@ void addEventComment(int event_id, int user_id, body) async {
   String timestamp = DateTime.timestamp().toString();
   try {
     await Supabase.instance.client.from('event_comments_populated').insert({
-     // 'events_comments_id': 31,
+      // 'events_comments_id': 31,
       'event_id': event_id,
       'timestamp': timestamp,
       'user_id': user_id,
@@ -182,7 +182,7 @@ void addStoryComment(int story_id, int user_id, isbn, body) async {
   String timestamp = DateTime.timestamp().toString();
   try {
     await Supabase.instance.client.from('story_comments_populated').insert({
-     // 'story_comments_id': 36,
+      // 'story_comments_id': 36,
       'isbn': isbn,
       'story_id': story_id,
       'timestamp': timestamp,
@@ -195,3 +195,4 @@ void addStoryComment(int story_id, int user_id, isbn, body) async {
     debugPrint(e.toString());
   }
 }
+
