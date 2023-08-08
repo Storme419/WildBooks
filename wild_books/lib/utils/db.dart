@@ -1,6 +1,9 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:wild_books/classes/MarkerData.dart';
+import 'package:wild_books/classes/BookData.dart';
+
 
 Future<void> initSupabase() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -116,6 +119,7 @@ Future getStory(givenStoryId) async {
   return newData;
 }
 
+
 Future<List<MarkerData>> getAllBookMarkers(bool showUnfound) async {
   var query = Supabase.instance.client.from('books_populated').select('''
         lastKnownLat, lastKnownLong, book_id, title, isFound
@@ -194,5 +198,86 @@ void addStoryComment(int story_id, int user_id, isbn, body) async {
   } catch (e) {
     debugPrint(e.toString());
   }
+}
+
+
+Future postBook(BookData book) async {
+
+  // TODO - take user ID as a parameter, to create an event
+
+  final List<Map<String, dynamic>> data = await Supabase.instance.client.from('books_populated')
+  .insert([
+      {
+        'title': book.title,
+        'author': book.author,
+        'isbn': book.isbn,
+        'image_url': book.imgUrl,
+        'genre': book.genreId,
+        'language': book.languageId,
+        'timestamp': book.timestamp,
+        'isFound': book.isFound,
+        'lastKnownLat': book.lat,
+        'lastKnownLong': book.lng,
+        'story_id': book.storyId,
+      },
+  ]).select();
+
+  final bookId = data[0]['book_id'];
+
+  String randomLetter() {
+    const String letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    return letters[Random().nextInt(letters.length-1)];
+  }
+
+  final String code = randomLetter() + randomLetter() + bookId.toString() + randomLetter() + randomLetter();
+
+  await Supabase.instance.client
+  .from('books_populated')
+  .update({ 'code': code })
+  .match({ 'book_id': bookId });
+
+  // TODO: add a released event using the book ID
+
+  return code;
+}
+
+Future getReleasedByUser(userid) async {
+   final data =
+      await Supabase.instance.client.from('book_events_populated').select('''
+        book_id, user_id, event,
+          books_populated(
+            image_url
+          )
+      ''').eq('user_id', userid);
+  
+      List<Object> newData = [];
+      for(var i = 0; i < data.length; i++) {
+        if(data[i]['event'] == 'released') {
+        newData.add ({
+          'image_url':data[i]['books_populated']
+        });
+       }
+      }
+      return newData;
+
+}
+Future getFoundByUser(userid) async {
+   final data =
+      await Supabase.instance.client.from('book_events_populated').select('''
+        book_id, user_id, event,
+          books_populated(
+            image_url
+          )
+      ''').eq('user_id', userid);
+  
+      List<Object> newData = [];
+      for(var i = 0; i < data.length; i++) {
+        if(data[i]['event'] == 'found') {
+        newData.add ({
+          'image_url':data[i]['books_populated']
+        });
+       }
+      }
+      return newData;
 }
 
