@@ -157,3 +157,43 @@ Future postBook(BookData book) async {
 
   return code;
 }
+
+Future getReleasedByUser(userid) async {
+   final data =
+      await Supabase.instance.client.from('book_events_populated').select('''
+        book_id, user_id, event,
+          books_populated(
+            image_url
+          )
+      ''').eq('user_id', userid);
+  
+      List<Object> newData = [];
+      for(var i = 0; i < data.length; i++) {
+        if(data[i]['event'] == 'released') {
+        newData.add ({
+          'image_url':data[i]['books_populated']
+        });
+       }
+      }
+      return newData;
+
+}
+Future getFoundByUser(userid) async {
+   final data =
+      await Supabase.instance.client.from('book_events_populated').select('''
+        book_id, user_id, event,
+          books_populated(
+            image_url
+          )
+      ''').eq('user_id', userid);
+  
+      List<Object> newData = [];
+      for(var i = 0; i < data.length; i++) {
+        if(data[i]['event'] == 'found') {
+        newData.add ({
+          'image_url':data[i]['books_populated']
+        });
+       }
+      }
+      return newData;
+}
