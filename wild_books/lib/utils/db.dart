@@ -63,7 +63,7 @@ Future getBooks([eventFilter]) async {
 
 Future getSingleBook(givenCode) async {
   final data = await Supabase.instance.client.from('books_populated').select('''
-        title, author, image_url, code, story_id,
+        title, author, image_url, code, story_id, book_id,
         book_events_populated (
          event,
          timestamp,
@@ -86,7 +86,8 @@ Future getSingleBook(givenCode) async {
       'author': data[0]['author'],
       'image_url': data[0]['image_url'],
       'code': data[0]['code'],
-      'story_id': data[0]['story_id']
+      'story_id': data[0]['story_id'],
+      'book_id': data[0]['book_id']
     });
     for (var i = 0; i < data[0]['book_events_populated'].length; i++) {
       final events = data[0]['book_events_populated'][i];

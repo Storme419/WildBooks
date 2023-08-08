@@ -3,6 +3,7 @@ import 'package:quickalert/quickalert.dart';
 import 'package:wild_books/model/book.dart';
 import 'package:wild_books/utils/db.dart';
 import 'package:wild_books/view/book_tile.dart';
+import 'package:wild_books/view/singleBook.dart';
 
 enum FilterValues { all, found, released }
 
@@ -55,9 +56,20 @@ class _HomePageState extends State<HomePage> {
                           suffixIcon: IconButton(
                             onPressed: () async {
                               try {
+                                debugPrint('code: $code');
+
                                 final result = await getSingleBook(code);
-                                if (result[0]['code'] == code) {
-                                  //  Navigator.of(context).pushNamed('/found-book');
+
+                                debugPrint('db result: ${result[0]['code']}');
+
+                                if (result[0]['code'].toUpperCase() ==
+                                    code.toUpperCase()) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SingleBookPage(
+                                            bookId: result[0]['book_id'])),
+                                  );
                                 }
                               } catch (e) {
                                 QuickAlert.show(
@@ -117,8 +129,7 @@ class _HomePageState extends State<HomePage> {
 
                     if (filterValuesView.name == 'all') {
                       listData = getBooks();
-                    }
-                    else {
+                    } else {
                       listData = getBooks(filterValuesView.name);
                     }
                   });
@@ -138,16 +149,15 @@ class _HomePageState extends State<HomePage> {
                         itemCount: books.length,
                         itemBuilder: (context, index) {
                           Book book = Book(
-                            bookId: books[index]['book_id'],
-                            title: books[index]['title'],
-                            author: books[index]['author'],
-                            bookCover: books[index]['image_url'],
-                            timestamp:
-                                DateTime.parse(books[index]['timestamp']),
-                            latitude: books[index]['latitude'],
-                            longitude: books[index]['longitude'],
-                            event: books[index]['event']
-                          );
+                              bookId: books[index]['book_id'],
+                              title: books[index]['title'],
+                              author: books[index]['author'],
+                              bookCover: books[index]['image_url'],
+                              timestamp:
+                                  DateTime.parse(books[index]['timestamp']),
+                              latitude: books[index]['latitude'],
+                              longitude: books[index]['longitude'],
+                              event: books[index]['event']);
                           return BookTile(book: book);
                         });
                   }),
