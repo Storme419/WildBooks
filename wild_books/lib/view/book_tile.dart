@@ -22,14 +22,7 @@ class BookTile extends StatelessWidget {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => SingleBookPage(
-                        book: Book(
-                            title: book.title,
-                            author: book.author,
-                            bookCover: book.bookCover,
-                            timestamp: book.timestamp,
-                            latitude: book.latitude,
-                            longitude: book.longitude))));
+                    builder: (context) => SingleBookPage(bookId: book.bookId)));
           },
           child: Card(
             shape: RoundedRectangleBorder(

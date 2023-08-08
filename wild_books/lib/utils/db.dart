@@ -1,9 +1,10 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:wild_books/classes/BookshelfData.dart';
 import 'package:wild_books/classes/MarkerData.dart';
 import 'package:wild_books/classes/BookData.dart';
-import 'package:wild_books/classes/bookshelfdata.dart';
+import 'package:wild_books/classes/SingleBookData.dart';
 
 Future<void> initSupabase() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,6 +36,7 @@ Future getBooks() async {
     final events = data[i]['books_populated'];
 
     newData.add({
+      'book_id': events['book_id'],
       'event': data[i]['event'],
       'timestamp': data[i]['timestamp'],
       'latitude': data[i]['latitude'],
@@ -91,6 +93,63 @@ Future getSingleBook(givenCode) async {
     }
   }
   return newData;
+}
+
+Future getSingleBook2(id) async {
+  final data = await supabase.from('books_populated').select('''
+        book_id,
+        title,
+        author,
+        isbn,
+        image_url,
+        timestamp,
+        code,
+        story_id,
+        genre,
+        language,
+        isFound,
+        lastKnownLat,
+        lastKnownLong,
+
+        book_events_populated (
+          event_id,
+          book_id,
+          event,
+          timestamp,
+          latitude,
+          longitude,
+          user_id,
+          user_note,
+          users_populated (name),
+
+          event_comments_populated (
+            events_comments_id,
+            comments_body,
+            users_populated (name)
+          )
+        )
+      ''').eq('book_id', id);
+
+  final book = data[0];
+
+  SingleBookData bookData = SingleBookData(
+    book['book_id'],
+    book['code'],
+    book['isbn'],
+    book['title'],
+    book['author'],
+    book['image_url'],
+    book['timestamp'],
+    book['isFound'],
+    book['lastKnownLat'],
+    book['lastKnownLong'],
+    1,
+    1,
+    1,
+    [],
+  );
+
+  return bookData;
 }
 
 Future getStory(givenStoryId) async {
@@ -199,41 +258,42 @@ void addStoryComment(int story_id, int user_id, isbn, body) async {
   }
 }
 
-
 Future postBook(BookData book) async {
-
   // TODO - take user ID as a parameter, to create an event
 
-  final List<Map<String, dynamic>> data = await Supabase.instance.client.from('books_populated')
-  .insert([
-      {
-        'title': book.title,
-        'author': book.author,
-        'isbn': book.isbn,
-        'image_url': book.imgUrl,
-        'genre': book.genreId,
-        'language': book.languageId,
-        'timestamp': book.timestamp,
-        'isFound': book.isFound,
-        'lastKnownLat': book.lat,
-        'lastKnownLong': book.lng,
-        'story_id': book.storyId,
-      },
+  final List<Map<String, dynamic>> data =
+      await Supabase.instance.client.from('books_populated').insert([
+    {
+      'title': book.title,
+      'author': book.author,
+      'isbn': book.isbn,
+      'image_url': book.imgUrl,
+      'genre': book.genreId,
+      'language': book.languageId,
+      'timestamp': book.timestamp,
+      'isFound': book.isFound,
+      'lastKnownLat': book.lat,
+      'lastKnownLong': book.lng,
+      'story_id': book.storyId,
+    },
   ]).select();
 
   final bookId = data[0]['book_id'];
 
   String randomLetter() {
     const String letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    return letters[Random().nextInt(letters.length-1)];
+    return letters[Random().nextInt(letters.length - 1)];
   }
 
-  final String code = randomLetter() + randomLetter() + bookId.toString() + randomLetter() + randomLetter();
+  final String code = randomLetter() +
+      randomLetter() +
+      bookId.toString() +
+      randomLetter() +
+      randomLetter();
 
   await Supabase.instance.client
-  .from('books_populated')
-  .update({ 'code': code })
-  .match({ 'book_id': bookId });
+      .from('books_populated')
+      .update({'code': code}).match({'book_id': bookId});
 
   // TODO: add a released event using the book ID
 

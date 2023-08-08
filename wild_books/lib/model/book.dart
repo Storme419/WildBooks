@@ -1,6 +1,7 @@
 import 'package:geocoding/geocoding.dart';
 
 class Book {
+  final int bookId;
   final String title;
   final String author;
   final String bookCover;
@@ -10,6 +11,7 @@ class Book {
  
 
   Book({
+    required this.bookId,
     required this.title,
     required this.author,
     required this.bookCover,
