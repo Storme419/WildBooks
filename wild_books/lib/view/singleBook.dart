@@ -67,11 +67,8 @@ class _SingleBookPageState extends State<SingleBookPage> {
                       hideButton
                           ? Container()
                           : ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  hideButton = true;
-                                });
-                                Navigator.push(
+                              onPressed: () async {
+                                final bool isEventPosted = await Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => AddEvent(
@@ -82,10 +79,17 @@ class _SingleBookPageState extends State<SingleBookPage> {
                                                 ? 'released'
                                                 : 'found',
                                             bookId: bookData.bookId,
-                                            userId: 1, // TODO - can't pass this ----> supabase.auth.currentUser.toString(),
-                                                        // old userId is 'int', data type on profiles table is 'UUID'
+                                            userId:
+                                                1, // TODO - can't pass this ----> supabase.auth.currentUser.toString(),
+                                            // old userId is 'int', data type on profiles table is 'UUID'
                                           )),
                                 );
+
+                                if (isEventPosted) {
+                                  setState(() {
+                                    hideButton = true;
+                                  });
+                                }
                               },
                               child: Text(bookData.isFound
                                   ? 'Release this book'
