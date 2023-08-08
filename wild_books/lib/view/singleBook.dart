@@ -9,7 +9,7 @@ import 'package:wild_books/utils/db.dart';
 class SingleBookPage extends StatelessWidget {
   final int bookId;
 
-  SingleBookPage({super.key, required this.bookId});
+  const SingleBookPage({super.key, required this.bookId});
 
   @override
   Widget build(BuildContext context) {

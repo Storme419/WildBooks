@@ -8,7 +8,7 @@ class Book {
   final DateTime timestamp;
   final double latitude;
   final double longitude;
- 
+  final String event;
 
   Book({
     required this.bookId,
@@ -18,7 +18,10 @@ class Book {
     required this.timestamp,
     required this.latitude,
     required this.longitude,
+    required this.event,
   });
 
-
+  String getEvent() {
+    return event[0].toUpperCase() + event.substring(1).toLowerCase();
+  }
 }
