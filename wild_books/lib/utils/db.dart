@@ -18,10 +18,10 @@ Future<void> initSupabase() async {
 
 final supabase = Supabase.instance.client;
 
-Future getBooks() async {
-  final data =
-      await Supabase.instance.client.from('book_events_populated').select('''
-        event, timestamp, latitude, longitude, 
+Future getBooks([eventFilter]) async {
+  var query =
+      Supabase.instance.client.from('book_events_populated').select('''
+        event, timestamp, latitude, longitude,
         books_populated(
             title,
             author,
@@ -31,6 +31,14 @@ Future getBooks() async {
             book_id
           )
       ''');
+
+  if (eventFilter != null) {
+    debugPrint(eventFilter.toString());
+    query = query.eq('event', eventFilter);
+  }
+
+  final data = await query;
+
   List<Object> newData = [];
   for (int i = 0; i < data.length; i++) {
     final events = data[i]['books_populated'];
@@ -46,7 +54,7 @@ Future getBooks() async {
       'author': events['author'],
       'image_url': events['image_url'],
       'genre': events['genre'],
-      'code': events['code']
+      'code': events['code'],
     });
   }
 
@@ -96,7 +104,7 @@ Future getSingleBook(givenCode) async {
 }
 
 Future getSingleBook2(id) async {
-  final data = await supabase.from('books_populated').select('''
+  final data = await Supabase.instance.client.from('books_populated').select('''
         book_id,
         title,
         author,
@@ -132,6 +140,7 @@ Future getSingleBook2(id) async {
 
   final book = data[0];
 
+
   SingleBookData bookData = SingleBookData(
     book['book_id'],
     book['code'],
@@ -141,8 +150,8 @@ Future getSingleBook2(id) async {
     book['image_url'],
     book['timestamp'],
     book['isFound'],
-    book['lastKnownLat'],
-    book['lastKnownLong'],
+    book['lastKnownLat'] + 0.0,
+    book['lastKnownLong'] + 0.0,
     1,
     1,
     1,

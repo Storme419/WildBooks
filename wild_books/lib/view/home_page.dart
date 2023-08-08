@@ -17,6 +17,8 @@ class _HomePageState extends State<HomePage> {
   FilterValues filterValuesView = FilterValues.all;
   late String code;
 
+  Future listData = getBooks();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,13 +114,20 @@ class _HomePageState extends State<HomePage> {
                 onSelectionChanged: (Set<FilterValues> newSelection) async {
                   setState(() {
                     filterValuesView = newSelection.first;
+
+                    if (filterValuesView.name == 'all') {
+                      listData = getBooks();
+                    }
+                    else {
+                      listData = getBooks(filterValuesView.name);
+                    }
                   });
                 },
               ),
             ),
             Expanded(
               child: FutureBuilder(
-                  future: getBooks(),
+                  future: listData,
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return const Center(child: CircularProgressIndicator());
@@ -137,6 +146,7 @@ class _HomePageState extends State<HomePage> {
                                 DateTime.parse(books[index]['timestamp']),
                             latitude: books[index]['latitude'],
                             longitude: books[index]['longitude'],
+                            event: books[index]['event']
                           );
                           return BookTile(book: book);
                         });

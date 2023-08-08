@@ -54,7 +54,7 @@ class BookTile extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(30, 5, 0, 5),
                           child: Text(
-                            'Title: ${book.title}',
+                            '${book.getEvent()}!',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
@@ -67,7 +67,7 @@ class BookTile extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(30, 5, 0, 5),
                           child: Text(
-                            'Author: ${book.author}',
+                            '${book.title},\n${book.author}',
                             style: TextStyle(
                               fontSize: 15,
                             ),
@@ -85,7 +85,7 @@ class BookTile extends StatelessWidget {
                               debugPrint(snapshot.data.toString());
 
                               return Text(
-                                  'Released in ${snapshot.data.toString()} ${timeago.format(book.timestamp)}',
+                                  '${snapshot.data.toString()}, ${timeago.format(book.timestamp)}',
                                   style: TextStyle(
                                     fontSize: 13,
                                   ));
