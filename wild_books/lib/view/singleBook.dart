@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:wild_books/model/book.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:wild_books/utils/db.dart';
+import 'package:wild_books/view/add_event.dart';
 
 // https://didtheylikeit.com/wp-content/uploads/2022/07/TheKiteRunner300x400-2.png
 
-class SingleBookPage extends StatelessWidget {
+class SingleBookPage extends StatefulWidget {
   final int bookId;
 
   const SingleBookPage({super.key, required this.bookId});
 
   @override
+  State<SingleBookPage> createState() => _SingleBookPageState();
+}
+
+class _SingleBookPageState extends State<SingleBookPage> {
+  // TODO hide button automatically if user not logged in
+  bool hideButton = false;
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: getSingleBook2(bookId),
+        future: getSingleBook2(widget.bookId),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());
@@ -42,7 +49,7 @@ class SingleBookPage extends StatelessWidget {
                         padding: const EdgeInsets.all(25),
                         child: Image.network(bookData.imgUrl, fit: BoxFit.fill),
                       ),
-                      const SizedBox(height: 48),
+                      const SizedBox(height: 20),
                       Text(
                         '${bookData.title}',
                         style: TextStyle(
@@ -56,7 +63,41 @@ class SingleBookPage extends StatelessWidget {
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: 48),
+                      const SizedBox(height: 20),
+                      hideButton
+                          ? Container()
+                          : ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  hideButton = true;
+                                });
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AddEvent(
+                                            title: bookData.isFound
+                                                ? 'Release Book'
+                                                : 'Find Book',
+                                            event: bookData.isFound
+                                                ? 'released'
+                                                : 'found',
+                                            bookId: bookData.bookId,
+                                            userId: 1, // TODO - can't pass this ----> supabase.auth.currentUser.toString(),
+                                                        // old userId is 'int', data type on profiles table is 'UUID'
+                                          )),
+                                );
+                              },
+                              child: Text(bookData.isFound
+                                  ? 'Release this book'
+                                  : 'I found this book'),
+                            ),
+                      ElevatedButton(
+                        onPressed: () {
+                          debugPrint(supabase.auth.currentUser.toString());
+                        },
+                        child: const Text('View journey'),
+                      ),
+                      const SizedBox(height: 20),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: const Text(
@@ -103,7 +144,8 @@ class SingleBookPage extends StatelessWidget {
                                     style: TextStyle(color: Colors.grey[500]),
                                   ),
                                   Text(
-                                    timeago.format(DateTime.parse(bookData.timestamp)),
+                                    timeago.format(
+                                        DateTime.parse(bookData.timestamp)),
                                     //important!!!
                                     //
                                     //
