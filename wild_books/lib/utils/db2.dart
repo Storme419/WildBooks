@@ -7,7 +7,7 @@ Future <List<MarkerData>> getAllBookMarkers(bool showUnfound) async {
         lastKnownLat, lastKnownLong, book_id, title, isFound
       ''');
 
-  if (!showUnfound) query = query.eq('isFound', true);
+  if (!showUnfound) query = query.eq('isFound', false);
   final data = await query;
 
   final List<MarkerData> markerDataArr = [];

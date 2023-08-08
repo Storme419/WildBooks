@@ -105,14 +105,14 @@ class _BigMapState extends State<BigMap> with TickerProviderStateMixin {
                       child: Column(children: [
                         Icon(
                           Icons.location_on,
-                          color: marker.isFound ? Colors.red : Colors.black,
+                          color: marker.isFound ? Colors.black : Colors.red,
                           size: 30,
                         ),
                         Text(
                           marker.getMarkerText(),
                           style: TextStyle(
-                            color: marker.isFound ? Colors.white : Colors.black,
-                            backgroundColor: marker.isFound? Colors.deepOrange : Colors.white,
+                            color: marker.isFound ? Colors.black : Colors.white,
+                            backgroundColor: marker.isFound? Colors.white : Colors.deepOrange,
                           ),
                         ),
                       ]),
