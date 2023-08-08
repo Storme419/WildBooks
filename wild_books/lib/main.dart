@@ -75,13 +75,18 @@ class _RootPageState extends State<RootPage> {
       drawer: Drawer(
         child: Column(
           children: [
-            UserAccountsDrawerHeader(
-                currentAccountPicture: ClipRRect(
-                    borderRadius: BorderRadius.circular(40),
-                    child: Image.network(
-                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS29OImDEUJspbdQTIIKTar91MyZ920fD6jpQ&usqp=CAU")),
-                accountName: const Text("Test User"),
-                accountEmail: const Text("test@gmail.com")),
+            const UserAccountsDrawerHeader(
+              // currentAccountPicture: ClipRRect(
+              //     borderRadius: BorderRadius.circular(40),
+              //     child: Image.network(
+              //         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS29OImDEUJspbdQTIIKTar91MyZ920fD6jpQ&usqp=CAU")),
+              accountName: Text(''),
+              accountEmail: Text(''),
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('lib/images/book.drawer.jpg'),
+                      fit: BoxFit.fill)),
+            ),
             SwitchListTile(
               title: const Text('Dark Mode'),
               value: ThemeController.instance.isDarkTheme,
@@ -93,40 +98,40 @@ class _RootPageState extends State<RootPage> {
               height: 20,
             ),
             ListTile(
-              leading: Icon(Icons.info),
-              title: Text('About Us'),
+              leading: const Icon(Icons.info),
+              title: const Text('About Us'),
               onTap: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).pushNamed('/about-us');
               },
             ),
             ListTile(
-              leading: Icon(Icons.add),
-              title: Text('Add a book'),
+              leading: const Icon(Icons.add),
+              title: const Text('Add a book'),
               onTap: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).pushNamed('/add-book');
               },
             ),
             ListTile(
-              leading: Icon(Icons.book_rounded),
-              title: Text('All Books'),
+              leading: const Icon(Icons.book_rounded),
+              title: const Text('All Books'),
               onTap: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).pushNamed('/books-list');
               },
             ),
             ListTile(
-              leading: Icon(Icons.search),
-              title: Text('Find Books'),
+              leading: const Icon(Icons.search),
+              title: const Text('Find Books'),
               onTap: () {
                 Navigator.of(context).pop();
                 // Navigator.of(context).pushNamed('/about-us');
               },
             ),
             ListTile(
-              leading: Icon(Icons.logout),
-              title: Text('Log-out'),
+              leading: const Icon(Icons.logout),
+              title: const Text('Log-out'),
               onTap: () async {
                 Navigator.of(context).pop();
                 await supabase.auth.signOut();
@@ -144,7 +149,7 @@ class _RootPageState extends State<RootPage> {
           Padding(
             padding: const EdgeInsets.only(right: 8),
             child: IconButton(
-                padding: EdgeInsets.fromLTRB(0, 0, 2, 4),
+                padding: const EdgeInsets.fromLTRB(0, 0, 2, 4),
                 onPressed: () {
                   Navigator.of(context).pushNamed('/profile-button');
                 },

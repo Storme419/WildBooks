@@ -5,7 +5,6 @@ import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wild_books/classes/MarkerData.dart';
 import 'package:wild_books/controller/geolocation_controller.dart';
-import 'package:quickalert/quickalert.dart';
 
 class BigMap extends StatefulWidget {
   const BigMap(
@@ -32,7 +31,6 @@ class _BigMapState extends State<BigMap> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-
     GeolocationController.instance.getLocation();
   }
 
@@ -61,16 +59,10 @@ class _BigMapState extends State<BigMap> with TickerProviderStateMixin {
             backgroundColor: Colors.white,
             child: IconButton(
               onPressed: () {
-                GeolocationController.instance.error != ''
-                    ? QuickAlert.show(
-                        context: context,
-                        type: QuickAlertType.error,
-                        title: 'Oops...',
-                        text: GeolocationController.instance.error)
-                    : mapController.animateTo(
-                        dest: LatLng(GeolocationController.instance.lat,
-                            GeolocationController.instance.long),
-                      );
+                mapController.animateTo(
+                  dest: LatLng(GeolocationController.instance.lat,
+                      GeolocationController.instance.long),
+                );
               },
               icon: const Icon(Icons.my_location),
             ),

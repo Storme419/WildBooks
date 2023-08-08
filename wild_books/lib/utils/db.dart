@@ -1,5 +1,8 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:wild_books/classes/MarkerData.dart';
+import 'package:wild_books/classes/BookData.dart';
 import 'package:wild_books/classes/bookshelfdata.dart';
 
 Future<void> initSupabase() async {
@@ -114,6 +117,127 @@ Future getStory(givenStoryId) async {
     'comments': data[0]['story_comments_populated']
   });
   return newData;
+}
+
+Future<List<MarkerData>> getAllBookMarkers(bool showUnfound) async {
+  var query = Supabase.instance.client.from('books_populated').select('''
+        lastKnownLat, lastKnownLong, book_id, title, isFound
+      ''');
+
+  if (!showUnfound) query = query.eq('isFound', true);
+  final data = await query;
+
+  final List<MarkerData> markerDataArr = [];
+
+  for (final marker in data) {
+    final markerData = MarkerData(
+      lat: marker['lastKnownLat'].toDouble(),
+      lng: marker['lastKnownLong'].toDouble(),
+      markerLinkId: marker['book_id'],
+      markerText: marker['title'],
+      isFound: marker['isFound'],
+    );
+
+    markerDataArr.add(markerData);
+  }
+
+  return markerDataArr;
+}
+
+void addEvent(int bookId, int userId, event, double latitude, double longitude,
+    user_note) async {
+  String timestamp = DateTime.timestamp().toString();
+  try {
+    await Supabase.instance.client.from('book_events_populated').insert({
+      'book_id': bookId,
+      'user_id': userId,
+      'event': event,
+      'timestamp': timestamp,
+      'latitude': latitude,
+      'longitude': longitude,
+      'user_note': user_note
+    });
+  } on PostgrestException catch (error) {
+    debugPrint(error.message);
+  } catch (e) {
+    debugPrint(e.toString());
+  }
+}
+
+void addEventComment(int event_id, int user_id, body) async {
+  String timestamp = DateTime.timestamp().toString();
+  try {
+    await Supabase.instance.client.from('event_comments_populated').insert({
+      // 'events_comments_id': 31,
+      'event_id': event_id,
+      'timestamp': timestamp,
+      'user_id': user_id,
+      'comments_body': body,
+    });
+  } on PostgrestException catch (error) {
+    debugPrint(error.message);
+  } catch (e) {
+    debugPrint(e.toString());
+  }
+}
+
+void addStoryComment(int story_id, int user_id, isbn, body) async {
+  String timestamp = DateTime.timestamp().toString();
+  try {
+    await Supabase.instance.client.from('story_comments_populated').insert({
+      // 'story_comments_id': 36,
+      'isbn': isbn,
+      'story_id': story_id,
+      'timestamp': timestamp,
+      'user_id': user_id,
+      'body': body,
+    });
+  } on PostgrestException catch (error) {
+    debugPrint(error.message);
+  } catch (e) {
+    debugPrint(e.toString());
+  }
+}
+
+
+Future postBook(BookData book) async {
+
+  // TODO - take user ID as a parameter, to create an event
+
+  final List<Map<String, dynamic>> data = await Supabase.instance.client.from('books_populated')
+  .insert([
+      {
+        'title': book.title,
+        'author': book.author,
+        'isbn': book.isbn,
+        'image_url': book.imgUrl,
+        'genre': book.genreId,
+        'language': book.languageId,
+        'timestamp': book.timestamp,
+        'isFound': book.isFound,
+        'lastKnownLat': book.lat,
+        'lastKnownLong': book.lng,
+        'story_id': book.storyId,
+      },
+  ]).select();
+
+  final bookId = data[0]['book_id'];
+
+  String randomLetter() {
+    const String letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    return letters[Random().nextInt(letters.length-1)];
+  }
+
+  final String code = randomLetter() + randomLetter() + bookId.toString() + randomLetter() + randomLetter();
+
+  await Supabase.instance.client
+  .from('books_populated')
+  .update({ 'code': code })
+  .match({ 'book_id': bookId });
+
+  // TODO: add a released event using the book ID
+
+  return code;
 }
 
 Future getReleasedByUser(userid) async {
