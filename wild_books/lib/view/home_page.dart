@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:wild_books/model/book.dart';
 import 'package:wild_books/utils/db.dart';
 import 'package:wild_books/view/book_tile.dart';
@@ -14,6 +15,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   FilterValues filterValuesView = FilterValues.all;
+  late String code;
 
   @override
   Widget build(BuildContext context) {
@@ -22,31 +24,31 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
         child: Column(
           children: [
-            // Container(
-            //   width: double.infinity,
-            //   padding: const EdgeInsets.fromLTRB(30, 20, 20, 0),
-            //   child: Wrap(children: [
-            //     const Text('What\'s Wild Books?',
-            //         style:
-            //             TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
-            //     InkWell(
-            //       onTap: () => Navigator.of(context).pushNamed('/about-us'),
-            //       child: const Text(' Know more about us here.',
-            //           style:
-            //               TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
-            //     )
-            //   ]),
-            // ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
-              child: GestureDetector(
-                onTap: () => Navigator.of(context).pushNamed('/about-us'),
-                child: const Text(
-                  'What\'s Wild Books? Know more about us here.',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
-                ),
-              ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              padding: const EdgeInsets.fromLTRB(30, 20, 20, 0),
+              child: Wrap(children: [
+                const Text('What\'s Wild Books?',
+                    style:
+                        TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
+                InkWell(
+                  onTap: () => Navigator.of(context).pushNamed('/about-us'),
+                  child: const Text(' Know more about us here.',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
+                )
+              ]),
             ),
+            // Padding(
+            //   padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
+            //   child: GestureDetector(
+            //     onTap: () => Navigator.of(context).pushNamed('/about-us'),
+            //     child: const Text(
+            //       'What\'s Wild Books? Know more about us here.',
+            //       style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
+            //     ),
+            //   ),
+            // ),
             Container(
               padding: const EdgeInsets.fromLTRB(6, 30, 6, 15),
               width: MediaQuery.of(context).size.width,
@@ -55,13 +57,27 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(
                   height: 45,
                   child: TextField(
+                      textCapitalization: TextCapitalization.characters,
                       onChanged: (text) {
-                        print(text);
+                        code = text;
                       },
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
-                          onPressed: () {
-                            Navigator.of(context).pushNamed('/found-book');
+                          onPressed: () async {
+                            try {
+                              final result = await getSingleBook(code);
+                              if(result[0]['code'] == code){
+                            //  Navigator.of(context).pushNamed('/found-book');
+                              } 
+                            } catch (e) {
+                             QuickAlert.show(
+                                context: context,
+                                type: QuickAlertType.error,
+                                title: 'Oops...',
+                                text: "Invalid code. Please try again or generate a new code.",
+                                );
+                            }
+
                           },
                           icon: const Icon(Icons.send),
                         ),

@@ -165,8 +165,6 @@ class _RegisterPageState extends State<RegisterPage> {
                             await supabase.auth.signUp(
                               email: email,
                               password: password,
-                              emailRedirectTo:
-                                  'mfa-app://callback${Navigator.of(context).pushNamed('/account')}',
                             );
                             if (mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
