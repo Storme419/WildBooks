@@ -129,6 +129,7 @@ class _HomePageState extends State<HomePage> {
                         itemCount: books.length,
                         itemBuilder: (context, index) {
                           Book book = Book(
+                            bookId: books[index]['book_id'],
                             title: books[index]['title'],
                             author: books[index]['author'],
                             bookCover: books[index]['image_url'],
