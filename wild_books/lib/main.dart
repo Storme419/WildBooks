@@ -61,6 +61,9 @@ class RootPage extends StatefulWidget {
 
 class _RootPageState extends State<RootPage> {
   int _selectedIndex = 0;
+  final user = supabase.auth.currentUser != null
+      ? supabase.auth.currentUser!.email as String
+      : 'Please log-in';
 
   final List<Widget> _pages = [
     const HomePage(),
@@ -76,12 +79,20 @@ class _RootPageState extends State<RootPage> {
         child: Column(
           children: [
             UserAccountsDrawerHeader(
-                currentAccountPicture: ClipRRect(
-                    borderRadius: BorderRadius.circular(40),
-                    child: Image.network(
-                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS29OImDEUJspbdQTIIKTar91MyZ920fD6jpQ&usqp=CAU")),
-                accountName: const Text("Test User"),
-                accountEmail: const Text("test@gmail.com")),
+              // currentAccountPicture: ClipRRect(
+              //     borderRadius: BorderRadius.circular(40),
+              //     child: Image.network(
+              //         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS29OImDEUJspbdQTIIKTar91MyZ920fD6jpQ&usqp=CAU")),
+              accountName: Text(
+                supabase.auth.currentUser != null ? 'Logged in as: ' : "",
+                style: TextStyle(fontSize: 12),
+              ),
+              accountEmail: Text(user),
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('lib/images/book.drawer.jpg'),
+                      fit: BoxFit.fill)),
+            ),
             SwitchListTile(
               title: const Text('Dark Mode'),
               value: ThemeController.instance.isDarkTheme,
@@ -97,6 +108,7 @@ class _RootPageState extends State<RootPage> {
               title: Text('About Us'),
               onTap: () {
                 Navigator.of(context).pop();
+                //print(supabase.auth.currentUser?.email);
                 Navigator.of(context).pushNamed('/about-us');
               },
             ),
