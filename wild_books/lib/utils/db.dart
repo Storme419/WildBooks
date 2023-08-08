@@ -19,8 +19,7 @@ Future<void> initSupabase() async {
 final supabase = Supabase.instance.client;
 
 Future getBooks([eventFilter]) async {
-  var query =
-      Supabase.instance.client.from('book_events_populated').select('''
+  var query = Supabase.instance.client.from('book_events_populated').select('''
         event, timestamp, latitude, longitude,
         books_populated(
             title,
@@ -141,7 +140,6 @@ Future getSingleBook2(id) async {
 
   final book = data[0];
 
-
   SingleBookData bookData = SingleBookData(
     book['book_id'],
     book['code'],
@@ -213,8 +211,8 @@ Future<List<MarkerData>> getAllBookMarkers(bool showUnfound) async {
   return markerDataArr;
 }
 
-void addEvent(int bookId, int userId, event, double latitude, double longitude,
-    user_note) async {
+Future addEvent(int bookId, int userId, event, double latitude,
+    double longitude, user_note) async {
   String timestamp = DateTime.timestamp().toString();
   try {
     await Supabase.instance.client.from('book_events_populated').insert({
@@ -226,6 +224,15 @@ void addEvent(int bookId, int userId, event, double latitude, double longitude,
       'longitude': longitude,
       'user_note': user_note
     });
+debugPrint(event);
+    bool isFound = event == 'found' ? true : false;
+
+    await Supabase.instance.client
+        .from('books_populated')
+        .update({'lastKnownLat': latitude, 'lastKnownLong': longitude, 'isFound': isFound})
+        .match({'book_id': bookId});
+
+    return true;
   } on PostgrestException catch (error) {
     debugPrint(error.message);
   } catch (e) {
