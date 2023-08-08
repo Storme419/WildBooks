@@ -61,9 +61,6 @@ class RootPage extends StatefulWidget {
 
 class _RootPageState extends State<RootPage> {
   int _selectedIndex = 0;
-  final user = supabase.auth.currentUser != null
-      ? supabase.auth.currentUser!.email as String
-      : 'Please log-in';
 
   final List<Widget> _pages = [
     const HomePage(),
@@ -78,16 +75,13 @@ class _RootPageState extends State<RootPage> {
       drawer: Drawer(
         child: Column(
           children: [
-            UserAccountsDrawerHeader(
+            const UserAccountsDrawerHeader(
               // currentAccountPicture: ClipRRect(
               //     borderRadius: BorderRadius.circular(40),
               //     child: Image.network(
               //         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS29OImDEUJspbdQTIIKTar91MyZ920fD6jpQ&usqp=CAU")),
-              accountName: Text(
-                supabase.auth.currentUser != null ? 'Logged in as: ' : "",
-                style: TextStyle(fontSize: 12),
-              ),
-              accountEmail: Text(user),
+              accountName: Text(''),
+              accountEmail: Text(''),
               decoration: BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage('lib/images/book.drawer.jpg'),
@@ -104,41 +98,40 @@ class _RootPageState extends State<RootPage> {
               height: 20,
             ),
             ListTile(
-              leading: Icon(Icons.info),
-              title: Text('About Us'),
+              leading: const Icon(Icons.info),
+              title: const Text('About Us'),
               onTap: () {
                 Navigator.of(context).pop();
-                //print(supabase.auth.currentUser?.email);
                 Navigator.of(context).pushNamed('/about-us');
               },
             ),
             ListTile(
-              leading: Icon(Icons.add),
-              title: Text('Add a book'),
+              leading: const Icon(Icons.add),
+              title: const Text('Add a book'),
               onTap: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).pushNamed('/add-book');
               },
             ),
             ListTile(
-              leading: Icon(Icons.book_rounded),
-              title: Text('All Books'),
+              leading: const Icon(Icons.book_rounded),
+              title: const Text('All Books'),
               onTap: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).pushNamed('/books-list');
               },
             ),
             ListTile(
-              leading: Icon(Icons.search),
-              title: Text('Find Books'),
+              leading: const Icon(Icons.search),
+              title: const Text('Find Books'),
               onTap: () {
                 Navigator.of(context).pop();
                 // Navigator.of(context).pushNamed('/about-us');
               },
             ),
             ListTile(
-              leading: Icon(Icons.logout),
-              title: Text('Log-out'),
+              leading: const Icon(Icons.logout),
+              title: const Text('Log-out'),
               onTap: () async {
                 Navigator.of(context).pop();
                 await supabase.auth.signOut();
@@ -156,7 +149,7 @@ class _RootPageState extends State<RootPage> {
           Padding(
             padding: const EdgeInsets.only(right: 8),
             child: IconButton(
-                padding: EdgeInsets.fromLTRB(0, 0, 2, 4),
+                padding: const EdgeInsets.fromLTRB(0, 0, 2, 4),
                 onPressed: () {
                   Navigator.of(context).pushNamed('/profile-button');
                 },
