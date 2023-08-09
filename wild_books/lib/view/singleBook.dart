@@ -184,6 +184,8 @@ class _SingleBookPageState extends State<SingleBookPage> {
                                       author: singleBookData.author,
                                       imageUrl: singleBookData.imageUrl,
                                       events: singleBookData.events,
+                                      code: singleBookData.code,
+                                      bookId: singleBookData.bookId,
                                     );
                                     SingleBookEvents singleBookEvent =
                                         SingleBookEvents(
