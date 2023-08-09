@@ -9,9 +9,10 @@ import 'package:wild_books/utils/db2.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MapSingleBook extends StatefulWidget {
-  const MapSingleBook({super.key, required this.bookId});
+  const MapSingleBook({super.key, required this.bookId, required this.title});
 
   final int bookId;
+  final String title;
 
   @override
   State<MapSingleBook> createState() => _MapSingleBookState();
@@ -35,7 +36,7 @@ class _MapSingleBookState extends State<MapSingleBook>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('map'),
+        title: Text(widget.title),
       ),
       body: FlutterMap(
         mapController: mapController.mapController,
