@@ -31,6 +31,10 @@ class _SingleBookPageState extends State<SingleBookPage> {
 
           return Scaffold(
             appBar: AppBar(
+              shape: ContinuousRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(45),
+                bottomLeft: Radius.circular(45))),
               title: Text(bookData.title),
               automaticallyImplyLeading: false,
               leading: IconButton(

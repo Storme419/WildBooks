@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_animations/flutter_map_animations.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wild_books/classes/MarkerData.dart';
 import 'package:wild_books/controller/geolocation_controller.dart';
@@ -59,10 +61,16 @@ class _BigMapState extends State<BigMap> with TickerProviderStateMixin {
             backgroundColor: Colors.white,
             child: IconButton(
               onPressed: () {
-                mapController.animateTo(
-                  dest: LatLng(GeolocationController.instance.lat,
-                      GeolocationController.instance.long),
-                );
+                GeolocationController.instance.error != ''
+                          ? QuickAlert.show(
+                              context: context,
+                              type: QuickAlertType.error,
+                              title: 'Oops...',
+                              text: GeolocationController.instance.error)
+                          : mapController.animateTo(
+                              dest: LatLng(GeolocationController.instance.lat,
+                                  GeolocationController.instance.long),
+                            );
               },
               icon: const Icon(Icons.my_location),
             ),

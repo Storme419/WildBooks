@@ -26,6 +26,10 @@ class _AddBookMapState extends State<AddBookMap> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        shape: ContinuousRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(45),
+                bottomLeft: Radius.circular(45))),
         title: const Text('Specify your location'),
       ),
       body: Stack(

@@ -142,6 +142,10 @@ class _RootPageState extends State<RootPage> {
         ),
       ),
       appBar: AppBar(
+        shape: ContinuousRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(45),
+                bottomLeft: Radius.circular(45))),
         title: const Text(
           'W I L D B O O K S',
         ),
