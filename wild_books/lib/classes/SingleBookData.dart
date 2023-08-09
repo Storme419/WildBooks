@@ -13,6 +13,7 @@ class SingleBookData {
   final int languageId;
   final int storyId;
   List<SingleBookEvent> events;
+  final String description;
 
   //code
 
@@ -31,6 +32,7 @@ class SingleBookData {
     this.languageId,
     this.storyId,
     this.events,
+    this.description,
   );
 }
 
