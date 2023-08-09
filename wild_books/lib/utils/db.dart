@@ -8,6 +8,7 @@ import 'package:wild_books/classes/SingleBookData.dart';
 import 'package:wild_books/classes/single_book.dart';
 import 'package:wild_books/classes/single_book_event.dart';
 import 'package:wild_books/classes/single_book_event_comment.dart';
+import 'package:wild_books/utils/api.dart';
 
 Future<void> initSupabase() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -154,6 +155,8 @@ Future getSingleBook2(id) async {
 
   final book = data[0];
 
+  final description = await fetchBlurb(book['isbn']);
+
   SingleBookData bookData = SingleBookData(
     book['book_id'],
     book['code'],
@@ -169,6 +172,7 @@ Future getSingleBook2(id) async {
     1,
     1,
     [],
+    description
   );
 
   return bookData;

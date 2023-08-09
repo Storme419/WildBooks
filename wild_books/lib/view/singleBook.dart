@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:wild_books/utils/api.dart';
 import 'package:wild_books/utils/db.dart';
 import 'package:wild_books/view/add_event.dart';
 import 'package:wild_books/view/map_page_single_book.dart';
@@ -23,6 +24,7 @@ class _SingleBookPageState extends State<SingleBookPage> {
 
   @override
   Widget build(BuildContext context) {
+
     return FutureBuilder(
         future: getSingleBook2(widget.bookId),
         builder: (context, snapshot) {
@@ -117,8 +119,7 @@ class _SingleBookPageState extends State<SingleBookPage> {
                       const SizedBox(height: 20),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: const Text(
-                          'This is a fake description box to lure you in to our amazing app. Bit more text.',
+                        child: Text(bookData.description,
                           style: TextStyle(
                             fontSize: 18,
                           ),

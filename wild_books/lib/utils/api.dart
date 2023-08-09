@@ -41,3 +41,21 @@ class FetchedBookData {
     this.imgUrl,
   );
 }
+
+Future fetchBlurb(isbn) async {
+  final response = await http.get(Uri.parse('$baseUrl?q=isbn:$isbn'));
+
+  if (response.statusCode == 200) {
+    final bookData = jsonDecode(response.body);
+
+    if (bookData['totalItems'] > 0) {
+      final String blurb = bookData['items'][0]['volumeInfo']['description'];
+
+      return blurb;
+    } else {
+      throw Exception('no books found');
+    }
+  } else {
+    throw Exception('no repsonse from books api');
+  }
+}
