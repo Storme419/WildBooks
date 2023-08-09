@@ -1,57 +1,79 @@
 import 'package:flutter/material.dart';
 import 'package:wild_books/classes/BookshelfData.dart';
-import 'package:intl/intl.dart';
+import 'package:wild_books/utils/db.dart';
+import 'package:wild_books/view/singleBook.dart';
+
+const hardcodedUser = 1;
 
 class Bookshelf extends StatefulWidget {
   const Bookshelf({super.key});
-  //const Bookshelf({super.key, required this.userId});
-
-  //final int userId;
-
   @override
   State<Bookshelf> createState() => _BookshelfState();
 }
 
 class _BookshelfState extends State<Bookshelf> {
-
-  List<BookshelfData> bookshelfData = [
-    BookshelfData(bookId: 1, bookImgUrl: 'https://covers.openlibrary.org/b/id/13147279-M.jpg'),
-    BookshelfData(bookId: 1, bookImgUrl: 'https://covers.openlibrary.org/b/id/13147279-M.jpg'),
-    BookshelfData(bookId: 1, bookImgUrl: 'https://covers.openlibrary.org/b/id/13147279-M.jpg'),
-    BookshelfData(bookId: 1, bookImgUrl: 'https://covers.openlibrary.org/b/id/13147279-M.jpg'),
-    BookshelfData(bookId: 1, bookImgUrl: 'https://covers.openlibrary.org/b/id/13147279-M.jpg'),
-    BookshelfData(bookId: 1, bookImgUrl: 'https://covers.openlibrary.org/b/id/13147279-M.jpg'),
-    BookshelfData(bookId: 1, bookImgUrl: 'https://covers.openlibrary.org/b/id/13147279-M.jpg'),
-    BookshelfData(bookId: 1, bookImgUrl: 'https://covers.openlibrary.org/b/id/13147279-M.jpg'),
-    BookshelfData(bookId: 1, bookImgUrl: 'https://covers.openlibrary.org/b/id/13147279-M.jpg'),
-    BookshelfData(bookId: 1, bookImgUrl: 'https://covers.openlibrary.org/b/id/13147279-M.jpg'),
-    BookshelfData(bookId: 1, bookImgUrl: 'https://covers.openlibrary.org/b/id/13147279-M.jpg'),
-    BookshelfData(bookId: 1, bookImgUrl: 'https://covers.openlibrary.org/b/id/13147279-M.jpg'),
-    BookshelfData(bookId: 1, bookImgUrl: 'https://covers.openlibrary.org/b/id/13147279-M.jpg'),
-    BookshelfData(bookId: 1, bookImgUrl: 'https://covers.openlibrary.org/b/id/13147279-M.jpg'),
-    BookshelfData(bookId: 1, bookImgUrl: 'https://covers.openlibrary.org/b/id/13147279-M.jpg'),
-    BookshelfData(bookId: 1, bookImgUrl: 'https://covers.openlibrary.org/b/id/13147279-M.jpg'),
-    BookshelfData(bookId: 1, bookImgUrl: 'https://covers.openlibrary.org/b/id/13147279-M.jpg'),
-    BookshelfData(bookId: 1, bookImgUrl: 'https://covers.openlibrary.org/b/id/13147279-M.jpg'),
-  ];
+  Future<Map<String, List<BookshelfData>>> _fetchAllBooks() async {
+    List<BookshelfData> foundBooks = await getFoundByUser(hardcodedUser);
+    List<BookshelfData> releasedBooks = await getReleasedByUser(hardcodedUser);
+    return {'found': foundBooks, 'released': releasedBooks};
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: GridView.count(
-          crossAxisCount: 3,
-          children: List.generate(bookshelfData.length, (index) {
-            return GestureDetector(
-              onTap: () {
-                debugPrint('navigate to single book ${bookshelfData[index].bookId}');
-              },
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Image.network(bookshelfData[index].bookImgUrl),
-              ),
+        child: FutureBuilder(
+          future: _fetchAllBooks(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+             
+              return const Center(child: CircularProgressIndicator());
+            }
+            final foundBooks = snapshot.data!['found']!;
+            
+            
+            final releasedBooks = snapshot.data!['released']!;
+
+            return ListView(
+              children: <Widget>[
+                SizedBox(
+                  height: 120,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: foundBooks.length,
+                    itemBuilder: (context, index) =>
+                        _buildListItem(foundBooks[index]),
+                  ),
+                ),
+                // SizedBox(height: 0),
+                SizedBox(
+                  height: 120,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: releasedBooks.length,
+                    itemBuilder: (context, index) =>
+                        _buildListItem(releasedBooks[index]),
+                  ),
+                ),
+              ],
             );
-          }),
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildListItem(BookshelfData book) {
+    return GestureDetector(
+      onTap: () {
+        debugPrint(book.bookId.toString());
+        // singleBookPage(book_id);
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: Image.network(
+          book.bookImgUrl,
+          width: 100,
         ),
       ),
     );
