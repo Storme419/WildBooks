@@ -7,7 +7,7 @@ Future <List<MarkerData>> getAllBookMarkers(bool showUnfound) async {
         lastKnownLat, lastKnownLong, book_id, title, isFound
       ''');
 
-  if (!showUnfound) query = query.eq('isFound', true);
+  if (!showUnfound) query = query.eq('isFound', false);
   final data = await query;
 
   final List<MarkerData> markerDataArr = [];
@@ -28,9 +28,29 @@ Future <List<MarkerData>> getAllBookMarkers(bool showUnfound) async {
 }
 
 
-// postNewEvent() {
-// 
-//  if it is a 'released' event
-//  set 'isFound' false so it appears on map
-//  update last known lat/long 
-// }
+Future <List<EventMarkerData>> getSingleBookMarkers(int bookId) async {
+  var data = await Supabase.instance.client.from('books_populated').select('''
+        book_events_populated (
+          event,
+          latitude,
+          longitude
+          )
+      ''').eq('book_id', bookId);
+
+
+  final List<EventMarkerData> markerDataArr = [];
+
+  final events = data[0]['book_events_populated'];
+
+  for (final event in events) {
+    final markerData = EventMarkerData(
+      lat: event['latitude'].toDouble(),
+      lng: event['longitude'].toDouble(),
+    );
+
+    markerDataArr.add(markerData);
+  }
+
+  return markerDataArr;
+}
+

@@ -12,6 +12,10 @@ class _FoundBookState extends State<FoundBook> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        shape: ContinuousRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(45),
+                bottomLeft: Radius.circular(45))),
         automaticallyImplyLeading: false,
         leading: IconButton(
           onPressed: () {

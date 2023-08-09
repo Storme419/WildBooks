@@ -3,7 +3,7 @@ class SingleBook {
   final String title;
   final String author;
   final String imageUrl;
-  List<SingleBookEvent> events;
+  List<SingleBookEvents> events;
 
   SingleBook(
       {required this.title,

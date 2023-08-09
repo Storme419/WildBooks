@@ -34,12 +34,18 @@ class _AvatarState extends State<Avatar> {
             ),
           )
         else
-          Image.network(
-            widget.imageUrl!,
-            width: 150,
-            height: 150,
-            fit: BoxFit.cover,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(75),
+            child: Image.network(
+              widget.imageUrl!,
+              width: 150,
+              height: 150,
+              fit: BoxFit.cover,
+            ),
           ),
+        SizedBox(
+          height: 10,
+        ),
         ElevatedButton(
           onPressed: _isLoading ? null : _upload,
           child: const Text('Upload'),

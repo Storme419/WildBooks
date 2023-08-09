@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_animations/flutter_map_animations.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wild_books/classes/MarkerData.dart';
 import 'package:wild_books/controller/geolocation_controller.dart';
-import 'package:quickalert/quickalert.dart';
 
 class BigMap extends StatefulWidget {
   const BigMap(
@@ -32,7 +33,6 @@ class _BigMapState extends State<BigMap> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-
     GeolocationController.instance.getLocation();
   }
 
@@ -62,15 +62,15 @@ class _BigMapState extends State<BigMap> with TickerProviderStateMixin {
             child: IconButton(
               onPressed: () {
                 GeolocationController.instance.error != ''
-                    ? QuickAlert.show(
-                        context: context,
-                        type: QuickAlertType.error,
-                        title: 'Oops...',
-                        text: GeolocationController.instance.error)
-                    : mapController.animateTo(
-                        dest: LatLng(GeolocationController.instance.lat,
-                            GeolocationController.instance.long),
-                      );
+                          ? QuickAlert.show(
+                              context: context,
+                              type: QuickAlertType.error,
+                              title: 'Oops...',
+                              text: GeolocationController.instance.error)
+                          : mapController.animateTo(
+                              dest: LatLng(GeolocationController.instance.lat,
+                                  GeolocationController.instance.long),
+                            );
               },
               icon: const Icon(Icons.my_location),
             ),
@@ -113,14 +113,14 @@ class _BigMapState extends State<BigMap> with TickerProviderStateMixin {
                       child: Column(children: [
                         Icon(
                           Icons.location_on,
-                          color: marker.isFound ? Colors.red : Colors.black,
+                          color: marker.isFound ? Colors.black : Colors.red,
                           size: 30,
                         ),
                         Text(
                           marker.getMarkerText(),
                           style: TextStyle(
-                            color: marker.isFound ? Colors.white : Colors.black,
-                            backgroundColor: marker.isFound? Colors.deepOrange : Colors.white,
+                            color: marker.isFound ? Colors.black : Colors.white,
+                            backgroundColor: marker.isFound? Colors.white : Colors.deepOrange,
                           ),
                         ),
                       ]),

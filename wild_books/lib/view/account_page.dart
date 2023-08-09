@@ -12,6 +12,7 @@ class AccountPage extends StatefulWidget {
 
 class _AccountPageState extends State<AccountPage> {
   final _usernameController = TextEditingController();
+  final _aboutMeController = TextEditingController();
 
   String? _avatarUrl;
   var _loading = true;
@@ -22,7 +23,7 @@ class _AccountPageState extends State<AccountPage> {
       _loading = true;
     });
 
-    try { 
+    try {
       final userId = supabase.auth.currentUser!.id;
       final data = await supabase
           .from('profiles')
@@ -31,6 +32,7 @@ class _AccountPageState extends State<AccountPage> {
           .single();
       _usernameController.text = (data['username'] ?? '') as String;
       _avatarUrl = (data['avatar_url'] ?? '') as String;
+      _aboutMeController.text = (data['about_me'] ?? '') as String;
     } on PostgrestException catch (error) {
       SnackBar(
         content: Text(error.message),
@@ -57,9 +59,11 @@ class _AccountPageState extends State<AccountPage> {
     });
     final userName = _usernameController.text.trim();
     final user = supabase.auth.currentUser;
+    final aboutMe = _aboutMeController.text.trim();
     final updates = {
       'id': user!.id,
       'username': userName,
+      'about_me': aboutMe,
       'updated_at': DateTime.now().toIso8601String(),
     };
     try {
@@ -150,36 +154,159 @@ class _AccountPageState extends State<AccountPage> {
   @override
   void dispose() {
     _usernameController.dispose();
+    _aboutMeController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Profile')),
-      body: _loading
-          ? const Center(child: CircularProgressIndicator())
-          : ListView(
-              padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
-              children: [
-                Avatar(
-                  imageUrl: _avatarUrl,
-                  onUpload: _onUpload,
+      appBar: AppBar(
+        shape: ContinuousRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(45),
+                bottomLeft: Radius.circular(45))),
+                title: const Text('My Profile')),
+      body: Stack(children: [
+        Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primaryContainer),
+          child: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.only(top: 40),
+              ),
+              Expanded(
+                child: Container(
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(50),
+                          topRight: Radius.circular(50))),
+                  margin: const EdgeInsets.only(top: 60),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 20,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                const SizedBox(height: 18),
-                TextFormField(
-                  controller: _usernameController,
-                  decoration: const InputDecoration(labelText: 'User Name'),
-                ),
-                const SizedBox(height: 18),
-                ElevatedButton(
-                  onPressed: _loading ? null : _updateProfile,
-                  child: Text(_loading ? 'Saving...' : 'Update'),
-                ),
-                const SizedBox(height: 18),
-                TextButton(onPressed: _signOut, child: const Text('Sign Out')),
-              ],
-            ),
+              ),
+            ],
+          ),
+        ),
+        _loading
+            ? const Center(child: CircularProgressIndicator())
+            : ListView(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
+                children: [
+                  Avatar(
+                    imageUrl: _avatarUrl,
+                    onUpload: _onUpload,
+                  ),
+                  const SizedBox(height: 18),
+                  TextFormField(
+                    controller: _usernameController,
+                    decoration: const InputDecoration(labelText: 'Username'),
+                  ),
+                  const SizedBox(height: 15),
+                  TextFormField(
+                    controller: _aboutMeController,
+                    decoration: const InputDecoration(labelText: 'About me'),
+                  ),
+                  const SizedBox(height: 18),
+                  ElevatedButton(
+                    onPressed: _loading ? null : _updateProfile,
+                    style: ElevatedButton.styleFrom(
+                        onPrimary: Color.fromARGB(1, 42, 87, 255),
+                        shadowColor: Colors.blueGrey,
+                        elevation: 5,
+                        padding: EdgeInsets.zero,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20))),
+                    child: Ink(
+                      decoration: BoxDecoration(
+                          color: Color.fromARGB(1, 42, 87, 255),
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Container(
+                        width: 60,
+                        height: 40,
+                        alignment: Alignment.center,
+                        child: Text(
+                          _loading ? 'Saving...' : 'Update',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black87,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 18),
+                  TextButton(
+                      onPressed: _signOut, child: const Text('Sign Out')),
+                ],
+              ),
+
+        // ElevatedButton(
+        //   onPressed: () {},
+        //   style: ElevatedButton.styleFrom(
+        //       onPrimary: Color.fromARGB(1, 42, 87, 255),
+        //       shadowColor: Colors.blueGrey,
+        //       elevation: 5,
+        //       padding: EdgeInsets.zero,
+        //       shape: RoundedRectangleBorder(
+        //           borderRadius: BorderRadius.circular(20))),
+        //   child: Ink(
+        //     decoration: BoxDecoration(
+        //         color: Color.fromARGB(1, 42, 87, 255),
+        //         borderRadius: BorderRadius.circular(20)),
+        //     child: Container(
+        //       width: 150,
+        //       height: 40,
+        //       alignment: Alignment.center,
+        //       child: const Text(
+        //         'Let\'s go!',
+        //         style: TextStyle(
+        //           fontSize: 16,
+        //           color: Colors.black87,
+        //         ),
+        //       ),
+        //     ),
+        //   ),
+        // ),
+      ]),
     );
   }
 }
+
+    //   body: _loading
+    //       ? const Center(child: CircularProgressIndicator())
+    //       : ListView(
+    //           padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
+    //           children: [
+    //             Avatar(
+    //               imageUrl: _avatarUrl,
+    //               onUpload: _onUpload,
+    //             ),
+    //             const SizedBox(height: 18),
+    //             TextFormField(
+    //               controller: _usernameController,
+    //               decoration: const InputDecoration(labelText: 'User Name'),
+    //             ),
+    //             const SizedBox(height: 18),
+    //             ElevatedButton(
+    //               onPressed: _loading ? null : _updateProfile,
+    //               child: Text(_loading ? 'Saving...' : 'Update'),
+    //             ),
+    //             const SizedBox(height: 18),
+    //             TextButton(onPressed: _signOut, child: const Text('Sign Out')),
+    //           ],
+    //         ),
+    // );
