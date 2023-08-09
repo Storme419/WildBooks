@@ -26,3 +26,17 @@ class MarkerData {
     }
   }
 }
+
+class EventMarkerData {
+  final double lat;
+  final double lng;
+
+  EventMarkerData({
+    required this.lat,
+    required this.lng,
+  });
+
+  LatLng getLatLng() {
+    return LatLng(lat, lng);
+  }
+}

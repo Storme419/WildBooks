@@ -1,16 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_animations/flutter_map_animations.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:wild_books/components/BigMap.dart';
+import 'package:wild_books/controller/geolocation_controller.dart';
 import 'package:wild_books/view/singleBook.dart';
 import 'package:wild_books/utils/db2.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class Map extends StatefulWidget {
-  const Map({super.key});
+class MapSingleBook extends StatefulWidget {
+  const MapSingleBook({super.key, required this.bookId});
+
+  final int bookId;
 
   @override
-  State<Map> createState() => _MapState();
+  State<MapSingleBook> createState() => _MapSingleBookState();
 }
 
-class _MapState extends State<Map> {
+class _MapSingleBookState extends State<MapSingleBook>
+    with TickerProviderStateMixin {
+  late final mapController = AnimatedMapController(
+    vsync: this,
+    duration: const Duration(milliseconds: 1000),
+    curve: Curves.easeInOut,
+  );
+
   bool isShowUnfound = true;
 
   String selectedBookTitle = 'Book Title';
@@ -19,118 +33,107 @@ class _MapState extends State<Map> {
 
   @override
   Widget build(BuildContext context) {
-    double drawerHeight = MediaQuery.of(context).size.height / 4;
-
-    void notifyMarkerDetails(bookTitle, bookId) {
-      setState(() {
-        selectedBookTitle = bookTitle;
-        selectedBookId = bookId;
-        isDrawerVisible = true;
-      });
-    }
-
-    void notifyHideDrawer() {
-      setState(() {
-        isDrawerVisible = false;
-      });
-    }
-
     return Scaffold(
       appBar: AppBar(
-        title: Text('single book'),
+        title: const Text('map'),
       ),
-      body: Stack(
-        children: <Widget>[
-          BigMap(
-              markerData: getAllBookMarkers(isShowUnfound),
-              callbackMarkerDetails: notifyMarkerDetails,
-              callbackHideDrawer: notifyHideDrawer),
-          AnimatedPositioned(
-            left: 0,
-            bottom: isDrawerVisible ? 0 : -drawerHeight,
-            duration: const Duration(milliseconds: 300),
-            child: MapDrawer(
-                height: drawerHeight,
-                bookTitle: selectedBookTitle,
-                bookId: selectedBookId,
-                callbackHideDrawer: notifyHideDrawer),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              setState(() {
-                isShowUnfound = !isShowUnfound;
-              });
-            },
-            child: Text(isShowUnfound ? 'show unfound' : 'show all'),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class MapDrawer extends StatefulWidget {
-  const MapDrawer({
-    super.key,
-    required this.height,
-    required this.bookTitle,
-    required this.bookId,
-    required this.callbackHideDrawer,
-  });
-
-  final double height;
-  final String bookTitle;
-  final int bookId;
-  final void Function() callbackHideDrawer;
-
-  @override
-  State<MapDrawer> createState() => _MapDrawerState();
-}
-
-class _MapDrawerState extends State<MapDrawer> {
-  @override
-  Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-
-    return ClipRRect(
-      borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(20),
-        topRight: Radius.circular(20),
-      ),
-      child: Container(
-        color: Colors.white,
-        height: widget.height,
-        width: width,
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Stack(children: <Widget>[
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Text(widget.bookTitle),
-                  ElevatedButton(
-                    onPressed: () {
-                      
-                      debugPrint('navigate to ${widget.bookId}');
-                    },
-                    child: const Text('View this book'),
-                  ),
-                ],
-              ),
-            ),
-            Align(
-              alignment: Alignment.topRight,
+      body: FlutterMap(
+        mapController: mapController.mapController,
+        options: MapOptions(
+          minZoom: 2.0,
+          maxZoom: 18.0,
+          center: const LatLng(51.5, -0.1),
+          interactiveFlags: InteractiveFlag.all & ~InteractiveFlag.rotate,
+          zoom: 9.2,
+          onMapReady: () {
+            mapController.mapController.mapEventStream.listen((evt) {});
+          },
+        ),
+        nonRotatedChildren: [
+          Align(
+            alignment: Alignment.topRight,
+            child: CircleAvatar(
+              radius: 25,
+              backgroundColor: Colors.white,
               child: IconButton(
                 onPressed: () {
-                  widget.callbackHideDrawer();
+                  mapController.animateTo(
+                    dest: LatLng(GeolocationController.instance.lat,
+                        GeolocationController.instance.long),
+                  );
                 },
-                icon: const Icon(Icons.close),
+                icon: const Icon(Icons.my_location),
               ),
             ),
-          ]),
-        ),
+          ),
+          RichAttributionWidget(
+            attributions: [
+              TextSourceAttribution(
+                'OpenStreetMap contributors',
+                onTap: () =>
+                    launchUrl(Uri.parse('https://openstreetmap.org/copyright')),
+              ),
+            ],
+          ),
+        ],
+        children: [
+          TileLayer(
+            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+            userAgentPackageName: 'com.example.app',
+          ),
+          FutureBuilder(
+              future: getSingleBookMarkers(widget.bookId),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (!snapshot.hasData) return const PolylineLayer(polylines: []);
+
+                final markers = snapshot.data!;
+
+                List<LatLng> points = [];
+
+                for (final marker in markers) {
+                  points.add(marker.getLatLng());
+                }  
+
+                return PolylineLayer(
+                  polylines: [
+                    Polyline(
+                      points: points,
+                      color: Colors.blue,
+                      strokeWidth: 5,
+                      isDotted: true,
+
+                    ),
+                  ],
+                );
+              }),
+          FutureBuilder(
+            future: getSingleBookMarkers(widget.bookId),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (!snapshot.hasData) return const MarkerLayer(markers: []);
+
+              final markers = snapshot.data!;
+
+              return MarkerLayer(
+                markers: [
+                  ...markers.map(
+                    (marker) => Marker(
+                      point: marker.getLatLng(),
+                      width: 80,
+                      height: 80,
+                      builder: (context) => Column(children: [
+                        Icon(
+                          Icons.location_on,
+                          color: Colors.red,
+                          size: 30,
+                        ),
+                      ]),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ],
       ),
     );
   }
