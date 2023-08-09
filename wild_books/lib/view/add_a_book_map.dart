@@ -53,23 +53,26 @@ class _AddBookMapState extends State<AddBookMap> with TickerProviderStateMixin {
               ),
               Align(
                 alignment: Alignment.topRight,
-                child: CircleAvatar(
-                  radius: 25,
-                  backgroundColor: Colors.white,
-                  child: IconButton(
-                    onPressed: () {
-                      GeolocationController.instance.error != ''
-                          ? QuickAlert.show(
-                              context: context,
-                              type: QuickAlertType.error,
-                              title: 'Oops...',
-                              text: GeolocationController.instance.error)
-                          : mapController.animateTo(
-                              dest: LatLng(GeolocationController.instance.lat,
-                                  GeolocationController.instance.long),
-                            );
-                    },
-                    icon: const Icon(Icons.my_location),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CircleAvatar(
+                    radius: 25,
+                    backgroundColor: Colors.white,
+                    child: IconButton(
+                      onPressed: () {
+                        GeolocationController.instance.error != ''
+                            ? QuickAlert.show(
+                                context: context,
+                                type: QuickAlertType.error,
+                                title: 'Oops...',
+                                text: GeolocationController.instance.error)
+                            : mapController.animateTo(
+                                dest: LatLng(GeolocationController.instance.lat,
+                                    GeolocationController.instance.long),
+                              );
+                      },
+                      icon: const Icon(Icons.my_location),
+                    ),
                   ),
                 ),
               ),
@@ -90,11 +93,34 @@ class _AddBookMapState extends State<AddBookMap> with TickerProviderStateMixin {
               ),
             ],
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context, mapController.mapController.center);
-            },
-            child: const Text('here!'),
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 30, horizontal: 30),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context, mapController.mapController.center);
+              },
+              style: ElevatedButton.styleFrom(
+                  shadowColor: Colors.blueGrey,
+                  elevation: 5,
+                  padding: EdgeInsets.zero,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20))),
+              child: Ink(
+                child: Container(
+                  width: 120,
+                  height: 30,
+                  alignment: Alignment.center,
+                  child: const Text(
+                    'Here!',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ),
         ],
       ),

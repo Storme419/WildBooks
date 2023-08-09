@@ -50,8 +50,8 @@ class _AddEventState extends State<AddEvent> {
         content: Text('Pick a valid location'),
       ));
     } else {
-      final bool isEventPosted = await addEvent(widget.bookId, widget.userId, widget.event, lat, lng,
-          commentController.text);
+      final bool isEventPosted = await addEvent(widget.bookId, widget.userId,
+          widget.event, lat, lng, commentController.text);
 
       // patch book lat/long and isFound state
 
@@ -87,14 +87,17 @@ class _AddEventState extends State<AddEvent> {
               children: [
                 Card(
                     child: Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: TextField(
-                        controller: commentController,
-                        maxLines: 3, //or null
-                        decoration: InputDecoration.collapsed(
-                            hintText: "Enter a comment here"),
-                      ),
-                    )),
+                  padding: EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: commentController,
+                    maxLines: 3, //or null
+                    decoration: InputDecoration.collapsed(
+                        hintText: "Enter a comment here"),
+                  ),
+                )),
+                const SizedBox(
+                  height: 15,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -111,25 +114,90 @@ class _AddEventState extends State<AddEvent> {
                                 lng = GeolocationController.instance.long;
                               });
                       },
-                      child: const Text('get my location'),
+                      style: ElevatedButton.styleFrom(
+                          shadowColor: Colors.blueGrey,
+                          elevation: 5,
+                          padding: EdgeInsets.zero,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20))),
+                      child: Ink(
+                        child: Container(
+                          width: 120,
+                          height: 30,
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Get my location',
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
                     ),
                     ElevatedButton(
-                      onPressed: () {
-                        getLatLngFromMap(context);
-                      },
-                      child: const Text('find on map'),
-                    ),
+                        onPressed: () {
+                          getLatLngFromMap(context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                            shadowColor: Colors.blueGrey,
+                            elevation: 5,
+                            padding: EdgeInsets.zero,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20))),
+                        child: Ink(
+                          child: Container(
+                            width: 120,
+                            height: 30,
+                            alignment: Alignment.center,
+                            child: const Text(
+                              'Find on map',
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Colors.black87,
+                              ),
+                            ),
+                          ),
+                        )),
                   ],
                 ),
-                Text('lat: ${lat.toString()}'),
-                Text('lng: ${lng.toString()}'),
-                SizedBox(height: 25),
-                ElevatedButton(
-                  onPressed: () {
-                    submitEvent();
-                  },
-                  child: Text(widget.title),
+                const SizedBox(
+                  height: 30,
                 ),
+                Text('lat: ${lat.toString()}',
+                    style: const TextStyle(
+                        fontSize: 15, fontWeight: FontWeight.w600)),
+                Text('lng: ${lng.toString()}',
+                    style: const TextStyle(
+                        fontSize: 15, fontWeight: FontWeight.w600)),
+                const SizedBox(height: 25),
+                ElevatedButton(
+                    onPressed: () {
+                      submitEvent();
+                    },
+                    style: ElevatedButton.styleFrom(
+                        shadowColor: Colors.blueGrey,
+                        elevation: 5,
+                        padding: EdgeInsets.zero,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20))),
+                    child: Ink(
+                      child: Container(
+                        width: 120,
+                        height: 30,
+                        alignment: Alignment.center,
+                        child: Text(
+                          widget.title,
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Colors.black87,
+                          ),
+                        ),
+                      ),
+                    )),
               ],
             ),
           ),
