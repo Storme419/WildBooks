@@ -9,6 +9,7 @@ import 'package:wild_books/classes/single_book_event.dart';
 import 'package:wild_books/classes/single_book_event_comment.dart';
 import 'package:wild_books/view/event_tile.dart';
 import 'package:wild_books/view/story_page.dart';
+import 'package:expandable_text/expandable_text.dart';
 
 class SingleBookPage extends StatefulWidget {
   final int bookId;
@@ -143,7 +144,10 @@ class _SingleBookPageState extends State<SingleBookPage> {
 
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Text(bookData.description,
+                        child: ExpandableText(
+                          bookData.description,
+                          expandText: 'Show more',
+                          collapseText: 'Show less',
                           style: TextStyle(
                             fontSize: 18,
                           ),
