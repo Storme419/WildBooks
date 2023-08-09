@@ -20,6 +20,11 @@ class SingleBookPage extends StatefulWidget {
 class _SingleBookPageState extends State<SingleBookPage> {
   // TODO hide button automatically if user not logged in
   bool hideButton = false;
+  final user = supabase.auth.currentUser;
+
+  initState() {
+    user == null ? hideButton = true : null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +48,7 @@ class _SingleBookPageState extends State<SingleBookPage> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                icon: const Icon(Icons.arrow_back_ios),
+                icon: const Icon(Icons.arrow_back),
               ),
             ),
             body: SingleChildScrollView(
