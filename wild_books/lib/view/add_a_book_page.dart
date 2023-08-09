@@ -247,7 +247,26 @@ class _AddBookState extends State<AddBook> {
                       onPressed: () {
                         submitBook();
                       },
-                      child: const Text('get my code'),
+                     style: ElevatedButton.styleFrom(
+                              shadowColor: Colors.blueGrey,
+                              elevation: 5,
+                              padding: EdgeInsets.zero,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20))),
+                          child: Ink(
+                            child: Container(
+                              width: 120,
+                              height: 30,
+                              alignment: Alignment.center,
+                              child: const Text(
+                                'Get my code',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                            ),
+                          )
                     ),
                     const SizedBox(
                       height: 20,
