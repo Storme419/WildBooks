@@ -7,6 +7,7 @@ import 'package:wild_books/classes/single_book.dart';
 import 'package:wild_books/classes/single_book_event.dart';
 import 'package:wild_books/classes/single_book_event_comment.dart';
 import 'package:wild_books/view/event_tile.dart';
+import 'package:wild_books/view/story_page.dart';
 
 class SingleBookPage extends StatefulWidget {
   final int bookId;
@@ -33,7 +34,7 @@ class _SingleBookPageState extends State<SingleBookPage> {
 
           return Scaffold(
             appBar: AppBar(
-              shape: ContinuousRectangleBorder(
+              shape: const ContinuousRectangleBorder(
                   borderRadius: BorderRadius.only(
                       bottomRight: Radius.circular(45),
                       bottomLeft: Radius.circular(45))),
@@ -59,12 +60,12 @@ class _SingleBookPageState extends State<SingleBookPage> {
                       const SizedBox(height: 20),
                       Text(
                         '${bookData.title}',
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 25),
                       ),
                       Text(
                         'Author: ${bookData.author}',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                           color: Colors.grey,
                         ),
@@ -102,6 +103,9 @@ class _SingleBookPageState extends State<SingleBookPage> {
                                   ? 'Release this book'
                                   : 'I found this book'),
                             ),
+                      SizedBox(
+                        height: 10,
+                      ),
                       ElevatedButton(
                         onPressed: () {
                           Navigator.push(
@@ -114,7 +118,22 @@ class _SingleBookPageState extends State<SingleBookPage> {
                         },
                         child: const Text('View journey'),
                       ),
+                      const SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => StoryPage(
+                                    bookId: bookData.bookId,
+                                    title: bookData.title,
+                                    bookCover: bookData.imgUrl)),
+                          );
+                        },
+                        child: const Text('View story'),
+                      ),
                       const SizedBox(height: 20),
+
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: const Text(
@@ -129,8 +148,9 @@ class _SingleBookPageState extends State<SingleBookPage> {
                       const SizedBox(
                         height: 48,
                       ),
-
-                      //comments container
+                      
+                      
+                      //comments and event container
                       Container(
                         height: 600,
                         child: FutureBuilder(
