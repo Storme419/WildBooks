@@ -1,8 +1,11 @@
 class SingleBookEventComment {
-  int eventId;
-  int userId;
+  // int eventId;
+  String userName;
   String commentBody;
 
   SingleBookEventComment(
-      {required this.eventId, required this.userId, required this.commentBody});
+      {
+        // required this.eventId, 
+      required this.userName, 
+      required this.commentBody});
 }
