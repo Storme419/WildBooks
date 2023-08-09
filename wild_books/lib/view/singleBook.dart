@@ -101,7 +101,7 @@ class _SingleBookPageState extends State<SingleBookPage> {
                           Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => MapSingleBook(bookId: bookData.bookId)
+                                      builder: (context) => MapSingleBook(bookId: bookData.bookId, title: bookData.title)
                                   ),
                           );
                         },
