@@ -331,7 +331,7 @@ Future postBook(BookData book) async {
   return code;
 }
 
-Future getReleasedByUser(userid) async {
+  Future<List<BookshelfData>> getReleasedByUser(userid) async {
   final data =
       await Supabase.instance.client.from('book_events_populated').select('''
         book_id, event,
@@ -344,29 +344,34 @@ Future getReleasedByUser(userid) async {
   for (var i = 0; i < data.length; i++) {
     if (data[i]['event'] == 'released') {
       newData.add(BookshelfData(
-          bookId: data[i]['book_id'],
-          bookImgUrl: data[i]['books_populated']['image_url']));
+        bookImgUrl: data[i]['books_populated']['image_url'],
+        bookId: data[i]['book_id'],
+      ));
     }
   }
   return newData;
 }
 
-Future getFoundByUser(userid) async {
+Future<List<BookshelfData>> getFoundByUser(userid) async {
   final data =
       await Supabase.instance.client.from('book_events_populated').select('''
-        event, book_id,
-        books_populated(
-          image_url
-        )
+        book_id, event,
+          books_populated(
+            image_url
+          )
       ''').eq('user_id', userid);
 
   List<BookshelfData> newData = [];
   for (var i = 0; i < data.length; i++) {
     if (data[i]['event'] == 'found') {
       newData.add(BookshelfData(
-          bookId: data[i]['book_id'],
-          bookImgUrl: data[i]['books_populated']['image_url']));
+                bookImgUrl: data[i]['books_populated']['image_url'],
+       
+        bookId: data[i]['book_id'],
+      ));
     }
   }
+  
+  
   return newData;
 }
