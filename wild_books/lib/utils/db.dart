@@ -5,6 +5,9 @@ import 'package:wild_books/classes/BookshelfData.dart';
 import 'package:wild_books/classes/MarkerData.dart';
 import 'package:wild_books/classes/BookData.dart';
 import 'package:wild_books/classes/SingleBookData.dart';
+import 'package:wild_books/classes/single_book.dart';
+import 'package:wild_books/classes/single_book_event.dart';
+import 'package:wild_books/classes/single_book_event_comment.dart';
 
 Future<void> initSupabase() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -77,30 +80,41 @@ Future getSingleBook(givenCode) async {
         )
       ''').eq('code', givenCode);
 
-  List<Object> newData = [];
+  final singleBookData = SingleBook(
+    title: data[0]['title'],
+    author: data[0]['author'],
+    imageUrl: data[0]['image_url'],
+    events: [],
+  );
 
-  if (givenCode == data[0]['code']) {
-    newData.add({
-      'title': data[0]['title'],
-      'author': data[0]['author'],
-      'image_url': data[0]['image_url'],
-      'code': data[0]['code'],
-      'story_id': data[0]['story_id'],
-      'book_id': data[0]['book_id']
-    });
-    for (var i = 0; i < data[0]['book_events_populated'].length; i++) {
-      final events = data[0]['book_events_populated'][i];
-      newData.add({
-        'event': events['event'],
-        'timestamp': events['timestamp'],
-        'location': "to be disclosed",
-        'name': events['users_populated']['name'],
-        'note': events['user_note'],
-        'comments': events['event_comments_populated']
-      });
+  final eventsArr = data[0]['book_events_populated'];
+
+  for (var i = 0; i < eventsArr.length; i++) {
+    final eventData = SingleBookEvents(
+      event: eventsArr[i]['event'],
+      timestamp: eventsArr[i]['timestamp'],
+      // latitude: event['latitude'],
+      // longitude: event['longitude'],
+      location: 'to be disclosed',
+      name: eventsArr[i]['users_populated']['name'],
+      note: eventsArr[i]['user_note'],
+      comments: [],
+    );
+
+    for (var j = 0; j < eventsArr[i]['event_comments_populated'].length; j++) {
+
+      eventData.comments.add(SingleBookEventComment(
+        // eventId: comment['event_id'],
+        userName: eventsArr[i]['event_comments_populated'][j]['users_populated']
+            ['name'],
+        commentBody: eventsArr[i]['event_comments_populated'][j]
+            ['comments_body'],
+      ));
+    singleBookData.events.add(eventData);
     }
   }
-  return newData;
+
+  return singleBookData;
 }
 
 Future getSingleBook2(id) async {

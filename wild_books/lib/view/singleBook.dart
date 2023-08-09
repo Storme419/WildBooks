@@ -3,8 +3,10 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:wild_books/utils/db.dart';
 import 'package:wild_books/view/add_event.dart';
 import 'package:wild_books/view/map_page_single_book.dart';
-
-// https://didtheylikeit.com/wp-content/uploads/2022/07/TheKiteRunner300x400-2.png
+import 'package:wild_books/classes/single_book.dart';
+import 'package:wild_books/classes/single_book_event.dart';
+import 'package:wild_books/classes/single_book_event_comment.dart';
+import 'package:wild_books/view/event_tile.dart';
 
 class SingleBookPage extends StatefulWidget {
   final int bookId;
@@ -32,9 +34,9 @@ class _SingleBookPageState extends State<SingleBookPage> {
           return Scaffold(
             appBar: AppBar(
               shape: ContinuousRectangleBorder(
-            borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(45),
-                bottomLeft: Radius.circular(45))),
+                  borderRadius: BorderRadius.only(
+                      bottomRight: Radius.circular(45),
+                      bottomLeft: Radius.circular(45))),
               title: Text(bookData.title),
               automaticallyImplyLeading: false,
               leading: IconButton(
@@ -103,10 +105,11 @@ class _SingleBookPageState extends State<SingleBookPage> {
                       ElevatedButton(
                         onPressed: () {
                           Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => MapSingleBook(bookId: bookData.bookId, title: bookData.title)
-                                  ),
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MapSingleBook(
+                                    bookId: bookData.bookId,
+                                    title: bookData.title)),
                           );
                         },
                         child: const Text('View journey'),
@@ -129,144 +132,57 @@ class _SingleBookPageState extends State<SingleBookPage> {
 
                       //comments container
                       Container(
-                        decoration: BoxDecoration(
-                          color: Colors.brown[50],
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        margin: EdgeInsets.only(
-                            top: 5, left: 25, right: 25, bottom: 10),
-                        padding: EdgeInsets.all(25),
-                        child: Row(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.grey[400],
-                              ),
-                              padding: EdgeInsets.all(10),
-                              margin: EdgeInsets.only(
-                                right: 15,
-                              ),
-                              child: const Icon(Icons.person),
-                            ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Released by HardcodedUsername2 in Paris',
-                                    style: TextStyle(color: Colors.grey[500]),
-                                  ),
-                                  Text(
-                                    timeago.format(
-                                        DateTime.parse(bookData.timestamp)),
-                                    //important!!!
-                                    //
-                                    //
-                                    //timestamp above is pulled from the books table and not linked to the events as of yet
-                                    //please delete these comments when it has been implemented
-                                    style: TextStyle(color: Colors.grey[500]),
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text(
-                                    "Absolutely loved this book and could not contain my love for this book so I've left it on top of the statue at the tea gardens",
-                                    textAlign: TextAlign.left,
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextField(
-                                      style: TextStyle(fontSize: 15),
-                                      onChanged: (text) {
-                                        print(text);
-                                      },
-                                      decoration: InputDecoration(
-                                        suffixIcon: IconButton(
-                                          onPressed: () {},
-                                          icon: Icon(Icons.send),
-                                        ),
-                                        hintText: 'Post a comment',
-                                        border: const OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(15.0))),
-                                      ))
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
+                        height: 600,
+                        child: FutureBuilder(
+                            future: getSingleBook('ZM0DV'),
+                            builder: (context, snapshot) {
+                              if (!snapshot.hasData) {
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              }
+                              final singleBookData = snapshot.data!;
+                              //         // final today =
+                              //         //     DateTime.parse(singleBookData[1]['timestamp']);
+                              //         // final dateSlug =
+                              //         //     "${today.year.toString()}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}";
 
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.brown[50],
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        margin: EdgeInsets.only(
-                            top: 5, left: 25, right: 25, bottom: 10),
-                        padding: EdgeInsets.all(25),
-                        child: Row(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.grey[400],
-                              ),
-                              padding: EdgeInsets.all(10),
-                              margin: EdgeInsets.only(
-                                right: 15,
-                              ),
-                              child: const Icon(Icons.person),
-                            ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Released by HardcodedUsername1 in Paris',
-                                    style: TextStyle(color: Colors.grey[500]),
-                                  ),
-                                  Text(
-                                    '${timeago.format(DateTime.parse(bookData.timestamp))}',
-                                    //important!!!
-                                    //
-                                    //
-                                    //timestamp above is pulled from the books table and not linked to the events as of yet
-                                    //please delete these comments when it has been implemented
-                                    style: TextStyle(color: Colors.grey[500]),
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text(
-                                    "Wow everyone's right...I also loved it and could not contain my love for this book so I've left it underneath the statue at the tea gardens",
-                                    textAlign: TextAlign.left,
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextField(
-                                      style: TextStyle(fontSize: 15),
-                                      onChanged: (text) {
-                                        print(text);
-                                      },
-                                      decoration: InputDecoration(
-                                        suffixIcon: IconButton(
-                                          onPressed: () {},
-                                          icon: Icon(Icons.send),
-                                        ),
-                                        hintText: 'Post a comment',
-                                        border: const OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(5.0))),
-                                      ))
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
+                              return ListView.builder(
+                                  itemCount: 3,
+                                  itemBuilder: (context, index) {
+                                    SingleBook singleBook = SingleBook(
+                                      title: singleBookData.title,
+                                      author: singleBookData.author,
+                                      imageUrl: singleBookData.imageUrl,
+                                      events: singleBookData.events,
+                                    );
+                                    SingleBookEvents singleBookEvent =
+                                        SingleBookEvents(
+                                      event: singleBook.events[index].event,
+                                      timestamp:
+                                          singleBook.events[index].timestamp,
+                                      location:
+                                          singleBook.events[index].location,
+                                      name: singleBook.events[index].name,
+                                      note: singleBook.events[index].note,
+                                      comments:
+                                          singleBook.events[index].comments,
+                                    );
+                                    SingleBookEventComment
+                                        singleBookEventComment =
+                                        SingleBookEventComment(
+                                            userName: singleBookEvent
+                                                .comments[index].userName,
+                                            commentBody: singleBookEvent
+                                                .comments[index].commentBody);
+
+                                    return EventTile(
+                                      singleBook: singleBook,
+                                      singleBookEvent: singleBookEvent,
+                                      singleBookEventComment:
+                                          singleBookEventComment,
+                                    );
+                                  });
+                            }),
                       ),
                     ],
                   ),
