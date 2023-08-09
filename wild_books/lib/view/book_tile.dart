@@ -8,6 +8,7 @@ class BookTile extends StatelessWidget {
   final Book book;
   final userLocation = UserLocation();
 
+
   BookTile({super.key, required this.book});
 
   String? city;
@@ -53,7 +54,7 @@ class BookTile extends StatelessWidget {
                         width: MediaQuery.of(context).size.width * 0.7,
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(30, 5, 0, 5),
-                          child: Text(
+                          child:  Text(
                             '${book.getEvent()}!',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,

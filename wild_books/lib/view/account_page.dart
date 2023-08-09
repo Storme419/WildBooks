@@ -107,7 +107,7 @@ class _AccountPageState extends State<AccountPage> {
       );
     } finally {
       if (mounted) {
-        Navigator.of(context).pushReplacementNamed('/home');
+        Navigator.of(context).pushReplacementNamed('/');
       }
     }
   }
@@ -162,11 +162,11 @@ class _AccountPageState extends State<AccountPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        shape: ContinuousRectangleBorder(
-            borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(45),
-                bottomLeft: Radius.circular(45))),
-                title: const Text('My Profile')),
+          shape: ContinuousRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(45),
+                  bottomLeft: Radius.circular(45))),
+          title: const Text('My Profile')),
       body: Stack(children: [
         Container(
           width: double.infinity,
