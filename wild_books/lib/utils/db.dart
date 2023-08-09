@@ -40,7 +40,7 @@ Future getBooks([eventFilter]) async {
     query = query.eq('event', eventFilter);
   }
 
-  final data = await query;
+  final data = await query.order('timestamp', ascending: false);
 
   List<Object> newData = [];
   for (int i = 0; i < data.length; i++) {
