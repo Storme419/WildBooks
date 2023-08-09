@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:wild_books/utils/db.dart';
 import 'package:wild_books/view/add_event.dart';
+import 'package:wild_books/view/map_page_single_book.dart';
 
 // https://didtheylikeit.com/wp-content/uploads/2022/07/TheKiteRunner300x400-2.png
 
@@ -97,7 +98,12 @@ class _SingleBookPageState extends State<SingleBookPage> {
                             ),
                       ElevatedButton(
                         onPressed: () {
-                          debugPrint(supabase.auth.currentUser.toString());
+                          Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MapSingleBook(bookId: bookData.bookId)
+                                  ),
+                          );
                         },
                         child: const Text('View journey'),
                       ),
