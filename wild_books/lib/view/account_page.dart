@@ -161,7 +161,12 @@ class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('My Profile')),
+      appBar: AppBar(
+        shape: ContinuousRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(45),
+                bottomLeft: Radius.circular(45))),
+                title: const Text('My Profile')),
       body: Stack(children: [
         Container(
           width: double.infinity,

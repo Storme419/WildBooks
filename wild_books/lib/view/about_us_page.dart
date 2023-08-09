@@ -7,6 +7,10 @@ class AboutUs extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        shape: ContinuousRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(45),
+                bottomLeft: Radius.circular(45))),
         title: const Text('About Us'),
         automaticallyImplyLeading: false,
         leading: IconButton(
