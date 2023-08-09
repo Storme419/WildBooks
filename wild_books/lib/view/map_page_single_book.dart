@@ -93,7 +93,10 @@ class _MapSingleBookState extends State<MapSingleBook>
 
                 for (final marker in markers) {
                   points.add(marker.getLatLng());
-                }  
+                }
+
+                mapController.animateTo(
+                    dest: points[points.length-1]);
 
                 return PolylineLayer(
                   polylines: [
