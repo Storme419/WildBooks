@@ -95,93 +95,168 @@ class _AddBookState extends State<AddBook> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        shape: ContinuousRectangleBorder(
-            borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(45),
-                bottomLeft: Radius.circular(45))),
-        title: const Text('Release a book'),
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          icon: const Icon(Icons.arrow_back_ios),
-        ),
-        actions: [
-          IconButton(
+        appBar: AppBar(
+          shape: const ContinuousRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(45),
+                  bottomLeft: Radius.circular(45))),
+          title: const Text('Release a book'),
+          automaticallyImplyLeading: false,
+          leading: IconButton(
             onPressed: () {
-              alert(context, 'Release a book', 'Generate a code to write in your book when you leave it somewhere.\n\nYour ISBN can be found near the barcode of your book.');
+              Navigator.of(context).pop();
             },
-            icon: const Icon(Icons.info_outline),
+            icon: const Icon(Icons.arrow_back_ios),
           ),
-        ],
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              children: [
-                Container(
-                  width: 200,
-                  child: TextFormField(
-                    textAlign: TextAlign.center,
-                    controller: isbnController,
-                    decoration: const InputDecoration(hintText: 'ISBN'),
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    isbn = isbnController.text;
-                    fetch(isbnController.text);
-                  },
-                  child: const Text('get book'),
-                ),
-                Text(bookName),
-                SizedBox(height: 25),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        GeolocationController.instance.error != ''
-                            ? QuickAlert.show(
-                                context: context,
-                                type: QuickAlertType.error,
-                                title: 'Oops...',
-                                text: GeolocationController.instance.error)
-                            : setState(() {
-                                lat = GeolocationController.instance.lat;
-                                lng = GeolocationController.instance.long;
-                              });
-                      },
-                      child: const Text('get my location'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        getLatLngFromMap(context);
-                      },
-                      child: const Text('find on map'),
-                    ),
-                  ],
-                ),
-                Text('lat: ${lat.toString()}'),
-                Text('lng: ${lng.toString()}'),
-                SizedBox(height: 25),
-                ElevatedButton(
-                  onPressed: () {
-                    submitBook();
-                  },
-                  child: const Text('get my code'),
-                ),
-                Text('code: $code'),
-              ],
+          actions: [
+            IconButton(
+              onPressed: () {
+                alert(context, 'Release a book',
+                    'Generate a code to write in your book when you leave it somewhere.\n\nYour ISBN can be found near the barcode of your book.');
+              },
+              icon: const Icon(Icons.info_outline),
             ),
-          ),
+          ],
         ),
-      ),
-    );
+        body: SafeArea(
+          child: SingleChildScrollView(
+              child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(children: [
+                    const SizedBox(height: 25),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: TextFormField(
+                        textAlign: TextAlign.center,
+                        controller: isbnController,
+                        decoration: const InputDecoration(
+                            hintText: 'ISBN',
+                            label: Text('ISBN'),
+                            border: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)))),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: () {
+                        isbn = isbnController.text;
+                        fetch(isbnController.text);
+                      },
+                      style: ElevatedButton.styleFrom(
+                          shadowColor: Colors.blueGrey,
+                          elevation: 5,
+                          padding: EdgeInsets.zero,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20))),
+                      child: Ink(
+                        child: Container(
+                          width: 120,
+                          height: 30,
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Find my book',
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 25),
+                    Text(
+                      bookName != '' ? 'Book title: $bookName' : '',
+                      style: const TextStyle(
+                          fontSize: 17, fontWeight: FontWeight.w600),
+                    ),
+                    const SizedBox(height: 25),
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      ElevatedButton(
+                          onPressed: () {
+                            GeolocationController.instance.error != ''
+                                ? QuickAlert.show(
+                                    context: context,
+                                    type: QuickAlertType.error,
+                                    title: 'Oops...',
+                                    text: GeolocationController.instance.error)
+                                : setState(() {
+                                    lat = GeolocationController.instance.lat;
+                                    lng = GeolocationController.instance.long;
+                                  });
+                          },
+                          style: ElevatedButton.styleFrom(
+                              shadowColor: Colors.blueGrey,
+                              elevation: 5,
+                              padding: EdgeInsets.zero,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20))),
+                          child: Ink(
+                            child: Container(
+                              width: 120,
+                              height: 30,
+                              alignment: Alignment.center,
+                              child: const Text(
+                                'Get my location',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                            ),
+                          )),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      ElevatedButton(
+                          onPressed: () {
+                            getLatLngFromMap(context);
+                          },
+                          style: ElevatedButton.styleFrom(
+                              shadowColor: Colors.blueGrey,
+                              elevation: 5,
+                              padding: EdgeInsets.zero,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20))),
+                          child: Ink(
+                            child: Container(
+                              width: 120,
+                              height: 30,
+                              alignment: Alignment.center,
+                              child: const Text(
+                                'Find on map',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                            ),
+                          )),
+                    ]),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Text('lat: ${lat.toString()}',
+                        style: const TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.w600)),
+                    Text('lng: ${lng.toString()}',
+                        style: const TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.w600)),
+                    const SizedBox(height: 25),
+                    ElevatedButton(
+                      onPressed: () {
+                        submitBook();
+                      },
+                      child: const Text('get my code'),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text('Code: $code',
+                        style: const TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.w600)),
+                  ]))),
+        ));
   }
 }
 

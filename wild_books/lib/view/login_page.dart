@@ -24,21 +24,11 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-      ),
+      appBar: AppBar(),
       body: Container(
         width: double.infinity,
         decoration:
-            BoxDecoration(color: Theme.of(context).colorScheme.primaryContainer
-                // gradient: LinearGradient(
-                //     begin: Alignment.topCenter,
-                //     end: Alignment.bottomCenter,
-                //     colors: [
-                //   Color.fromARGB(1, 42, 87, 255),
-                //   Color.fromARGB(255, 2, 69, 178),
-                // ])),
-                ),
+            BoxDecoration(color: Theme.of(context).colorScheme.primaryContainer),
         child: Column(
           children: [
             Container(
@@ -187,7 +177,7 @@ class _LoginPageState extends State<LoginPage> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                            onPrimary: Color.fromARGB(1, 42, 87, 255),
+                            //onPrimary: Color.fromARGB(1, 42, 87, 255),
                             shadowColor: Colors.blueGrey,
                             elevation: 5,
                             padding: EdgeInsets.zero,
