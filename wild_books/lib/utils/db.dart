@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:wild_books/classes/BookshelfData.dart';
 
 Future<void> initSupabase() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -114,43 +115,48 @@ Future getStory(givenStoryId) async {
   });
   return newData;
 }
-Future getReleasedByUser(userid) async {
-   final data =
+Future<List<BookshelfData>> getReleasedByUser(userid) async {
+  final data =
       await Supabase.instance.client.from('book_events_populated').select('''
         book_id, user_id, event,
           books_populated(
             image_url
           )
       ''').eq('user_id', userid);
-  
-      List<Object> newData = [];
-      for(var i = 0; i < data.length; i++) {
-        if(data[i]['event'] == 'released') {
-        newData.add ({
-          'image_url':data[i]['books_populated']
-        });
-       }
-      }
-      return newData;
-
+  List<BookshelfData> newData = [];
+  for (var i = 0; i < data.length; i++) {
+    if (data[i]['event'] == 'released') {
+      newData.add(BookshelfData(
+        // userId: data[0]['user_id'],
+        bookImgUrl: data[i]['books_populated']['image_url'],
+        bookId: data[i]['book_id'],
+      ));
+    }
+  }
+  return newData;
 }
-Future getFoundByUser(userid) async {
-   final data =
+
+Future<List<BookshelfData>> getFoundByUser(userid) async {
+  final data =
       await Supabase.instance.client.from('book_events_populated').select('''
-        book_id, user_id, event,
+        book_id, event,
           books_populated(
             image_url
           )
       ''').eq('user_id', userid);
-  
-      List<Object> newData = [];
-      for(var i = 0; i < data.length; i++) {
-        if(data[i]['event'] == 'found') {
-        newData.add ({
-          'image_url':data[i]['books_populated']
-        });
-       }
-      }
-      return newData;
-}
 
+  List<BookshelfData> newData = [];
+  for (var i = 0; i < data.length; i++) {
+    if (data[i]['event'] == 'found') {
+      newData.add(BookshelfData(
+        // userId: data[0]['user_id'],
+        bookImgUrl: data[i]['books_populated']['image_url'],
+       
+        bookId: data[i]['book_id'],
+      ));
+    }
+  }
+  
+  
+  return newData;
+}
