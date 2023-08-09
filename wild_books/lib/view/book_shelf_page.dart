@@ -3,7 +3,7 @@ import 'package:wild_books/classes/BookshelfData.dart';
 import 'package:wild_books/utils/db.dart';
 import 'package:wild_books/view/singleBook.dart';
 
-const hardcodedUser = 1;
+const hardcodedUser = 6;
 
 class Bookshelf extends StatefulWidget {
   const Bookshelf({super.key});
@@ -36,8 +36,15 @@ class _BookshelfState extends State<Bookshelf> {
 
             return ListView(
               children: <Widget>[
+                SizedBox(height: 50),
+                Text(
+                            '   Found Books',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,)),
+                
                 SizedBox(
-                  height: 120,
+                  height: 180,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: foundBooks.length,
@@ -45,9 +52,14 @@ class _BookshelfState extends State<Bookshelf> {
                         _buildListItem(foundBooks[index]),
                   ),
                 ),
-                // SizedBox(height: 0),
+                 SizedBox(height: 50),
+                Text(
+                            '   Released Books',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,)),
                 SizedBox(
-                  height: 120,
+                  height: 180,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: releasedBooks.length,
@@ -66,11 +78,13 @@ class _BookshelfState extends State<Bookshelf> {
   Widget _buildListItem(BookshelfData book) {
     return GestureDetector(
       onTap: () {
-        debugPrint(book.bookId.toString());
+        Navigator.push(context,
+       MaterialPageRoute(builder: (context) => SingleBookPage(bookId: book.bookId))
+        );
         // singleBookPage(book_id);
       },
       child: Padding(
-        padding: const EdgeInsets.all(5.0),
+        padding: const EdgeInsets.all(15.0),
         child: Image.network(
           book.bookImgUrl,
           width: 100,
