@@ -4,10 +4,14 @@ class SingleBook {
   final String author;
   final String imageUrl;
   List<SingleBookEvents> events;
+  final String code;
+  final int bookId;
 
   SingleBook(
       {required this.title,
       required this.author,
       required this.imageUrl,
-      required this.events});
+      required this.events,
+      required this.code,
+      required this.bookId});
 }

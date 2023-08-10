@@ -86,6 +86,8 @@ Future getSingleBook(givenCode) async {
     author: data[0]['author'],
     imageUrl: data[0]['image_url'],
     events: [],
+    code: data[0]['code'],
+    bookId: data[0]['book_id'],
   );
 
   final eventsArr = data[0]['book_events_populated'];

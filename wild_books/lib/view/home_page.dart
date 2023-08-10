@@ -60,15 +60,15 @@ class _HomePageState extends State<HomePage> {
           
                                 final result = await getSingleBook(code);
           
-                                debugPrint('db result: ${result[0]['code']}');
+                                debugPrint('db result: ${result.code}');
           
-                                if (result[0]['code'].toUpperCase() ==
+                                if (result.code.toUpperCase() ==
                                     code.toUpperCase()) {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => SingleBookPage(
-                                            bookId: result[0]['book_id'])),
+                                            bookId: result.bookId)),
                                   );
                                 }
                               } catch (e) {

@@ -24,15 +24,18 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+      ),
       body: Container(
         width: double.infinity,
-        decoration:
-            BoxDecoration(color: Theme.of(context).colorScheme.primaryContainer),
+        decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primaryContainer),
         child: Column(
           children: [
             Container(
-              margin: const EdgeInsets.only(top: 100),
+              margin: const EdgeInsets.only(top: 200),
               child: const Text(
                 "Welcome back!",
                 style: TextStyle(
