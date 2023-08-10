@@ -86,6 +86,8 @@ Future getSingleBook(givenCode) async {
     author: data[0]['author'],
     imageUrl: data[0]['image_url'],
     events: [],
+    code: data[0]['code'],
+    bookId: data[0]['book_id'],
   );
 
   final eventsArr = data[0]['book_events_populated'];
@@ -321,7 +323,7 @@ void addStoryComment(int story_id, int user_id, isbn, body) async {
   }
 }
 
-Future postBook(BookData book) async {
+Future postBook(BookData book,double lat, double lng) async {
   // TODO - take user ID as a parameter, to create an event
 
   final List<Map<String, dynamic>> data =
@@ -359,6 +361,8 @@ Future postBook(BookData book) async {
       .update({'code': code}).match({'book_id': bookId});
 
   // TODO: add a released event using the book ID
+  await addEvent(bookId, 1, 'released', lat,
+    lng, 'The book was released into the wild!');
 
   return code;
 }

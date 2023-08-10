@@ -43,6 +43,8 @@ dependencies:
   timeago: ^3.5.0
   intl: ^0.18.1
   geocoding: ^2.1.0
+  introduction_screen: ^3.1.11
+  expandable_text: 2.3.0
   
 
 
@@ -64,6 +66,11 @@ flutter:
   assets:
     - lib/images/book2.png
     - lib/images/book.drawer.jpg
+
+    - lib/images/wildbooks1.png
+    - lib/images/wildbooks2.png
+    - lib/images/wildbooks3.png
+
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

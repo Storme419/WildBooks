@@ -6,6 +6,7 @@ import 'package:wild_books/view/add_a_book_page.dart';
 import 'package:wild_books/view/book_shelf_page.dart';
 import 'package:wild_books/view/discarded_pages/found_book_page.dart';
 import 'package:wild_books/view/list_of_all_books.dart';
+import 'package:wild_books/view/onboarding_page.dart';
 import 'package:wild_books/view/search_page.dart';
 import 'package:wild_books/view/home_page.dart';
 import 'package:wild_books/view/login_page.dart';
@@ -46,7 +47,7 @@ class MyApp extends StatelessWidget {
               '/books-list': (context) => const ListOfBooks(),
               '/found-book': (context) => const FoundBook()
             },
-            home: const RootPage(),
+            home: const OnBoardingPage(),
           );
         });
   }

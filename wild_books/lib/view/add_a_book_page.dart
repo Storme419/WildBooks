@@ -33,7 +33,7 @@ class _AddBookState extends State<AddBook> {
 
   @override
   void initState() {
-    isbnController.text = '9780151660346';
+    isbnController.text = '';
     GeolocationController.instance.getLocation();
     super.initState();
   }
@@ -80,7 +80,7 @@ class _AddBookState extends State<AddBook> {
         1, // storyId
       );
 
-      final codeFromDb = await postBook(bookData);
+      final codeFromDb = await postBook(bookData, lat, lng);
 
       setState(() {
         code = codeFromDb;
