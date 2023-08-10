@@ -77,17 +77,15 @@ class _RootPageState extends State<RootPage> {
       drawer: Drawer(
         child: Column(
           children: [
-             UserAccountsDrawerHeader(
-              // currentAccountPicture: ClipRRect(
-              //     borderRadius: BorderRadius.circular(40),
-              //     child: Image.network(
-              //         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS29OImDEUJspbdQTIIKTar91MyZ920fD6jpQ&usqp=CAU")),
-              accountName: Text(''),
-              accountEmail: Text(''),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary
-              )
-            ),
+            UserAccountsDrawerHeader(
+                // currentAccountPicture: ClipRRect(
+                //     borderRadius: BorderRadius.circular(40),
+                //     child: Image.network(
+                //         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS29OImDEUJspbdQTIIKTar91MyZ920fD6jpQ&usqp=CAU")),
+                accountName: Text(''),
+                accountEmail: Text(''),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary)),
             SwitchListTile(
               title: const Text('Dark Mode'),
               value: ThemeController.instance.isDarkTheme,
@@ -150,11 +148,12 @@ class _RootPageState extends State<RootPage> {
         title: Row(
           children: [
             Padding(
-              padding: const EdgeInsets.all(6.0),
-              child: Image.asset('lib/images/WB logo.png', height: 32),
+              padding: const EdgeInsets.fromLTRB(65, 8, 8, 8),
+              child: Image.asset('lib/images/WB_logo.png', height: 32),
             ),
             const Text(
               'W I L D B O O K S',
+              textAlign: TextAlign.center,
             ),
           ],
         ),
