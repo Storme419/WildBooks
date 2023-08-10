@@ -167,11 +167,11 @@ class _RootPageState extends State<RootPage> {
       body: _pages[_selectedIndex],
       bottomNavigationBar: Container(
         height: 70,
-        color: Theme.of(context).colorScheme.primaryContainer,
+        color: Theme.of(context).colorScheme.secondary,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
           child: GNav(
-            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+            backgroundColor: Theme.of(context).colorScheme.secondary,
             color: Theme.of(context).colorScheme.onSurface,
             activeColor: Theme.of(context).colorScheme.onSecondary,
             tabBackgroundColor:

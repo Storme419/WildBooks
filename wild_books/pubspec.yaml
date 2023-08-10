@@ -65,6 +65,8 @@ flutter:
   assets:
     - lib/images/book2.png
     - lib/images/book.drawer.jpg
+    - lib/images/signin.png
+    - lib/images/signin2.png
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

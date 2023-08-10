@@ -8,7 +8,6 @@ class BookTile extends StatelessWidget {
   final Book book;
   final userLocation = UserLocation();
 
-
   BookTile({super.key, required this.book});
 
   String? city;
@@ -16,7 +15,7 @@ class BookTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 10),
+      padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 20),
       child: Container(
         child: GestureDetector(
           onTap: () {
@@ -30,7 +29,7 @@ class BookTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(15.0),
               //side: BorderSide(color: Colors.grey)
             ),
-            elevation: 5,
+            elevation: 3,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -38,7 +37,7 @@ class BookTile extends StatelessWidget {
                   padding: const EdgeInsets.all(2.0),
                   child: ConstrainedBox(
                     constraints: BoxConstraints(
-                      maxWidth: MediaQuery.of(context).size.width * 0.15,
+                      maxWidth: MediaQuery.of(context).size.width * 0.5,
                       maxHeight: MediaQuery.of(context).size.width * 0.25,
                     ),
                     child: ClipRRect(
@@ -54,7 +53,7 @@ class BookTile extends StatelessWidget {
                         width: MediaQuery.of(context).size.width * 0.7,
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(30, 5, 0, 5),
-                          child:  Text(
+                          child: Text(
                             '${book.getEvent()}!',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
