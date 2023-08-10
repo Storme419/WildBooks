@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:wild_books/utils/api.dart';
 import 'package:wild_books/utils/db.dart';
 import 'package:wild_books/view/add_event.dart';
 import 'package:wild_books/view/map_page_single_book.dart';
@@ -9,7 +8,9 @@ import 'package:wild_books/classes/single_book_event.dart';
 import 'package:wild_books/classes/single_book_event_comment.dart';
 import 'package:wild_books/view/event_tile.dart';
 import 'package:wild_books/view/story_page.dart';
+import 'package:wild_books/utils/api.dart';
 import 'package:expandable_text/expandable_text.dart';
+import 'package:wild_books/classes/SingleBookData.dart';
 
 class SingleBookPage extends StatefulWidget {
   final int bookId;
@@ -58,26 +59,24 @@ class _SingleBookPageState extends State<SingleBookPage> {
               child: Center(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 1),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(25),
-                        child: Image.network(bookData.imgUrl, fit: BoxFit.fill),
+                  child: Column(children: [
+                    Padding(
+                      padding: const EdgeInsets.all(25),
+                      child: Image.network(bookData.imgUrl, fit: BoxFit.fill),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      '${bookData.title}',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 25),
+                    ),
+                    Text(
+                      'Author: ${bookData.author}',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey,
                       ),
-                      const SizedBox(height: 20),
-                      Text(
-                        '${bookData.title}',
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 25),
-                      ),
-                      Text(
-                        'Author: ${bookData.author}',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
+
                       const SizedBox(height: 20),
                       hideButton
                           ? Container()
@@ -159,11 +158,48 @@ class _SingleBookPageState extends State<SingleBookPage> {
                           style: TextStyle(
                             fontSize: 18,
                           ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MapSingleBook(
+                                  bookId: bookData.bookId,
+                                  title: bookData.title)),
+                        );
+                      },
+                      child: const Text('View journey'),
+                    ),
+                    const SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => StoryPage(
+                                  bookId: bookData.bookId,
+                                  title: bookData.title,
+                                  bookCover: bookData.imgUrl)),
+                        );
+                      },
+                      child: const Text('View story'),
+                    ),
+                    const SizedBox(height: 20),
 
-                      const SizedBox(
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Text(
+                        bookData.description,
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+      const SizedBox(
                         height: 48,
                       ),
 
@@ -225,6 +261,7 @@ class _SingleBookPageState extends State<SingleBookPage> {
                       ),
                     ],
                   ),
+
                 ),
               ),
             ),
@@ -232,3 +269,98 @@ class _SingleBookPageState extends State<SingleBookPage> {
         });
   }
 }
+
+
+
+// ListView.builder(itemBuilder: (context, index) {
+                      //   SingleBookData singleBook2 = SingleBookData(
+                      //       bookId: bookData.bookId,
+                      //       code: bookData.code,
+                      //       isbn: bookData.isbn,
+                      //       title: bookData.title,
+                      //       author: bookData.author,
+                      //       imgUrl: bookData.imgUrl,
+                      //       timestamp: bookData.timestamp,
+                      //       isFound: bookData.isFound,
+                      //       lat: bookData.lat,
+                      //       lng: bookData.lng,
+                      //       genreId: bookData.genreId,
+                      //       languageId: bookData.languageId,
+                      //       storyId: bookData.storyId,
+                      //       events: bookData.events[index].event,
+                      //       description: bookData.description);
+                      //   SingleBookEvents singleBookEvent = SingleBookEvents(
+                      //     event: singleBook.events[index].event,
+                      //     timestamp: singleBook.events[index].timestamp,
+                      //     location: singleBook.events[index].location,
+                      //     name: singleBook.events[index].name,
+                      //     note: singleBook.events[index].note,
+                      //     comments: singleBook.events[index].comments,
+                      //   );
+                      //   SingleBookEventComment singleBookEventComment =
+                      //       SingleBookEventComment(
+                      //           userName:
+                      //               singleBookEvent.comments[index].userName,
+                      //           commentBody: singleBookEvent
+                      //               .comments[index].commentBody);
+                      // })
+                      // Container(
+                      //   child: Column(
+                      //     children: [
+                      //       Text(bookData.bookId)
+                      //     ]),
+                      // ),
+
+                      //comments and event container
+                      // Container(
+                      //   height: 600,
+
+                      //   child: FutureBuilder(
+
+                      //       future: getSingleBook('ZM0DV'),
+                      //       //need to make code getter to make it dynamic
+                      //       builder: (context, snapshot) {
+                      //         if (!snapshot.hasData) {
+                      //           return const Center(
+                      //               child: CircularProgressIndicator());
+                      //         }
+                      //         final singleBookData = snapshot.data!;
+
+                      //         return ListView.builder(
+                      //             itemCount: 3,
+                      //             itemBuilder: (context, index) {
+                      //               SingleBook singleBook = SingleBook(
+                      //                 title: singleBookData.title,
+                      //                 author: singleBookData.author,
+                      //                 imageUrl: singleBookData.imageUrl,
+                      //                 events: singleBookData.events,
+                      //               );
+                      //               SingleBookEvents singleBookEvent =
+                      //                   SingleBookEvents(
+                      //                 event: singleBook.events[index].event,
+                      //                 timestamp:
+                      //                     singleBook.events[index].timestamp,
+                      //                 location:
+                      //                     singleBook.events[index].location,
+                      //                 name: singleBook.events[index].name,
+                      //                 note: singleBook.events[index].note,
+                      //                 comments:
+                      //                     singleBook.events[index].comments,
+                      //               );
+                      //               SingleBookEventComment
+                      //                   singleBookEventComment =
+                      //                   SingleBookEventComment(
+                      //                       userName: singleBookEvent
+                      //                           .comments[index].userName,
+                      //                       commentBody: singleBookEvent
+                      //                           .comments[index].commentBody);
+
+                      //               return EventTile(
+                      //                 singleBook: singleBook,
+                      //                 singleBookEvent: singleBookEvent,
+                      //                 singleBookEventComment:
+                      //                     singleBookEventComment,
+                      //               );
+                      //             });
+                      //       }),
+                      // ),

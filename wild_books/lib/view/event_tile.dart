@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wild_books/classes/SingleBookData.dart';
 import 'package:wild_books/classes/single_book.dart';
 import 'package:wild_books/classes/single_book_event.dart';
 import 'package:wild_books/classes/single_book_event_comment.dart';
@@ -11,11 +12,15 @@ class EventTile extends StatefulWidget {
   SingleBookEvents singleBookEvent;
   SingleBookEventComment singleBookEventComment;
 
-  EventTile(
-      {super.key,
-      required this.singleBook,
-      required this.singleBookEvent,
-      required this.singleBookEventComment});
+  // SingleBookData singleBook2;
+
+  EventTile({
+    super.key,
+    required this.singleBook,
+    required this.singleBookEvent,
+    required this.singleBookEventComment,
+    // required this.singleBook2,
+  });
 
   @override
   State<EventTile> createState() => _EventTileState();
@@ -35,7 +40,9 @@ class _EventTileState extends State<EventTile> {
           children: [
             Container(
               decoration: BoxDecoration(
+
                 color: Theme.of(context).colorScheme.onInverseSurface,
+
                 borderRadius: BorderRadius.circular(8),
               ),
               margin: EdgeInsets.only(top: 5, left: 25, right: 25, bottom: 10),
