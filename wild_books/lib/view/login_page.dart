@@ -36,12 +36,12 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             Container(
               margin: const EdgeInsets.only(top: 200),
-              child: const Text(
+              child: Text(
                 "Welcome back!",
                 style: TextStyle(
                   fontSize: 35,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: Theme.of(context).colorScheme.onSurface,
                   letterSpacing: 1,
                 ),
               ),
@@ -49,8 +49,8 @@ class _LoginPageState extends State<LoginPage> {
             Expanded(
               child: Container(
                 width: double.infinity,
-                decoration: const BoxDecoration(
-                    color: Colors.white,
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.background,
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(50),
                         topRight: Radius.circular(50))),
@@ -64,11 +64,11 @@ class _LoginPageState extends State<LoginPage> {
                       Container(
                         alignment: Alignment.topLeft,
                         margin: const EdgeInsets.only(left: 22, bottom: 20),
-                        child: const Text(
+                        child: Text(
                           "Login",
                           style: TextStyle(
                             fontSize: 15,
-                            color: Colors.black87,
+                            color: Theme.of(context).colorScheme.onSurface,
                             letterSpacing: 1,
                           ),
                         ),
@@ -96,13 +96,16 @@ class _LoginPageState extends State<LoginPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            const Icon(Icons.email_outlined),
+                            Icon(Icons.email_outlined,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSecondaryContainer),
                             Expanded(
                               child: Container(
                                 margin: const EdgeInsets.only(left: 10),
                                 child: TextFormField(
+                                  style: TextStyle(color: Colors.black),
                                   controller: _emailController,
-                                  maxLines: 1,
                                   decoration: const InputDecoration(
                                     label: Text("Email"),
                                     border: InputBorder.none,
@@ -136,13 +139,16 @@ class _LoginPageState extends State<LoginPage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              const Icon(Icons.password_outlined),
+                              Icon(Icons.password_outlined,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondaryContainer),
                               Expanded(
                                 child: Container(
                                   margin: const EdgeInsets.only(left: 10),
                                   child: TextFormField(
+                                    style: TextStyle(color: Colors.black),
                                     controller: _passwordController,
-                                    maxLines: 1,
                                     decoration: const InputDecoration(
                                       label: Text("Password"),
                                       border: InputBorder.none,
@@ -194,11 +200,11 @@ class _LoginPageState extends State<LoginPage> {
                             width: 150,
                             height: 40,
                             alignment: Alignment.center,
-                            child: const Text(
+                            child: Text(
                               'Let\'s go!',
                               style: TextStyle(
                                 fontSize: 16,
-                                color: Colors.black87,
+                                color: Theme.of(context).colorScheme.onSurface,
                               ),
                             ),
                           ),

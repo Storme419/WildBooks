@@ -37,12 +37,12 @@ class _RegisterPageState extends State<RegisterPage> {
           children: [
             Container(
               margin: const EdgeInsets.only(top: 200),
-              child: const Text(
+              child: Text(
                 "Hey there!",
                 style: TextStyle(
                   fontSize: 35,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: Theme.of(context).colorScheme.onSurface,
                   letterSpacing: 1,
                 ),
               ),
@@ -50,9 +50,9 @@ class _RegisterPageState extends State<RegisterPage> {
             Expanded(
               child: Container(
                 width: double.infinity,
-                decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.background,
+                    borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(50),
                         topRight: Radius.circular(50))),
                 margin: const EdgeInsets.only(top: 60),
@@ -65,11 +65,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       Container(
                         alignment: Alignment.topLeft,
                         margin: const EdgeInsets.only(left: 22, bottom: 20),
-                        child: const Text(
+                        child: Text(
                           "Register an account",
                           style: TextStyle(
                             fontSize: 15,
-                            color: Colors.black87,
+                            color: Theme.of(context).colorScheme.onSurface,
                             letterSpacing: 1,
                           ),
                         ),
@@ -83,7 +83,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             horizontal: 15, vertical: 5),
                         decoration: BoxDecoration(
                             border: Border.all(
-                                color: Color.fromARGB(1, 42, 87, 255),
+                                color: const Color.fromARGB(1, 42, 87, 255),
                                 width: 0.5),
                             boxShadow: const [
                               BoxShadow(
@@ -97,11 +97,15 @@ class _RegisterPageState extends State<RegisterPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            const Icon(Icons.email_outlined),
+                            Icon(Icons.email_outlined,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSecondaryContainer),
                             Expanded(
                               child: Container(
                                 margin: const EdgeInsets.only(left: 10),
                                 child: TextFormField(
+                                   style: TextStyle(color: Colors.black),
                                   controller: _emailController,
                                   decoration: const InputDecoration(
                                     label: Text("Email"),
@@ -122,7 +126,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               horizontal: 15, vertical: 5),
                           decoration: BoxDecoration(
                               border: Border.all(
-                                  color: Color.fromARGB(1, 42, 87, 255),
+                                  color: const Color.fromARGB(1, 42, 87, 255),
                                   width: 0.5),
                               boxShadow: const [
                                 BoxShadow(
@@ -136,11 +140,17 @@ class _RegisterPageState extends State<RegisterPage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              const Icon(Icons.password_outlined),
+                              Icon(
+                                Icons.password_outlined,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSecondaryContainer,
+                              ),
                               Expanded(
                                 child: Container(
                                   margin: const EdgeInsets.only(left: 10),
                                   child: TextFormField(
+                                    style: TextStyle(color: Colors.black),
                                     controller: _passwordController,
                                     decoration: const InputDecoration(
                                       label: Text("Password"),
@@ -188,7 +198,6 @@ class _RegisterPageState extends State<RegisterPage> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                            onPrimary: Color.fromARGB(1, 42, 87, 255),
                             shadowColor: Colors.blueGrey,
                             elevation: 5,
                             padding: EdgeInsets.zero,
@@ -196,7 +205,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 borderRadius: BorderRadius.circular(20))),
                         child: Ink(
                           decoration: BoxDecoration(
-                              color: Color.fromARGB(1, 42, 87, 255),
+                              color: const Color.fromARGB(1, 42, 87, 255),
                               borderRadius: BorderRadius.circular(20)),
                           child: Container(
                             width: 150,
@@ -210,11 +219,13 @@ class _RegisterPageState extends State<RegisterPage> {
                                         child: CircularProgressIndicator(
                                             color: Colors.white)),
                                   )
-                                : const Text(
+                                : Text(
                                     'Let\'s go!',
                                     style: TextStyle(
                                       fontSize: 16,
-                                      color: Colors.black87,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface,
                                     ),
                                   ),
                           ),
@@ -224,7 +235,10 @@ class _RegisterPageState extends State<RegisterPage> {
                       TextButton(
                           onPressed: () =>
                               Navigator.of(context).pushNamed('/sign-in'),
-                          child: const Text('I already have an account'))
+                          child: Text('I already have an account',
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.onSurface,
+                              )))
                     ],
                   ),
                 ),

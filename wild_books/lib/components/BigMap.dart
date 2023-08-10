@@ -54,25 +54,28 @@ class _BigMapState extends State<BigMap> with TickerProviderStateMixin {
         },
       ),
       nonRotatedChildren: [
-        Align(
-          alignment: Alignment.topRight,
-          child: CircleAvatar(
-            radius: 25,
-            backgroundColor: Colors.white,
-            child: IconButton(
-              onPressed: () {
-                GeolocationController.instance.error != ''
-                          ? QuickAlert.show(
-                              context: context,
-                              type: QuickAlertType.error,
-                              title: 'Oops...',
-                              text: GeolocationController.instance.error)
-                          : mapController.animateTo(
-                              dest: LatLng(GeolocationController.instance.lat,
-                                  GeolocationController.instance.long),
-                            );
-              },
-              icon: const Icon(Icons.my_location),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(0, 15, 15, 0),
+          child: Align(
+            alignment: Alignment.topRight,
+            child: CircleAvatar(
+              radius: 25,
+              backgroundColor: Colors.white,
+              child: IconButton(
+                onPressed: () {
+                  GeolocationController.instance.error != ''
+                      ? QuickAlert.show(
+                          context: context,
+                          type: QuickAlertType.error,
+                          title: 'Oops...',
+                          text: GeolocationController.instance.error)
+                      : mapController.animateTo(
+                          dest: LatLng(GeolocationController.instance.lat,
+                              GeolocationController.instance.long),
+                        );
+                },
+                icon: const Icon(Icons.my_location),
+              ),
             ),
           ),
         ),
@@ -120,7 +123,9 @@ class _BigMapState extends State<BigMap> with TickerProviderStateMixin {
                           marker.getMarkerText(),
                           style: TextStyle(
                             color: marker.isFound ? Colors.black : Colors.white,
-                            backgroundColor: marker.isFound? Colors.white : Colors.deepOrange,
+                            backgroundColor: marker.isFound
+                                ? Colors.white
+                                : Colors.deepOrange,
                           ),
                         ),
                       ]),

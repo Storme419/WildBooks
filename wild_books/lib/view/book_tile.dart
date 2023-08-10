@@ -14,7 +14,7 @@ class BookTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 20),
       child: Container(
         child: GestureDetector(
@@ -50,7 +50,7 @@ class BookTile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                        width: MediaQuery.of(context).size.width * 0.7,
+                        width: MediaQuery.of(context).size.width * 0.5,
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(30, 5, 0, 5),
                           child: Text(
@@ -63,7 +63,7 @@ class BookTile extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        width: MediaQuery.of(context).size.width * 0.7,
+                        width: MediaQuery.of(context).size.width * 0.5,
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(30, 5, 0, 5),
                           child: Text(
@@ -75,7 +75,7 @@ class BookTile extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        width: MediaQuery.of(context).size.width * 0.7,
+                        width: MediaQuery.of(context).size.width * 0.5,
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(30, 5, 0, 5),
                           child: FutureBuilder(

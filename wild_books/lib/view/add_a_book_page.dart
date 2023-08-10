@@ -33,7 +33,7 @@ class _AddBookState extends State<AddBook> {
 
   @override
   void initState() {
-    isbnController.text = '9780151660346';
+    isbnController.text = '';
     GeolocationController.instance.getLocation();
     super.initState();
   }
@@ -80,7 +80,7 @@ class _AddBookState extends State<AddBook> {
         1, // storyId
       );
 
-      final codeFromDb = await postBook(bookData);
+      final codeFromDb = await postBook(bookData, lat, lng);
 
       setState(() {
         code = codeFromDb;
@@ -154,11 +154,11 @@ class _AddBookState extends State<AddBook> {
                           width: 120,
                           height: 30,
                           alignment: Alignment.center,
-                          child: const Text(
+                          child: Text(
                             'Find my book',
                             style: TextStyle(
                               fontSize: 13,
-                              color: Colors.black87,
+                              color: Theme.of(context).colorScheme.onSurface,
                             ),
                           ),
                         ),
@@ -196,11 +196,12 @@ class _AddBookState extends State<AddBook> {
                               width: 120,
                               height: 30,
                               alignment: Alignment.center,
-                              child: const Text(
+                              child: Text(
                                 'Get my location',
                                 style: TextStyle(
                                   fontSize: 13,
-                                  color: Colors.black87,
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
                                 ),
                               ),
                             ),
@@ -223,11 +224,12 @@ class _AddBookState extends State<AddBook> {
                               width: 120,
                               height: 30,
                               alignment: Alignment.center,
-                              child: const Text(
+                              child: Text(
                                 'Find on map',
                                 style: TextStyle(
                                   fontSize: 13,
-                                  color: Colors.black87,
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
                                 ),
                               ),
                             ),
@@ -244,30 +246,29 @@ class _AddBookState extends State<AddBook> {
                             fontSize: 15, fontWeight: FontWeight.w600)),
                     const SizedBox(height: 25),
                     ElevatedButton(
-                      onPressed: () {
-                        submitBook();
-                      },
-                     style: ElevatedButton.styleFrom(
-                              shadowColor: Colors.blueGrey,
-                              elevation: 5,
-                              padding: EdgeInsets.zero,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20))),
-                          child: Ink(
-                            child: Container(
-                              width: 120,
-                              height: 30,
-                              alignment: Alignment.center,
-                              child: const Text(
-                                'Get my code',
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  color: Colors.black87,
-                                ),
+                        onPressed: () {
+                          submitBook();
+                        },
+                        style: ElevatedButton.styleFrom(
+                            shadowColor: Colors.blueGrey,
+                            elevation: 5,
+                            padding: EdgeInsets.zero,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20))),
+                        child: Ink(
+                          child: Container(
+                            width: 120,
+                            height: 30,
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Get my code',
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Theme.of(context).colorScheme.onSurface,
                               ),
                             ),
-                          )
-                    ),
+                          ),
+                        )),
                     const SizedBox(
                       height: 20,
                     ),

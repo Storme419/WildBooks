@@ -31,7 +31,6 @@ class _SingleBookPageState extends State<SingleBookPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return FutureBuilder(
         future: getSingleBook2(widget.bookId),
         builder: (context, snapshot) {
@@ -107,9 +106,13 @@ class _SingleBookPageState extends State<SingleBookPage> {
                                   });
                                 }
                               },
-                              child: Text(bookData.isFound
-                                  ? 'Release this book'
-                                  : 'I found this book'),
+                              child: Text(
+                                  bookData.isFound
+                                      ? 'Release this book'
+                                      : 'I found this book',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                  )),
                             ),
                       SizedBox(
                         height: 10,
@@ -124,7 +127,10 @@ class _SingleBookPageState extends State<SingleBookPage> {
                                     title: bookData.title)),
                           );
                         },
-                        child: const Text('View journey'),
+                        child: const Text('View journey',
+                            style: TextStyle(
+                              color: Colors.grey,
+                            )),
                       ),
                       const SizedBox(height: 10),
                       ElevatedButton(
@@ -138,7 +144,9 @@ class _SingleBookPageState extends State<SingleBookPage> {
                                     bookCover: bookData.imgUrl)),
                           );
                         },
-                        child: const Text('View story'),
+                        child: const Text('View story', style: TextStyle(
+                                    color: Colors.grey,
+                                  )),
                       ),
                       const SizedBox(height: 20),
 
@@ -158,8 +166,7 @@ class _SingleBookPageState extends State<SingleBookPage> {
                       const SizedBox(
                         height: 48,
                       ),
-                      
-                      
+
                       //comments and event container
                       Container(
                         height: 600,

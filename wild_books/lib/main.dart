@@ -45,7 +45,8 @@ class MyApp extends StatelessWidget {
               '/about-us': (context) => const AboutUs(),
               '/account': (context) => const AccountPage(),
               '/books-list': (context) => const ListOfBooks(),
-              '/found-book': (context) => const FoundBook()
+              '/found-book': (context) => const FoundBook(),
+              '/sign-out': (context) => const RootPage()
             },
             home: const OnBoardingPage(),
           );

@@ -19,7 +19,7 @@ class StoryPage extends StatefulWidget {
 }
 
 class _StoryPageState extends State<StoryPage> {
-    bool hideButton = false;
+  bool hideButton = false;
 
   @override
   Widget build(BuildContext context) {
@@ -98,9 +98,14 @@ class _StoryPageState extends State<StoryPage> {
                                   });
                                 }
                               },
-                              child: Text(bookData.isFound
-                                  ? 'Release this book'
-                                  : 'I found this book'),
+                              child: Text(
+                                bookData.isFound
+                                    ? 'Release this book'
+                                    : 'I found this book',
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                ),
+                              ),
                             ),
                       SizedBox(
                         height: 10,
@@ -124,13 +129,13 @@ class _StoryPageState extends State<StoryPage> {
                       ),
 
                       //comments and event container
-                  //     Container(
-                  //       height: 600,
-                  //       child: FutureBuilder(
-                  //           //need to change this to storyId
-                  //           future: getStory(1),
-                  //           builder: (context, snapshot) {
-                  //            
+                      //     Container(
+                      //       height: 600,
+                      //       child: FutureBuilder(
+                      //           //need to change this to storyId
+                      //           future: getStory(1),
+                      //           builder: (context, snapshot) {
+                      //
                     ],
                   ),
                 ),
