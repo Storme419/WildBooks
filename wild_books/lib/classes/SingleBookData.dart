@@ -1,3 +1,5 @@
+import 'package:wild_books/classes/single_book_event_comment.dart';
+
 class SingleBookData {
   final int bookId;
   final String code;
@@ -44,7 +46,9 @@ class SingleBookEvent {
   final double lat;
   final double lng;
   final int userId;
+  final String username;
   final String userNote;
+  List<SingleBookComment> comments;
 
   SingleBookEvent({
     required this.eventId,
@@ -54,22 +58,26 @@ class SingleBookEvent {
     required this.lat,
     required this.lng,
     required this.userId,
+    required this.username,
     required this.userNote,
+    required this.comments,
   });
 }
 
 class SingleBookComment {
   final int commentId;
-  final int eventId;
-  final String timestamp;
-  final int userId;
+  // final int eventId;
+  // final String timestamp;
+  // final int userId;
+  final String username;
   final String commentsBody;
 
   SingleBookComment({
     required this.commentId,
-    required this.eventId,
-    required this.timestamp,
-    required this.userId,
+    // required this.eventId,
+    // required this.timestamp,
+    // required this.userId,
+    required this.username,
     required this.commentsBody,
   });
 }

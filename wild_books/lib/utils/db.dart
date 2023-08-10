@@ -103,7 +103,6 @@ Future getSingleBook(givenCode) async {
     );
 
     for (var j = 0; j < eventsArr[i]['event_comments_populated'].length; j++) {
-
       eventData.comments.add(SingleBookEventComment(
         // eventId: comment['event_id'],
         userName: eventsArr[i]['event_comments_populated'][j]['users_populated']
@@ -111,7 +110,7 @@ Future getSingleBook(givenCode) async {
         commentBody: eventsArr[i]['event_comments_populated'][j]
             ['comments_body'],
       ));
-    singleBookData.events.add(eventData);
+      singleBookData.events.add(eventData);
     }
   }
 
@@ -158,23 +157,51 @@ Future getSingleBook2(id) async {
   final description = await fetchBlurb(book['isbn']);
 
   SingleBookData bookData = SingleBookData(
-    book['book_id'],
-    book['code'],
-    book['isbn'],
-    book['title'],
-    book['author'],
-    book['image_url'],
-    book['timestamp'],
-    book['isFound'],
-    book['lastKnownLat'] + 0.0,
-    book['lastKnownLong'] + 0.0,
-    1,
-    1,
-    1,
-    [],
-    description
-  );
+      book['book_id'],
+      book['code'],
+      book['isbn'],
+      book['title'],
+      book['author'],
+      book['image_url'],
+      book['timestamp'],
+      book['isFound'],
+      book['lastKnownLat'] + 0.0,
+      book['lastKnownLong'] + 0.0,
+      1,
+      1,
+      1,
+      [],
+      description);
 
+  final eventsArr = data[0]['book_events_populated'];
+  // debugPrint(eventsArr[0].toString());
+  for (final event in eventsArr) {
+    // debugPrint('${event.toString()}<<<<<<<<<');
+    // debugPrint('${event['user_id'].toString()}>>>>>>>>>>>');
+    final eventData = SingleBookEvent(
+      eventId: event['event_id'],
+      bookId: event['book_id'],
+      event: event['event'],
+      timestamp: event['timestamp'].toString(),
+      lat: event['latitude']+0.0,
+      lng: event['longitude']+0.0,
+      userId: event['user_id'],
+      username: event['users_populated']['name'],
+      userNote: event['user_note'].toString(),
+      comments: [],
+    );
+    final commentsArr = event['event_comments_populated'];
+    for (final comment in commentsArr) {
+      eventData.comments.add(SingleBookComment(
+        commentId: comment['events_comments_id'],
+        commentsBody: comment['comments_body'],
+        // eventId: comment['events_comments_id'],
+        // timestamp: comment['timestamp'],
+        username: comment['users_populated']['name'],
+      ));
+      bookData.events.add(eventData);
+    }
+  }
   return bookData;
 }
 
@@ -242,13 +269,14 @@ Future addEvent(int bookId, int userId, event, double latitude,
       'longitude': longitude,
       'user_note': user_note
     });
-debugPrint(event);
+    debugPrint(event);
     bool isFound = event == 'found' ? true : false;
 
-    await Supabase.instance.client
-        .from('books_populated')
-        .update({'lastKnownLat': latitude, 'lastKnownLong': longitude, 'isFound': isFound})
-        .match({'book_id': bookId});
+    await Supabase.instance.client.from('books_populated').update({
+      'lastKnownLat': latitude,
+      'lastKnownLong': longitude,
+      'isFound': isFound
+    }).match({'book_id': bookId});
 
     return true;
   } on PostgrestException catch (error) {
@@ -335,7 +363,7 @@ Future postBook(BookData book) async {
   return code;
 }
 
-  Future<List<BookshelfData>> getReleasedByUser(userid) async {
+Future<List<BookshelfData>> getReleasedByUser(userid) async {
   final data =
       await Supabase.instance.client.from('book_events_populated').select('''
         book_id, event,
@@ -369,13 +397,11 @@ Future<List<BookshelfData>> getFoundByUser(userid) async {
   for (var i = 0; i < data.length; i++) {
     if (data[i]['event'] == 'found') {
       newData.add(BookshelfData(
-                bookImgUrl: data[i]['books_populated']['image_url'],
-       
+        bookImgUrl: data[i]['books_populated']['image_url'],
         bookId: data[i]['book_id'],
       ));
     }
   }
-  
-  
+
   return newData;
 }

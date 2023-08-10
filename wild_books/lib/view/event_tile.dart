@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wild_books/classes/SingleBookData.dart';
 import 'package:wild_books/classes/single_book.dart';
 import 'package:wild_books/classes/single_book_event.dart';
 import 'package:wild_books/classes/single_book_event_comment.dart';
@@ -9,11 +10,15 @@ class EventTile extends StatelessWidget {
   SingleBookEvents singleBookEvent;
   SingleBookEventComment singleBookEventComment;
 
+  // SingleBookData singleBook2
+
   EventTile(
       {super.key,
       required this.singleBook,
       required this.singleBookEvent,
-      required this.singleBookEventComment});
+      required this.singleBookEventComment,
+      // required this.singleBook2,
+      });
 
   @override
   Widget build(BuildContext context) {

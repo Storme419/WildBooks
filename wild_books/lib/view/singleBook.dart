@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:wild_books/classes/SingleBookData.dart';
 import 'package:wild_books/utils/api.dart';
 import 'package:wild_books/utils/db.dart';
 import 'package:wild_books/view/add_event.dart';
@@ -30,7 +31,6 @@ class _SingleBookPageState extends State<SingleBookPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return FutureBuilder(
         future: getSingleBook2(widget.bookId),
         builder: (context, snapshot) {
@@ -39,6 +39,7 @@ class _SingleBookPageState extends State<SingleBookPage> {
           }
           final bookData = snapshot.data!;
 
+          // debugPrint('${bookData['events'].toString()}');
           return Scaffold(
             appBar: AppBar(
               shape: const ContinuousRectangleBorder(
@@ -143,7 +144,8 @@ class _SingleBookPageState extends State<SingleBookPage> {
 
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Text(bookData.description,
+                        child: Text(
+                          bookData.description,
                           style: TextStyle(
                             fontSize: 18,
                           ),
@@ -154,62 +156,127 @@ class _SingleBookPageState extends State<SingleBookPage> {
                       const SizedBox(
                         height: 48,
                       ),
-                      
-                      
-                      //comments and event container
+
                       Container(
-                        height: 600,
-                        child: FutureBuilder(
-                            future: getSingleBook('ZM0DV'),
-                            builder: (context, snapshot) {
-                              if (!snapshot.hasData) {
-                                return const Center(
-                                    child: CircularProgressIndicator());
-                              }
-                              final singleBookData = snapshot.data!;
-                              //         // final today =
-                              //         //     DateTime.parse(singleBookData[1]['timestamp']);
-                              //         // final dateSlug =
-                              //         //     "${today.year.toString()}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}";
-
-                              return ListView.builder(
-                                  itemCount: 3,
-                                  itemBuilder: (context, index) {
-                                    SingleBook singleBook = SingleBook(
-                                      title: singleBookData.title,
-                                      author: singleBookData.author,
-                                      imageUrl: singleBookData.imageUrl,
-                                      events: singleBookData.events,
-                                    );
-                                    SingleBookEvents singleBookEvent =
-                                        SingleBookEvents(
-                                      event: singleBook.events[index].event,
-                                      timestamp:
-                                          singleBook.events[index].timestamp,
-                                      location:
-                                          singleBook.events[index].location,
-                                      name: singleBook.events[index].name,
-                                      note: singleBook.events[index].note,
-                                      comments:
-                                          singleBook.events[index].comments,
-                                    );
-                                    SingleBookEventComment
-                                        singleBookEventComment =
-                                        SingleBookEventComment(
-                                            userName: singleBookEvent
-                                                .comments[index].userName,
-                                            commentBody: singleBookEvent
-                                                .comments[index].commentBody);
-
-                                    return EventTile(
-                                      singleBook: singleBook,
-                                      singleBookEvent: singleBookEvent,
-                                      singleBookEventComment:
-                                          singleBookEventComment,
-                                    );
-                                  });
-                            }),
+                        height: 1000,
+                        child: ListView.builder(
+                          itemCount: bookData.events.length,
+                          itemBuilder: (context, index) {
+                            debugPrint(bookData.events[index].toString());
+                            return Column(
+                              children: [
+                                Text(
+                                    'Found or Released: ${bookData.events[index].event}'),
+                                Text(
+                                    'Timestamp: ${timeago.format(DateTime.parse(bookData.events[index].timestamp))}'),
+                                Text(
+                                    'Event note: ${bookData.events[index].userNote}'),
+                                Text(
+                                    'UserId for Event: ${bookData.events[index].userId.toString()}'),
+                                Text(
+                                    'Username for Event: ${bookData.events[index].username}'),
+                                Text(
+                                    'Comment on event: ${bookData.events[index].comments[0].commentsBody}'),
+                                Text(
+                                    'Username of commenter: ${bookData.events[index].comments[0].username}'),
+                              ],
+                            );
+                          },
+                        ),
                       ),
+
+                      // ListView.builder(itemBuilder: (context, index) {
+                      //   SingleBookData singleBook2 = SingleBookData(
+                      //       bookId: bookData.bookId,
+                      //       code: bookData.code,
+                      //       isbn: bookData.isbn,
+                      //       title: bookData.title,
+                      //       author: bookData.author,
+                      //       imgUrl: bookData.imgUrl,
+                      //       timestamp: bookData.timestamp,
+                      //       isFound: bookData.isFound,
+                      //       lat: bookData.lat,
+                      //       lng: bookData.lng,
+                      //       genreId: bookData.genreId,
+                      //       languageId: bookData.languageId,
+                      //       storyId: bookData.storyId,
+                      //       events: bookData.events[index].event,
+                      //       description: bookData.description);
+                      //   SingleBookEvents singleBookEvent = SingleBookEvents(
+                      //     event: singleBook.events[index].event,
+                      //     timestamp: singleBook.events[index].timestamp,
+                      //     location: singleBook.events[index].location,
+                      //     name: singleBook.events[index].name,
+                      //     note: singleBook.events[index].note,
+                      //     comments: singleBook.events[index].comments,
+                      //   );
+                      //   SingleBookEventComment singleBookEventComment =
+                      //       SingleBookEventComment(
+                      //           userName:
+                      //               singleBookEvent.comments[index].userName,
+                      //           commentBody: singleBookEvent
+                      //               .comments[index].commentBody);
+                      // })
+                      // Container(
+                      //   child: Column(
+                      //     children: [
+                      //       Text(bookData.bookId)
+                      //     ]),
+                      // ),
+
+                      //comments and event container
+                      // Container(
+                      //   height: 600,
+
+                      //   child: FutureBuilder(
+
+                      //       future: getSingleBook('ZM0DV'),
+                      //       //need to make code getter to make it dynamic
+                      //       builder: (context, snapshot) {
+                      //         if (!snapshot.hasData) {
+                      //           return const Center(
+                      //               child: CircularProgressIndicator());
+                      //         }
+                      //         final singleBookData = snapshot.data!;
+
+                      //         return ListView.builder(
+                      //             itemCount: 3,
+                      //             itemBuilder: (context, index) {
+                      //               SingleBook singleBook = SingleBook(
+                      //                 title: singleBookData.title,
+                      //                 author: singleBookData.author,
+                      //                 imageUrl: singleBookData.imageUrl,
+                      //                 events: singleBookData.events,
+                      //               );
+                      //               SingleBookEvents singleBookEvent =
+                      //                   SingleBookEvents(
+                      //                 event: singleBook.events[index].event,
+                      //                 timestamp:
+                      //                     singleBook.events[index].timestamp,
+                      //                 location:
+                      //                     singleBook.events[index].location,
+                      //                 name: singleBook.events[index].name,
+                      //                 note: singleBook.events[index].note,
+                      //                 comments:
+                      //                     singleBook.events[index].comments,
+                      //               );
+                      //               SingleBookEventComment
+                      //                   singleBookEventComment =
+                      //                   SingleBookEventComment(
+                      //                       userName: singleBookEvent
+                      //                           .comments[index].userName,
+                      //                       commentBody: singleBookEvent
+                      //                           .comments[index].commentBody);
+
+                      //               return EventTile(
+                      //                 singleBook: singleBook,
+                      //                 singleBookEvent: singleBookEvent,
+                      //                 singleBookEventComment:
+                      //                     singleBookEventComment,
+                      //               );
+                      //             });
+                      //       }),
+                      // ),
                     ],
                   ),
                 ),
