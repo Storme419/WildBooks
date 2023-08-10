@@ -185,8 +185,8 @@ Future getSingleBook2(id) async {
       bookId: event['book_id'],
       event: event['event'],
       timestamp: event['timestamp'].toString(),
-      lat: event['latitude']+0.0,
-      lng: event['longitude']+0.0,
+      lat: event['latitude'] + 0.0,
+      lng: event['longitude'] + 0.0,
       userId: event['user_id'],
       username: event['users_populated']['name'],
       userNote: event['user_note'].toString(),
@@ -271,7 +271,7 @@ Future addEvent(int bookId, int userId, event, double latitude,
       'longitude': longitude,
       'user_note': user_note
     });
-    debugPrint(event);
+    // debugPrint(event);
     bool isFound = event == 'found' ? true : false;
 
     await Supabase.instance.client.from('books_populated').update({
@@ -323,7 +323,7 @@ void addStoryComment(int story_id, int user_id, isbn, body) async {
   }
 }
 
-Future postBook(BookData book,double lat, double lng) async {
+Future postBook(BookData book, double lat, double lng) async {
   // TODO - take user ID as a parameter, to create an event
 
   final List<Map<String, dynamic>> data =
@@ -361,8 +361,8 @@ Future postBook(BookData book,double lat, double lng) async {
       .update({'code': code}).match({'book_id': bookId});
 
   // TODO: add a released event using the book ID
-  await addEvent(bookId, 1, 'released', lat,
-    lng, 'The book was released into the wild!');
+  await addEvent(
+      bookId, 1, 'released', lat, lng, 'The book was released into the wild!');
 
   return code;
 }
