@@ -71,6 +71,7 @@ flutter:
     - lib/images/wildbooks1.png
     - lib/images/wildbooks2.png
     - lib/images/wildbooks3.png
+    - lib/images/WB logo.png
 
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see

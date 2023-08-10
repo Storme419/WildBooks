@@ -147,8 +147,16 @@ class _RootPageState extends State<RootPage> {
             borderRadius: BorderRadius.only(
                 bottomRight: Radius.circular(45),
                 bottomLeft: Radius.circular(45))),
-        title: const Text(
-          'W I L D B O O K S',
+        title: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: Image.asset('lib/images/WB logo.png', height: 32),
+            ),
+            const Text(
+              'W I L D B O O K S',
+            ),
+          ],
         ),
         actions: [
           Padding(
