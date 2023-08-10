@@ -5,15 +5,19 @@ import 'package:wild_books/utils/db.dart';
 import 'package:wild_books/view/add_event.dart';
 
 class StoryPage extends StatefulWidget {
+  
   const StoryPage(
       {super.key,
       required this.bookId,
       required this.title,
-      required this.bookCover});
+      required this.bookCover,
+      required this.description});
 
   final int bookId;
   final String title;
   final String bookCover;
+  final String description;
+  
   @override
   State<StoryPage> createState() => _StoryPageState();
 }
@@ -115,8 +119,8 @@ class _StoryPageState extends State<StoryPage> {
 
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: const Text(
-                          'This is a fake description box to lure you in to our amazing app. Bit more text.',
+                        child: Text(
+                          bookData.description,
                           style: TextStyle(
                             fontSize: 18,
                           ),

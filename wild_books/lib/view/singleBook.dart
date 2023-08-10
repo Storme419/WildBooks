@@ -4,16 +4,13 @@ import 'package:wild_books/utils/api.dart';
 import 'package:wild_books/utils/db.dart';
 import 'package:wild_books/view/add_event.dart';
 import 'package:wild_books/view/map_page_single_book.dart';
-import 'package:wild_books/classes/single_book.dart';
-import 'package:wild_books/classes/single_book_event.dart';
-import 'package:wild_books/classes/single_book_event_comment.dart';
+import 'package:wild_books/classes/SingleBookData.dart';
 import 'package:wild_books/view/event_tile.dart';
 import 'package:wild_books/view/story_page.dart';
 import 'package:expandable_text/expandable_text.dart';
 
 class SingleBookPage extends StatefulWidget {
   final int bookId;
-
   const SingleBookPage({super.key, required this.bookId});
 
   @override
@@ -23,6 +20,7 @@ class SingleBookPage extends StatefulWidget {
 class _SingleBookPageState extends State<SingleBookPage> {
   // TODO hide button automatically if user not logged in
   bool hideButton = false;
+
   final user = supabase.auth.currentUser;
 
   initState() {
@@ -139,14 +137,17 @@ class _SingleBookPageState extends State<SingleBookPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => StoryPage(
-                                    bookId: bookData.bookId,
-                                    title: bookData.title,
-                                    bookCover: bookData.imgUrl)),
+                                      bookId: bookData.bookId,
+                                      title: bookData.title,
+                                      bookCover: bookData.imgUrl,
+                                      description: bookData.description,
+                                    )),
                           );
                         },
-                        child: const Text('View story', style: TextStyle(
-                                    color: Colors.grey,
-                                  )),
+                        child: const Text('View story',
+                            style: TextStyle(
+                              color: Colors.grey,
+                            )),
                       ),
                       const SizedBox(height: 20),
 
@@ -168,61 +169,161 @@ class _SingleBookPageState extends State<SingleBookPage> {
                       ),
 
                       //comments and event container
+                      // final String bookCommentsAvailability = bookData.events[index].comments;
+
                       Container(
-                        height: 600,
-                        child: FutureBuilder(
-                            future: getSingleBook('ZM0DV'),
-                            builder: (context, snapshot) {
-                              if (!snapshot.hasData) {
-                                return const Center(
-                                    child: CircularProgressIndicator());
-                              }
-                              final singleBookData = snapshot.data!;
-                              //         // final today =
-                              //         //     DateTime.parse(singleBookData[1]['timestamp']);
-                              //         // final dateSlug =
-                              //         //     "${today.year.toString()}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}";
+                        height: 2000,
+                        child: ListView.builder(
+                            itemCount: bookData.events.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onInverseSurface,
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      margin: EdgeInsets.only(
+                                          top: 5,
+                                          left: 25,
+                                          right: 25,
+                                          bottom: 10),
+                                      padding: EdgeInsets.all(25),
+                                      child: Row(
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.only(bottom: 200, ),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: Colors.grey[400],
+                                              ),
+                                              padding: EdgeInsets.all(10),
+                                              margin: EdgeInsets.only(
+                                                right: 15,
+                                              ),
+                                              child: const Icon(Icons.person),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  '${bookData.events[index].event} by ${bookData.events[index].username}',
+                                                  style: TextStyle(
+                                                      color: Colors.grey[500]),
+                                                ),
+                                                Text(
+                                                  timeago.format(DateTime.parse(
+                                                      bookData.events[index]
+                                                          .timestamp)),
+                                                  style: TextStyle(
+                                                      color: Colors.grey[500]),
+                                                ),
+                                                const SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Text(
+                                                  bookData
+                                                      .events[index].userNote,
+                                                  textAlign: TextAlign.left,
+                                                ),
+                                                SizedBox(
+                                                  height: 15,
+                                                ),
 
-                              return ListView.builder(
-                                  itemCount: 3,
-                                  itemBuilder: (context, index) {
-                                    SingleBook singleBook = SingleBook(
-                                      title: singleBookData.title,
-                                      author: singleBookData.author,
-                                      imageUrl: singleBookData.imageUrl,
-                                      events: singleBookData.events,
-                                      code: singleBookData.code,
-                                      bookId: singleBookData.bookId,
-                                    );
-                                    SingleBookEvents singleBookEvent =
-                                        SingleBookEvents(
-                                      event: singleBook.events[index].event,
-                                      timestamp:
-                                          singleBook.events[index].timestamp,
-                                      location:
-                                          singleBook.events[index].location,
-                                      name: singleBook.events[index].name,
-                                      note: singleBook.events[index].note,
-                                      comments:
-                                          singleBook.events[index].comments,
-                                    );
-                                    SingleBookEventComment
-                                        singleBookEventComment =
-                                        SingleBookEventComment(
-                                            userName: singleBookEvent
-                                                .comments[index].userName,
-                                            commentBody: singleBookEvent
-                                                .comments[index].commentBody);
+                                                const Padding(
+                                                  padding: EdgeInsets.only(
+                                                      bottom: 20),
+                                                  child: Text(
+                                                    'Comments',
+                                                    style: TextStyle(
+                                                      fontSize: 20,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                    textAlign: TextAlign.left,
+                                                  ),
+                                                ),
 
-                                    return EventTile(
-                                      singleBook: singleBook,
-                                      singleBookEvent: singleBookEvent,
-                                      singleBookEventComment:
-                                          singleBookEventComment,
-                                    );
-                                  });
+                                                if (bookData.events[index]
+                                                        .comments.length ==
+                                                    0) ...[
+                                                  Text('No Comments')
+                                                ] else ...[
+                                                  Text(
+                                                    bookData.events[index]
+                                                        .comments[0].username,
+                                                    style: TextStyle(
+                                                      color: Colors.grey[500],
+                                                    ),
+                                                  ),
+                                                ],
+
+                                                const SizedBox(
+                                                  height: 5,
+                                                ),
+
+                                                if (bookData.events[index]
+                                                        .comments.length ==
+                                                    0) ...[
+                                                  Text('No Comments'),
+                                                ] else ...[
+                                                  Text(
+                                                    bookData
+                                                        .events[index]
+                                                        .comments[0]
+                                                        .commentsBody,
+                                                  ),
+                                                ],
+                                                const SizedBox(
+                                                  height: 20,
+                                                ),
+                                                TextField(
+                                                    style: const TextStyle(
+                                                        fontSize: 15),
+                                                    onChanged: (text) {
+                                                      print(text);
+                                                    },
+                                                    decoration: InputDecoration(
+                                                      suffixIcon: IconButton(
+                                                        onPressed: () {},
+                                                        icon: Icon(Icons.send),
+                                                      ),
+                                                      hoverColor:
+                                                          Colors.blue[900],
+                                                      hintText:
+                                                          'Post a comment',
+                                                      border: const OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius.circular(
+                                                                      15.0))),
+                                                    )),
+                                                // Text(
+                                                //   bookData
+                                                //       .events[index]
+                                                //       .comments[index]
+                                                //       .commentsBody,
+                                                // ),
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                              //end here
                             }),
-                      ),
+                      )
                     ],
                   ),
                 ),
