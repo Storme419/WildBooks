@@ -323,7 +323,9 @@ void addStoryComment(int story_id, int user_id, isbn, body) async {
   }
 }
 
-Future postBook(BookData book, double lat, double lng) async {
+
+Future postBook(BookData book,double lat, double lng) async {
+
   // TODO - take user ID as a parameter, to create an event
 
   final List<Map<String, dynamic>> data =
@@ -363,6 +365,9 @@ Future postBook(BookData book, double lat, double lng) async {
   // TODO: add a released event using the book ID
   await addEvent(
       bookId, 1, 'released', lat, lng, 'The book was released into the wild!');
+
+   await addEvent(bookId, 1, 'released', lat,
+    lng, 'The book was released into the wild!');
 
   return code;
 }

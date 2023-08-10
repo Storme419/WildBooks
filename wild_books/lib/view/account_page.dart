@@ -107,7 +107,7 @@ class _AccountPageState extends State<AccountPage> {
       );
     } finally {
       if (mounted) {
-        Navigator.of(context).pushReplacementNamed('/');
+        Navigator.of(context).pushReplacementNamed('/sign-out');
       }
     }
   }
@@ -161,12 +161,8 @@ class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-   
       appBar: AppBar(
-          shape: ContinuousRectangleBorder(
-              borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(45),
-                  bottomLeft: Radius.circular(45))),
+          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
           title: const Text('My Profile')),
       body: Stack(children: [
         Container(
@@ -181,8 +177,8 @@ class _AccountPageState extends State<AccountPage> {
               Expanded(
                 child: Container(
                   width: double.infinity,
-                  decoration: const BoxDecoration(
-                      color: Colors.white,
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.background,
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(50),
                           topRight: Radius.circular(50))),
@@ -225,7 +221,6 @@ class _AccountPageState extends State<AccountPage> {
                   ElevatedButton(
                     onPressed: _loading ? null : _updateProfile,
                     style: ElevatedButton.styleFrom(
-                        onPrimary: Color.fromARGB(1, 42, 87, 255),
                         shadowColor: Colors.blueGrey,
                         elevation: 5,
                         padding: EdgeInsets.zero,
@@ -243,7 +238,7 @@ class _AccountPageState extends State<AccountPage> {
                           _loading ? 'Saving...' : 'Update',
                           style: TextStyle(
                             fontSize: 16,
-                            color: Colors.black87,
+                            color: Theme.of(context).colorScheme.onSurface,
                           ),
                         ),
                       ),
@@ -251,63 +246,15 @@ class _AccountPageState extends State<AccountPage> {
                   ),
                   const SizedBox(height: 18),
                   TextButton(
-                      onPressed: _signOut, child: const Text('Sign Out')),
+                      onPressed: _signOut,
+                      child: Text(
+                        'Sign Out',
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface),
+                      )),
                 ],
               ),
-
-        // ElevatedButton(
-        //   onPressed: () {},
-        //   style: ElevatedButton.styleFrom(
-        //       onPrimary: Color.fromARGB(1, 42, 87, 255),
-        //       shadowColor: Colors.blueGrey,
-        //       elevation: 5,
-        //       padding: EdgeInsets.zero,
-        //       shape: RoundedRectangleBorder(
-        //           borderRadius: BorderRadius.circular(20))),
-        //   child: Ink(
-        //     decoration: BoxDecoration(
-        //         color: Color.fromARGB(1, 42, 87, 255),
-        //         borderRadius: BorderRadius.circular(20)),
-        //     child: Container(
-        //       width: 150,
-        //       height: 40,
-        //       alignment: Alignment.center,
-        //       child: const Text(
-        //         'Let\'s go!',
-        //         style: TextStyle(
-        //           fontSize: 16,
-        //           color: Colors.black87,
-        //         ),
-        //       ),
-        //     ),
-        //   ),
-        // ),
       ]),
     );
   }
 }
-
-    //   body: _loading
-    //       ? const Center(child: CircularProgressIndicator())
-    //       : ListView(
-    //           padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
-    //           children: [
-    //             Avatar(
-    //               imageUrl: _avatarUrl,
-    //               onUpload: _onUpload,
-    //             ),
-    //             const SizedBox(height: 18),
-    //             TextFormField(
-    //               controller: _usernameController,
-    //               decoration: const InputDecoration(labelText: 'User Name'),
-    //             ),
-    //             const SizedBox(height: 18),
-    //             ElevatedButton(
-    //               onPressed: _loading ? null : _updateProfile,
-    //               child: Text(_loading ? 'Saving...' : 'Update'),
-    //             ),
-    //             const SizedBox(height: 18),
-    //             TextButton(onPressed: _signOut, child: const Text('Sign Out')),
-    //           ],
-    //         ),
-    // );

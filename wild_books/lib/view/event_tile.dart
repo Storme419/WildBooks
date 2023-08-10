@@ -40,7 +40,9 @@ class _EventTileState extends State<EventTile> {
           children: [
             Container(
               decoration: BoxDecoration(
-                color: Colors.brown[50],
+
+                color: Theme.of(context).colorScheme.onInverseSurface,
+
                 borderRadius: BorderRadius.circular(8),
               ),
               margin: EdgeInsets.only(top: 5, left: 25, right: 25, bottom: 10),
@@ -112,7 +114,7 @@ class _EventTileState extends State<EventTile> {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: Colors.brown[50],
+              color: Theme.of(context).colorScheme.onInverseSurface,
               borderRadius: BorderRadius.circular(8),
             ),
             margin: EdgeInsets.only(top: 5, left: 25, right: 25, bottom: 10),

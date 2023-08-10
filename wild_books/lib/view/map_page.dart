@@ -52,13 +52,20 @@ class _MapState extends State<Map> {
                 bookId: selectedBookId,
                 callbackHideDrawer: notifyHideDrawer),
           ),
-          ElevatedButton(
-            onPressed: () {
-              setState(() {
-                isShowUnfound = !isShowUnfound;
-              });
-            },
-            child: Text(isShowUnfound ? 'show unfound' : 'show all'),
+          Container(
+            padding: EdgeInsets.fromLTRB(15, 15, 0, 0),
+            child: ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  isShowUnfound = !isShowUnfound;
+                });
+              },
+              child: Text(
+                isShowUnfound ? 'show unfound' : 'show all',
+                style:
+                    TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontWeight: FontWeight.w600),
+              ),
+            ),
           ),
         ],
       ),
@@ -112,7 +119,8 @@ class _MapDrawerState extends State<MapDrawer> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => SingleBookPage(bookId: widget.bookId)),
+                            builder: (context) =>
+                                SingleBookPage(bookId: widget.bookId)),
                       );
                       debugPrint('navigate to ${widget.bookId}');
                     },

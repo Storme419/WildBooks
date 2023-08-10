@@ -66,7 +66,8 @@ flutter:
   assets:
     - lib/images/book2.png
     - lib/images/book.drawer.jpg
-
+    - lib/images/signin.png
+    - lib/images/signin2.png
     - lib/images/wildbooks1.png
     - lib/images/wildbooks2.png
     - lib/images/wildbooks3.png

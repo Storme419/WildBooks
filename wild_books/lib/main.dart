@@ -45,7 +45,8 @@ class MyApp extends StatelessWidget {
               '/about-us': (context) => const AboutUs(),
               '/account': (context) => const AccountPage(),
               '/books-list': (context) => const ListOfBooks(),
-              '/found-book': (context) => const FoundBook()
+              '/found-book': (context) => const FoundBook(),
+              '/sign-out': (context) => const RootPage()
             },
             home: const OnBoardingPage(),
           );
@@ -76,7 +77,7 @@ class _RootPageState extends State<RootPage> {
       drawer: Drawer(
         child: Column(
           children: [
-            const UserAccountsDrawerHeader(
+             UserAccountsDrawerHeader(
               // currentAccountPicture: ClipRRect(
               //     borderRadius: BorderRadius.circular(40),
               //     child: Image.network(
@@ -84,9 +85,8 @@ class _RootPageState extends State<RootPage> {
               accountName: Text(''),
               accountEmail: Text(''),
               decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('lib/images/book.drawer.jpg'),
-                      fit: BoxFit.fill)),
+                color: Theme.of(context).colorScheme.primary
+              )
             ),
             SwitchListTile(
               title: const Text('Dark Mode'),
@@ -168,15 +168,14 @@ class _RootPageState extends State<RootPage> {
       body: _pages[_selectedIndex],
       bottomNavigationBar: Container(
         height: 70,
-        color: Theme.of(context).colorScheme.primaryContainer,
+        color: Theme.of(context).colorScheme.secondary,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
           child: GNav(
-            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-            color: Theme.of(context).colorScheme.onSurface,
-            activeColor: Theme.of(context).colorScheme.onSecondary,
-            tabBackgroundColor:
-                Theme.of(context).colorScheme.onSecondaryContainer,
+            backgroundColor: Theme.of(context).colorScheme.secondary,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+            activeColor: Theme.of(context).colorScheme.onSurface,
+            tabBackgroundColor: Theme.of(context).colorScheme.primary,
             padding: const EdgeInsets.all(5),
             gap: 8,
             tabs: const [

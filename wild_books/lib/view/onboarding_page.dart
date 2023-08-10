@@ -32,11 +32,11 @@ class OnBoardingPageState extends State<OnBoardingPage> {
   Widget build(BuildContext context) {
     const bodyStyle = TextStyle(fontSize: 19.0);
 
-    const pageDecoration = PageDecoration(
+      const pageDecoration = PageDecoration(
       titleTextStyle: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
       bodyTextStyle: bodyStyle,
       bodyPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-      pageColor: Colors.white,
+      pageColor: Color.fromARGB(255, 232, 236, 226),
       imagePadding: EdgeInsets.zero,
       bodyAlignment: Alignment.center,
       imageAlignment: Alignment.center,

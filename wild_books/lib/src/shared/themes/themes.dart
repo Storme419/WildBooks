@@ -5,7 +5,7 @@ ThemeData get darkTheme => ThemeData(
     useMaterial3: true,
     colorScheme: darkColorScheme,
     appBarTheme: AppBarTheme(
-        centerTitle: true, backgroundColor: darkColorScheme.primaryContainer),
+        centerTitle: true, backgroundColor: darkColorScheme.primary),
     segmentedButtonTheme: SegmentedButtonThemeData(style: ButtonStyle(
       textStyle: MaterialStateProperty.resolveWith<TextStyle>((states) {
         if (states.contains(MaterialState.selected)) {
@@ -19,7 +19,7 @@ ThemeData get lightTheme => ThemeData(
     useMaterial3: true,
     colorScheme: lightColorScheme,
     appBarTheme: AppBarTheme(
-        centerTitle: true, backgroundColor: lightColorScheme.primaryContainer),
+        centerTitle: true, backgroundColor: lightColorScheme.primary),
     segmentedButtonTheme: SegmentedButtonThemeData(style: ButtonStyle(
       textStyle: MaterialStateProperty.resolveWith<TextStyle>((states) {
         if (states.contains(MaterialState.selected)) {

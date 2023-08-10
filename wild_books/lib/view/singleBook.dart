@@ -76,39 +76,87 @@ class _SingleBookPageState extends State<SingleBookPage> {
                         fontSize: 16,
                         color: Colors.grey,
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 20),
-                    hideButton
-                        ? Container()
-                        : ElevatedButton(
-                            onPressed: () async {
-                              final bool isEventPosted = await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => AddEvent(
-                                          title: bookData.isFound
-                                              ? 'Release Book'
-                                              : 'Find Book',
-                                          event: bookData.isFound
-                                              ? 'released'
-                                              : 'found',
-                                          bookId: bookData.bookId,
-                                          userId:
-                                              1, // TODO - can't pass this ----> supabase.auth.currentUser.toString(),
-                                          // old userId is 'int', data type on profiles table is 'UUID'
-                                        )),
-                              );
 
-                              if (isEventPosted) {
-                                setState(() {
-                                  hideButton = true;
-                                });
-                              }
-                            },
-                            child: Text(bookData.isFound
-                                ? 'Release this book'
-                                : 'I found this book'),
+                      const SizedBox(height: 20),
+                      hideButton
+                          ? Container()
+                          : ElevatedButton(
+                              onPressed: () async {
+                                final bool isEventPosted = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AddEvent(
+                                            title: bookData.isFound
+                                                ? 'Release Book'
+                                                : 'Find Book',
+                                            event: bookData.isFound
+                                                ? 'released'
+                                                : 'found',
+                                            bookId: bookData.bookId,
+                                            userId:
+                                                1, // TODO - can't pass this ----> supabase.auth.currentUser.toString(),
+                                            // old userId is 'int', data type on profiles table is 'UUID'
+                                          )),
+                                );
+
+                                if (isEventPosted) {
+                                  setState(() {
+                                    hideButton = true;
+                                  });
+                                }
+                              },
+                              child: Text(
+                                  bookData.isFound
+                                      ? 'Release this book'
+                                      : 'I found this book',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                  )),
+                            ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MapSingleBook(
+                                    bookId: bookData.bookId,
+                                    title: bookData.title)),
+                          );
+                        },
+                        child: const Text('View journey',
+                            style: TextStyle(
+                              color: Colors.grey,
+                            )),
+                      ),
+                      const SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => StoryPage(
+                                    bookId: bookData.bookId,
+                                    title: bookData.title,
+                                    bookCover: bookData.imgUrl)),
+                          );
+                        },
+                        child: const Text('View story', style: TextStyle(
+                                    color: Colors.grey,
+                                  )),
+                      ),
+                      const SizedBox(height: 20),
+
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: ExpandableText(
+                          bookData.description,
+                          expandText: 'Show more',
+                          collapseText: 'Show less',
+                          style: TextStyle(
+                            fontSize: 18,
                           ),
                     SizedBox(
                       height: 10,
@@ -151,26 +199,69 @@ class _SingleBookPageState extends State<SingleBookPage> {
                         textAlign: TextAlign.center,
                       ),
                     ),
+      const SizedBox(
+                        height: 48,
+                      ),
 
-                    const SizedBox(
-                      height: 48,
-                    ),
+                      //comments and event container
+                      Container(
+                        height: 600,
+                        child: FutureBuilder(
+                            future: getSingleBook('ZM0DV'),
+                            builder: (context, snapshot) {
+                              if (!snapshot.hasData) {
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              }
+                              final singleBookData = snapshot.data!;
+                              //         // final today =
+                              //         //     DateTime.parse(singleBookData[1]['timestamp']);
+                              //         // final dateSlug =
+                              //         //     "${today.year.toString()}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}";
 
-                    //comments and event container
-                    Container(
-                      height: 1000,
-                      child: Column(children: [
-                        Text('Found or Released:${bookData.events[0].event}'),
-                        Text('${timeago.format(DateTime.parse(bookData.events[0].timestamp))}'),
-                        Text('Event note: ${bookData.events[0].userNote}'),
-                        Text('UserId for Event:${bookData.events[0].userId}'),
-                        Text('UserName for Event:${bookData.events[0].username}'),
-                        Text('UserName for Event:${bookData.events[0].event}'),
-                        Text('Comment on Event:${bookData.events[0].comments[0].commentsBody}'),
-                        Text('username of commenter:${bookData.events[0].comments[0].username}'),
-                      ]),
-                    ),
-                  ]),
+                              return ListView.builder(
+                                  itemCount: 3,
+                                  itemBuilder: (context, index) {
+                                    SingleBook singleBook = SingleBook(
+                                      title: singleBookData.title,
+                                      author: singleBookData.author,
+                                      imageUrl: singleBookData.imageUrl,
+                                      events: singleBookData.events,
+                                      code: singleBookData.code,
+                                      bookId: singleBookData.bookId,
+                                    );
+                                    SingleBookEvents singleBookEvent =
+                                        SingleBookEvents(
+                                      event: singleBook.events[index].event,
+                                      timestamp:
+                                          singleBook.events[index].timestamp,
+                                      location:
+                                          singleBook.events[index].location,
+                                      name: singleBook.events[index].name,
+                                      note: singleBook.events[index].note,
+                                      comments:
+                                          singleBook.events[index].comments,
+                                    );
+                                    SingleBookEventComment
+                                        singleBookEventComment =
+                                        SingleBookEventComment(
+                                            userName: singleBookEvent
+                                                .comments[index].userName,
+                                            commentBody: singleBookEvent
+                                                .comments[index].commentBody);
+
+                                    return EventTile(
+                                      singleBook: singleBook,
+                                      singleBookEvent: singleBookEvent,
+                                      singleBookEventComment:
+                                          singleBookEventComment,
+                                    );
+                                  });
+                            }),
+                      ),
+                    ],
+                  ),
+
                 ),
               ),
             ),
